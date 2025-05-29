@@ -8,7 +8,7 @@ public class Attack : MonoBehaviour
 
     private void Start()
     {
-        _animator = GetComponent<Animator>();
+        _animator = GetComponentInChildren<Animator>();
 
         if (_animator == null){ Debug.Log(gameObject.name + " has activate defensive programming"); return; }
     }
@@ -39,8 +39,5 @@ public class Attack : MonoBehaviour
         
     }
 
-    private void OnAttack(float _isAttack)
-    {
-        Debug.Log(_isAttack);
-    }
+    
 }
