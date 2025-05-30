@@ -24,7 +24,7 @@ public class Spawner : MonoBehaviour
     {
         _mainCamera = Camera.main;
 
-        spawnInterval = 0.68f;
+        
         _spawnTimer = spawnInterval;
 
     }

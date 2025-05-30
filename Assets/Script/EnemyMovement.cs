@@ -71,7 +71,7 @@ public class EnemyMovement : MonoBehaviour
 
     protected virtual void HandleRotation()
     {
-        Debug.Log(Vector2.Distance(player.transform.position, transform.position));
+        
 
         if (inputDirection == Vector2.zero)
             return;

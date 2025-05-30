@@ -19,7 +19,7 @@ public class OnAttack : MonoBehaviour
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void OnAttacking(float _isAttack)
+    private void OnAttacking(float _attackNum)
     {
 
         _attackAreaPosition = transform.position;
@@ -37,12 +37,14 @@ public class OnAttack : MonoBehaviour
         foreach(Collider2D _hitCollider in _hitColliders)
         {
             
+            _hitCollider.gameObject.GetComponent<Health>().TakeDamage(_attackNum);
+            
             // find the collider that collide with us then use Enemy punya TakeDamage function
             // hitCollider.GetComponent<Enemy>().TakeDamage(attackDamage * isAttack);
             // need to assign enemy to enemyLayer
         }
 
-        Debug.Log(_isAttack);
+        
     }
 
      

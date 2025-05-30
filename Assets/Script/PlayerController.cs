@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
 
     private Transform _transform;
 
+    private float lastAPressedTime = float.NegativeInfinity; // 初始化为负无穷，确保第一次按下时有效
+    private float lastDPressedTime = float.NegativeInfinity;
 
     void Start()
     {
@@ -38,10 +40,47 @@ public class PlayerController : MonoBehaviour
     void HandleMovement()
     {
 
-        //rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
-        float _moveInput = Input.GetAxisRaw("Horizontal");
+        float _moveInput = 0f;
         float currentSpeed;
 
+        
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            lastAPressedTime = Time.time;
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            lastDPressedTime = Time.time;
+        }
+
+        // 判断当前哪些方向键被按住
+        bool aHeld = Input.GetKey(KeyCode.A);
+        bool dHeld = Input.GetKey(KeyCode.D);
+
+        // 根据“后按键优先”的逻辑来决定_moveInput
+        if (aHeld && dHeld)
+        {
+            // 如果A和D同时被按住，比较哪个键是最后按下的
+            if (lastDPressedTime > lastAPressedTime)
+            {
+                _moveInput = 1f; // D键是最后按下的，向右移动
+            }
+            else
+            {
+                _moveInput = -1f; // A键是最后按下的（或同时按下），向左移动
+            }
+        }
+        else if (aHeld)
+        {
+            _moveInput = -1f; // 只有A键被按住，向左移动
+        }
+        else if (dHeld)
+        {
+            _moveInput = 1f; // 只有D键被按住，向右移动
+        }
+        // 如果A和D都没有被按住，_moveInput 保持 0，角色停止
+
+        // 判断是否按住Shift键进行奔跑
         if (Input.GetKey(KeyCode.LeftShift))
         {
             currentSpeed = runSpeed;
@@ -55,7 +94,7 @@ public class PlayerController : MonoBehaviour
 
         FlipPlayerSprite(_moveInput);
 
-        //animator.SetBool("IsRunning", moveInput != 0);
+        //animator.SetBool("IsRunning", _moveInput != 0); // 使用新的_moveInput
 
     }
 
@@ -80,7 +119,7 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = true;
             jumpCount = maxJumps;
-            Debug.Log("hits");
+            //Debug.Log("hits");
         }
 
     }
