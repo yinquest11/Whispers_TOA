@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 3
   tags:
   - Ground
+  - Catcher
+  - Enemy
+  - Fairy
+  - CatchToLocation
+  - EmptyFollowFairy
   layers:
   - Default
   - TransparentFX
@@ -14,7 +19,7 @@ TagManager:
   - UI
   - Enemy
   - Player
-  - 
+  - Fairy
   - 
   - 
   - 

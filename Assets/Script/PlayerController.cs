@@ -5,13 +5,13 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb;
-    //private Animator animator;
+    
 
     public float moveSpeed = 5f;
     public float jumpForce = 5f;
     public float runSpeed = 8f;
 
-    private bool isGrounded;
+    
     private int jumpCount;
     private int maxJumps = 2;
 
@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         _transform = GetComponent<Transform>();
-        //animator = GetComponent<Animator>();
+        
         jumpCount = maxJumps;
 
     }
@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     {
         HandleMovement();
         HandleJumping();
-        //UpdateAnimatorStates();
+        
     }
 
     void HandleMovement()
@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour
 
         FlipPlayerSprite(_moveInput);
 
-        //animator.SetBool("IsRunning", _moveInput != 0); // 使用新的_moveInput
+        
 
     }
 
@@ -102,22 +102,19 @@ public class PlayerController : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             jumpCount--;
-            isGrounded = false;
+            
         }
     }
 
-    //void UpdateAnimatorStates()
-    //{
-    //    //animator.SetBool("IsGrounded", isGrounded);
-    //}
+    
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
-            isGrounded = true;
+            //isGrounded = true;
             jumpCount = maxJumps;
-            //Debug.Log("hits");
+           
         }
 
     }

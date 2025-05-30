@@ -1,9 +1,9 @@
 using UnityEngine;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
-public class EnemyMovement : MonoBehaviour
+public class CatchersEnemyMovement : MonoBehaviour
 {
-    protected GameObject player;
+    protected GameObject fairy;
 
     protected Collider2D _collider;
     protected Rigidbody2D _rigidBody;
@@ -17,37 +17,63 @@ public class EnemyMovement : MonoBehaviour
     protected bool _isMoving = false;
     protected Vector2 _targetRotation = Vector2.zero;
 
+    public float withFairyDistance;
+    public bool wantToChase = true;
+    public bool stopChasingBefore = false;
+
+    
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _collider = GetComponent<Collider2D>();
         _rigidBody = GetComponent<Rigidbody2D>();
+        
 
-        player = GameObject.FindWithTag("Player");
+        fairy = GameObject.FindWithTag("Fairy");
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        HandleInput();
-        HandleMovement();
-        HandleRotation();
+        
+
+        if (wantToChase == false) 
+        {
+            _rigidBody.linearVelocity = Vector2.zero;
+            return;
+        }
+
+        if (stopChasingBefore != true)
+        {
+            HandleInput();
+            HandleMovement();
+            HandleRotation();
+        }
+        
+    }
+
+    private float GetWithFairyDistance()
+    {
+        return Vector2.Distance(transform.position,fairy.transform.position);
     }
 
     private void HandleInput()
     {
-        if ( player == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
+        if (fairy == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
        
 
-        // Let enemy face find player direction
+        // Let enemy face find fairy direction
         inputDirection =
-        new Vector2(player.transform.position.x - transform.position.x, player.transform.position.y - transform.position.y).normalized;
+        new Vector2(fairy.transform.position.x - transform.position.x, fairy.transform.position.y - transform.position.y).normalized;
 
         Debug.DrawRay(transform.position, inputDirection, Color.yellow);
     }
 
     private void HandleMovement()
     {
+
+        
 
         if ( _rigidBody  == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
 
@@ -79,5 +105,25 @@ public class EnemyMovement : MonoBehaviour
 
         float angle = (Mathf.Atan2(inputDirection.y, inputDirection.x) * Mathf.Rad2Deg) - 90f;
         transform.rotation = Quaternion.Euler(0f, 0f, angle);
+    }
+
+    private void OnTriggerEnter2D(Collider2D _fairyCollider)
+    {
+        if (_fairyCollider.gameObject.CompareTag("Fairy") == false)
+        {
+            return;
+        }
+
+        wantToChase = false;
+        stopChasingBefore = true;
+    }
+    private void OnTriggerExit2D(Collider2D _fairyCollider)
+    {
+        if (_fairyCollider.gameObject.CompareTag("Fairy") == false)
+        {
+            return;
+        }
+
+        wantToChase = true;
     }
 }

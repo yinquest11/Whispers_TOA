@@ -45,7 +45,7 @@ public class Health : MonoBehaviour
         
 
         currentHealth -= _damageAmountTake;
-        Debug.Log("Curretn Health: " + currentHealth);
+        
 
         // Different Action if the gameObject is Enemy or Player
         if (gameObjectIsPlayer == false)
