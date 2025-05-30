@@ -1,11 +1,12 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Attack : MonoBehaviour
 {
 
     private Animator _animator;
     public bool isMeleeAttack;
-
+    public float attackSpeed = 1; // 3 is maximum
+    
     private void Start()
     {
         _animator = GetComponentInChildren<Animator>();
@@ -36,6 +37,7 @@ public class Attack : MonoBehaviour
     private void SetAnimation()
     {
         _animator.SetBool("isMeleeAttack", isMeleeAttack);
+        _animator.SetFloat("attackSpeed", attackSpeed);
         
     }
 

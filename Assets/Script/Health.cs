@@ -62,7 +62,7 @@ public class Health : MonoBehaviour
         {
             currentHealth = 0;
 
-            Debug.Log(gameObject.name + " die");
+            
 
             HaveToDie();
 
