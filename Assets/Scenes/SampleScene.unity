@@ -657,7 +657,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4991736299691402666, guid: d0b8cb91e91a06447b8212496650603d, type: 3}
       propertyPath: attackSize.x
-      value: 1.6
+      value: 1.93
+      objectReference: {fileID: 0}
+    - target: {fileID: 4991736299691402666, guid: d0b8cb91e91a06447b8212496650603d, type: 3}
+      propertyPath: attackSize.y
+      value: 2.11
       objectReference: {fileID: 0}
     - target: {fileID: 4991736299691402666, guid: d0b8cb91e91a06447b8212496650603d, type: 3}
       propertyPath: attackMultiplier

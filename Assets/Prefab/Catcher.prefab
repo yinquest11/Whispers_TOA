@@ -186,7 +186,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
+  m_Radius: 0.52405226
 --- !u!114 &5020537509687546178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,3 +235,4 @@ MonoBehaviour:
   gameObjectIsPlayer: 0
   _catcherHealths: []
   isDead: 0
+  wantToTakeDamegeByPlayer: 0
