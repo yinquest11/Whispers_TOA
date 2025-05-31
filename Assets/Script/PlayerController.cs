@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb;
-    
+    private CatcherHealth[] _catcherHealths;
+
 
     public float moveSpeed = 5f;
     public float jumpForce = 5f;
@@ -39,6 +40,18 @@ public class PlayerController : MonoBehaviour
 
     void HandleMovement()
     {
+        if (Input.GetButton("Fire2"))
+        {
+            _catcherHealths = Object.FindObjectsByType<CatcherHealth>(FindObjectsSortMode.None);
+
+            if (_catcherHealths == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
+
+            foreach (CatcherHealth _catcherHealth in _catcherHealths)
+            {
+                _catcherHealth.HaveToDie();
+            }
+            
+        }
 
         float _moveInput = 0f;
         float currentSpeed;

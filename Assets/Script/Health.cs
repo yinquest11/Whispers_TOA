@@ -8,15 +8,19 @@ public class Health : MonoBehaviour
     public float currentHealth = 10f;
     public GameObject takeDamageSound;
     public GameObject spawnWhenDead;
-    private SpriteRenderer childSprite;
-    private Coroutine _changeColorCoroutine;
+    protected SpriteRenderer childSprite;
+    protected Coroutine _changeColorCoroutine;
 
     public bool gameObjectIsPlayer = false;
+
+    
+
+
 
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    protected virtual void Start()
     {
         childSprite = GetComponentInChildren<SpriteRenderer>();
 
@@ -24,19 +28,22 @@ public class Health : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
         
     }
 
-    private void Initialization()
+    protected void Initialization()
     {
         currentHealth = maxHealth;
     }
 
-    public void TakeDamage(float _damageAmountTake)
+    public virtual void TakeDamage(float _damageAmountTake)
     {
-        
+        if (this.enabled == false)
+        {
+            return;
+        }
 
         if (takeDamageSound != null)
         {
@@ -74,7 +81,7 @@ public class Health : MonoBehaviour
 
     }
 
-    IEnumerator _changeColor()
+    protected  virtual IEnumerator _changeColor()
     {
         childSprite.color = new Color(0.9433962f, 0.5844309f, 0.5844309f);
 
@@ -84,9 +91,11 @@ public class Health : MonoBehaviour
 
     }
 
-    public void HaveToDie()
+    public virtual void HaveToDie()
     {
-        if(gameObjectIsPlayer == false)
+
+
+        if (gameObjectIsPlayer == false && _changeColorCoroutine != null) 
         {
             StopCoroutine(_changeColorCoroutine);
         }

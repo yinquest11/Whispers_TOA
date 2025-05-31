@@ -267,6 +267,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 513756254}
+  - component: {fileID: 513756255}
   m_Layer: 0
   m_Name: EmptyFollowFairy
   m_TagString: EmptyFollowFairy
@@ -289,6 +290,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &513756255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 513756253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7276f4de7bea7744ca0f5acb65f8a34b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,7 +439,7 @@ GameObject:
   - component: {fileID: 896666088}
   m_Layer: 0
   m_Name: Spawner
-  m_TagString: Untagged
+  m_TagString: Spawner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -443,15 +456,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 058e2ee76c97b974b921e1854ccd2f10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startSpawnFlyEnemy: 0
-  startSpawnCatchers: 1
+  startSpawnFlyEnemy: 1
+  startSpawnCatchers: 0
   spawnInterval: 1.5
+  _randomSidePosition: {x: 0, y: 0, z: 0}
   enemyArray:
   - {fileID: 2398625624790442291, guid: 832df5fdd0d9663409df7ab0ec86a750, type: 3}
   catchers:
   - {fileID: 2398625624790442291, guid: 6190b9acca4db474e83cd913ca9a7801, type: 3}
   catchersAmount: 3
-  exitsCatchers: []
+  existCatchers: []
   whichIndexCatchers: 0
   _randomSide: 1
 --- !u!4 &896666089
@@ -642,6 +656,10 @@ PrefabInstance:
       propertyPath: attackSize.x
       value: 1.6
       objectReference: {fileID: 0}
+    - target: {fileID: 4991736299691402666, guid: d0b8cb91e91a06447b8212496650603d, type: 3}
+      propertyPath: attackMultiplier
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5708143237451396579, guid: d0b8cb91e91a06447b8212496650603d, type: 3}
       propertyPath: m_Name
       value: Player
@@ -709,11 +727,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5572943598545038780, guid: 30b472000dca57548839343554d104c8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.12
+      value: 10.11
       objectReference: {fileID: 0}
     - target: {fileID: 5572943598545038780, guid: 30b472000dca57548839343554d104c8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.68
+      value: 0.69
       objectReference: {fileID: 0}
     - target: {fileID: 5572943598545038780, guid: 30b472000dca57548839343554d104c8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -810,7 +828,7 @@ PrefabInstance:
       objectReference: {fileID: 339026786}
     - target: {fileID: 6659791306024411981, guid: 5edad8f539f75db4fa230644d32310f7, type: 3}
       propertyPath: catchFollowToLocationSpeed
-      value: 7.98
+      value: 4.24
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

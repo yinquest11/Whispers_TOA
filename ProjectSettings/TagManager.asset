@@ -10,6 +10,7 @@ TagManager:
   - Fairy
   - CatchToLocation
   - EmptyFollowFairy
+  - Spawner
   layers:
   - Default
   - TransparentFX

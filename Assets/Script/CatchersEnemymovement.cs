@@ -4,6 +4,7 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 public class CatchersEnemyMovement : MonoBehaviour
 {
     protected GameObject fairy;
+    private CatcherHealth _catcherHealth;
 
     protected Collider2D _collider;
     protected Rigidbody2D _rigidBody;
@@ -23,14 +24,34 @@ public class CatchersEnemyMovement : MonoBehaviour
 
     
 
+    
+
+    protected Spawner _spawner;
+
+    protected Vector3 exitLocation;
+    
+
+
+
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _collider = GetComponent<Collider2D>();
         _rigidBody = GetComponent<Rigidbody2D>();
+        _catcherHealth = GetComponent<CatcherHealth>();
+        _spawner = GameObject.FindWithTag("Spawner").GetComponent<Spawner>();
+        fairy = GameObject.FindWithTag("Fairy");
+
+        _spawner.RandomChooseOneScreenEdge();
+        _spawner.RandomChooseOnePosition();
+
+        exitLocation = _spawner._randomSidePosition;
+
+
         
 
-        fairy = GameObject.FindWithTag("Fairy");
     }
 
     // Update is called once per frame
@@ -38,19 +59,29 @@ public class CatchersEnemyMovement : MonoBehaviour
     {
         
 
-        if (wantToChase == false) 
-        {
-            _rigidBody.linearVelocity = Vector2.zero;
-            return;
-        }
+        
 
-        if (stopChasingBefore != true)
+        // Catched successful before?
+        if (stopChasingBefore != true && wantToChase == true)
         {
             HandleInput();
             HandleMovement();
             HandleRotation();
         }
+        else if (wantToChase == false && _catcherHealth.isDead == false)// When catchers touch fairy
+        {
+            _rigidBody.linearVelocity = Vector2.zero;
+        }
+        else if (_catcherHealth.isDead == true&& wantToChase == false) // when CatcherHealth is 0 and activate the overwrite punya Function, use Dead seires funciton
+        {
+            if (exitLocation == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
+            HandleDeadInput();
+            HandleDeadMovement();
+            HandleDeadRotation();
+            
+        }
         
+
     }
 
     private float GetWithFairyDistance()
@@ -58,7 +89,9 @@ public class CatchersEnemyMovement : MonoBehaviour
         return Vector2.Distance(transform.position,fairy.transform.position);
     }
 
-    private void HandleInput()
+    
+
+    public void HandleInput()
     {
         if (fairy == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
        
@@ -70,7 +103,7 @@ public class CatchersEnemyMovement : MonoBehaviour
         Debug.DrawRay(transform.position, inputDirection, Color.yellow);
     }
 
-    private void HandleMovement()
+    public void HandleMovement()
     {
 
         
@@ -95,7 +128,7 @@ public class CatchersEnemyMovement : MonoBehaviour
         _targetRotation = targetVelocity;
     }
 
-    protected virtual void HandleRotation()
+    public virtual void HandleRotation()
     {
         
 
@@ -109,6 +142,8 @@ public class CatchersEnemyMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D _fairyCollider)
     {
+        
+
         if (_fairyCollider.gameObject.CompareTag("Fairy") == false)
         {
             return;
@@ -117,13 +152,67 @@ public class CatchersEnemyMovement : MonoBehaviour
         wantToChase = false;
         stopChasingBefore = true;
     }
+
     private void OnTriggerExit2D(Collider2D _fairyCollider)
     {
+        
+
         if (_fairyCollider.gameObject.CompareTag("Fairy") == false)
         {
             return;
         }
 
         wantToChase = true;
+    }
+
+    public void HandleDeadInput()
+    {
+        
+
+        if (fairy == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
+
+
+        // Let enemy face find fairy direction
+        inputDirection = exitLocation.normalized;
+        
+
+        Debug.DrawRay(transform.position, inputDirection, Color.yellow);
+    }
+
+    public void HandleDeadMovement()
+    {
+
+
+
+        if (_rigidBody == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
+
+        if (_collider == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
+
+
+
+        Vector2 targetVelocity = Vector2.zero;
+
+        targetVelocity = new Vector2(inputDirection.x * acceleration, inputDirection.y * acceleration);
+
+        //use linearVelocity to let gameObject move
+        //use SmoothDamp to smooth between 2 Vector2
+        _rigidBody.linearVelocity = Vector2.SmoothDamp(_rigidBody.linearVelocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
+
+        //either (targetVelocity.x != 0) or (targetVelocity.y != 0) is true, _isMoving is true
+        _isMoving = targetVelocity.x != 0 || targetVelocity.y != 0;
+
+        _targetRotation = targetVelocity;
+    }
+
+    public virtual void HandleDeadRotation()
+    {
+
+
+        if (inputDirection == Vector2.zero)
+            return;
+
+
+        float angle = (Mathf.Atan2(inputDirection.y, inputDirection.x) * Mathf.Rad2Deg) - 90f;
+        transform.rotation = Quaternion.Euler(0f, 0f, angle);
     }
 }

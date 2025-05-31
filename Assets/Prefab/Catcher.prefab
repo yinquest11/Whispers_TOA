@@ -98,9 +98,9 @@ GameObject:
   - component: {fileID: 9144209454811558062}
   - component: {fileID: 7656294483191269474}
   - component: {fileID: 8825393169621148560}
-  - component: {fileID: 6087485250898460089}
   - component: {fileID: 5020537509687546178}
   - component: {fileID: 4776423268723950359}
+  - component: {fileID: -4719119603279312843}
   m_Layer: 6
   m_Name: Catcher
   m_TagString: Catcher
@@ -117,7 +117,7 @@ Transform:
   m_GameObject: {fileID: 2398625624790442291}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.28, y: 2.03, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -187,23 +187,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
---- !u!114 &6087485250898460089
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2398625624790442291}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2178d54a4de7ea47a25a59eab119193, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 10
-  currentHealth: 10
-  takeDamageSound: {fileID: 0}
-  spawnWhenDead: {fileID: 0}
-  gameObjectIsPlayer: 0
 --- !u!114 &5020537509687546178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,3 +216,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 104f2ae065ab09e40b20603f57f1c356, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-4719119603279312843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2398625624790442291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fad3cfd07836cc54a8d8d6410aade837, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
+  currentHealth: 10
+  takeDamageSound: {fileID: 0}
+  spawnWhenDead: {fileID: 0}
+  gameObjectIsPlayer: 0
+  _catcherHealths: []
+  isDead: 0

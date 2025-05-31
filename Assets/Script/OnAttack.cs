@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class OnAttack : MonoBehaviour
 {
-    public float attackDamage;
+    public float attackMultiplier;
     public Vector2 attackSize = new Vector2(1f, 1f);
     private Vector2 _attackAreaPosition;
     public float offSetX = 1f;
@@ -36,8 +36,11 @@ public class OnAttack : MonoBehaviour
 
         foreach(Collider2D _hitCollider in _hitColliders)
         {
+
+            _hitCollider.gameObject.GetComponent<Health>().TakeDamage(attackMultiplier * _attackNum);
             
-            _hitCollider.gameObject.GetComponent<Health>().TakeDamage(_attackNum);
+           
+            
             
             // find the collider that collide with us then use Enemy punya TakeDamage function
             // hitCollider.GetComponent<Enemy>().TakeDamage(attackDamage * isAttack);

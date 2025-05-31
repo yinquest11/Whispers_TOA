@@ -3,26 +3,21 @@ using UnityEngine;
 
 public class CatchFairy : MonoBehaviour
 {
-    
+    private CatcherHealth _catcherHealth;
+
     private FairyFollow _fairyFollow;
 
     private Transform _emptyFollowFairyTransform;
+
+    private GameObject[] _allCatchers;
+
+    //private bool _allisDead = false;
+
     
 
     public bool HasCatchFiary
     {
-        get
-        {
-            if (_fairyFollow == null)
-            {
-                return false;
-            }
-            else
-            {
-                return _fairyFollow.isCatchByEnemy;
-            }
-            
-        }
+       
         set
         {
             if (_fairyFollow != null)
@@ -39,20 +34,25 @@ public class CatchFairy : MonoBehaviour
     {
         _fairyFollow = GameObject.FindWithTag("Fairy").GetComponent<FairyFollow>();
         if (_fairyFollow == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
-        _emptyFollowFairyTransform = _fairyFollow.gameObject.transform;
+
+        _emptyFollowFairyTransform = GameObject.FindWithTag("EmptyFollowFairy").gameObject.transform;
+
+
+        _catcherHealth = GetComponent<CatcherHealth>();
+        if (_catcherHealth == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
 
     }
 
     // Update is called once per frame
     void Update()
     {
+         
+
         
 
-        if (HasCatchFiary == true) // All of catchers
-        {
-            
-        }
     }
+
+    
 
     private void OnTriggerEnter2D(Collider2D _fairyCollider)
     {
@@ -61,21 +61,26 @@ public class CatchFairy : MonoBehaviour
             return;
         }
 
+        if (_catcherHealth.isDead == true)
+        {
+            return;
+        }
+
         transform.SetParent(_emptyFollowFairyTransform);
 
 
-
-
-
         HasCatchFiary = true;
+
+
+
+
     }
 
     private void OnDestroy()
     {
 
 
-        HasCatchFiary = GameObject.FindWithTag("Catcher") == null ? false : true;
-
+        
 
     }
 }

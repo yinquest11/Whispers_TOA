@@ -14,7 +14,7 @@ public class Spawner : MonoBehaviour
     private float _spawnTimer;
 
     //private int _randomSideNumber;
-    private Vector3 _spawnPosition;
+    public Vector3 _randomSidePosition;
 
 
     public GameObject[] enemyArray;
@@ -22,7 +22,7 @@ public class Spawner : MonoBehaviour
     public GameObject[] catchers;
     public int catchersAmount;
 
-    public GameObject[] exitsCatchers;
+    public GameObject[] existCatchers;
 
     public int whichIndexCatchers = 0;
 
@@ -44,7 +44,7 @@ public class Spawner : MonoBehaviour
         _mainCamera = Camera.main; // Get main camera
         _spawnTimer = spawnInterval; // Initialize _spawnTimer
 
-        exitsCatchers = new GameObject[catchersAmount];
+        existCatchers = new GameObject[catchersAmount];
 
     }
 
@@ -83,7 +83,7 @@ public class Spawner : MonoBehaviour
 
         _currentChance = Random.Range(0, enemyArray.Length);
 
-        Instantiate(enemyArray[_currentChance], _spawnPosition, transform.rotation);
+        Instantiate(enemyArray[_currentChance], _randomSidePosition, transform.rotation);
     }
 
     public void RandomChooseOneScreenEdge()
@@ -96,25 +96,25 @@ public class Spawner : MonoBehaviour
         
     }
 
-    private void RandomChooseOnePosition()
+    public void RandomChooseOnePosition()
     {
         switch (_randomSide)
         {
             case EnumPosition.Top:
 
-                _spawnPosition = new Vector3(Random.Range(_cameraLeftBottom.x, _cameraRightTop.x), _cameraRightTop.y + 1, _mainCamera.nearClipPlane);
+                _randomSidePosition = new Vector3(Random.Range(_cameraLeftBottom.x, _cameraRightTop.x), _cameraRightTop.y + 1, _mainCamera.nearClipPlane);
                 break;
 
             case EnumPosition.Bottom:
-                _spawnPosition = new Vector3(Random.Range(_cameraLeftBottom.x, _cameraRightTop.x), _cameraLeftBottom.y - 1, _mainCamera.nearClipPlane);
+                _randomSidePosition = new Vector3(Random.Range(_cameraLeftBottom.x, _cameraRightTop.x), _cameraLeftBottom.y - 1, _mainCamera.nearClipPlane);
                 break;
 
             case EnumPosition.Left:
-                _spawnPosition = new Vector3(_cameraLeftBottom.x - 1, Random.Range(_cameraLeftBottom.y, _cameraRightTop.y), _mainCamera.nearClipPlane);
+                _randomSidePosition = new Vector3(_cameraLeftBottom.x - 1, Random.Range(_cameraLeftBottom.y, _cameraRightTop.y), _mainCamera.nearClipPlane);
                 break;
 
             case EnumPosition.Right:
-                _spawnPosition = new Vector3(_cameraRightTop.x + 1, Random.Range(_cameraLeftBottom.y, _cameraRightTop.y), _mainCamera.nearClipPlane);
+                _randomSidePosition = new Vector3(_cameraRightTop.x + 1, Random.Range(_cameraLeftBottom.y, _cameraRightTop.y), _mainCamera.nearClipPlane);
                 break;
         }
     }
@@ -130,11 +130,11 @@ public class Spawner : MonoBehaviour
 
             if (_randomSide == EnumPosition.Top || _randomSide == EnumPosition.Bottom)
             {
-                exitsCatchers[i] = Instantiate(catchers[whichIndexCatchers], _spawnPosition, transform.rotation);
+                existCatchers[i] = Instantiate(catchers[whichIndexCatchers], _randomSidePosition, transform.rotation);
             }
             else if (_randomSide == EnumPosition.Left || _randomSide == EnumPosition.Right)
             {
-                exitsCatchers[i] = Instantiate(catchers[whichIndexCatchers], _spawnPosition, transform.rotation);
+                existCatchers[i] = Instantiate(catchers[whichIndexCatchers], _randomSidePosition, transform.rotation);
 
             }
 

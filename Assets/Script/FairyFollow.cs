@@ -3,6 +3,8 @@ using UnityEngine;
 public class FairyFollow : MonoBehaviour
 {
     private Transform _playerTransform;
+    
+
     public Vector2 offset = new Vector2(-1.5f, 1.5f);
     public float followSpeed = 3f;
     public float catchFollowToLocationSpeed = 3f;
@@ -15,7 +17,8 @@ public class FairyFollow : MonoBehaviour
 
     private Vector3 _velocity = Vector3.zero;
 
-    public bool isCatchByEnemy = false;
+    public bool isCatchByEnemy;
+    
 
     private Transform _catchToLocation;
 
@@ -23,6 +26,7 @@ public class FairyFollow : MonoBehaviour
     {
         _playerTransform = GameObject.FindWithTag("Player").GetComponent<Transform>();
         _catchToLocation = GameObject.FindWithTag("CatchToLocation").GetComponent<Transform>();
+        
     }
 
     void Update()
@@ -32,11 +36,12 @@ public class FairyFollow : MonoBehaviour
             if (_playerTransform == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
             FairyFollowPlayer();
         }
-        else
+        else if (isCatchByEnemy == true)
         {
             if (_catchToLocation == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
             CatchByEnemyLiao();
         }
+        
       
     }
 
@@ -64,24 +69,16 @@ public class FairyFollow : MonoBehaviour
 
     public void CatchByEnemyLiao()
     {
-        Vector3 targetPosition = _catchToLocation.position + (Vector3)offset;
+        Vector3 targetPosition = _catchToLocation.position;
 
-        targetPosition.y += Mathf.Sin(Time.time * floatFrequency) * floatAmplitude;
+        
 
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref _velocity, catchFollowToLocationSpeed);
 
-        Vector3 orbitOffset = new Vector3
-        (
-            Mathf.Cos(Time.time * orbitSpeed) * orbitRadius,
-            Mathf.Sin(Time.time * orbitSpeed) * orbitRadius,
-            0
-        );
+        //Vector3 baseTarget = _catchToLocation.position;
+        //baseTarget.y += Mathf.Sin(Time.time * floatFrequency) * floatAmplitude;
 
-
-        Vector3 baseTarget = _catchToLocation.position + (Vector3)offset + orbitOffset;
-        baseTarget.y += Mathf.Sin(Time.time * floatFrequency) * floatAmplitude;
-
-        transform.position = Vector3.SmoothDamp(transform.position, baseTarget, ref _velocity, catchFollowToLocationSpeed);
+        //transform.position = Vector3.SmoothDamp(transform.position, baseTarget, ref _velocity, catchFollowToLocationSpeed);
     }
 
 }
