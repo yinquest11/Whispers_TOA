@@ -1,6 +1,7 @@
 using UnityEngine;
+using static Unity.Burst.Intrinsics.X86;
 
-public class CatcherHealth : Health
+public class CatcherHealth : Health // Inhereit from Health, can make some modify
 {
 
     protected Spawner _spawner;
@@ -19,7 +20,9 @@ public class CatcherHealth : Health
 
     private CatchersEnemyMovement _catchersEnemyMovement;
 
-    public bool HasCatchFiary
+    public bool wantToTakeDamegeByPlayer = false; // Can control want to get hit by Player?
+
+    public bool HasCatchFiary // Set the bolean "isCatchByEnemy" in FairyFollow, when i set HasCatchFiary, directly effect isCatchByEnemy
     {
 
         set
@@ -29,12 +32,17 @@ public class CatcherHealth : Health
                 _fairyFollow.isCatchByEnemy = value;
 
             }
+            else
+            {
+                if (_fairyFollow == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
+            }
 
         }
     }
 
-    private float _withPlayerDistance()
+    private float _withPlayerDistance()// Calculate the distance self(Cactcher) with the Player
     {
+        if (_playerTransform == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return 0; }
         return Vector2.Distance(transform.position, _playerTransform.position);
     }
 
@@ -44,20 +52,24 @@ public class CatcherHealth : Health
         _catchersEnemyMovement = GetComponent<CatchersEnemyMovement>();
         _catchFairy = GetComponent<CatchFairy>();
         _fairyFollow = GameObject.FindWithTag("Fairy").GetComponent<FairyFollow>();
+
         base.Start();
 
-        if (_playerTransform == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
-        if (_fairyFollow == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
+        
+        if (_catchersEnemyMovement == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
+        
+        
     }
 
     protected override void Update()
     {
         
         base.Update();
+
         if(_allisDead == true)
         {
             
-            HasCatchFiary = false;
+            HasCatchFiary = false; // Let the fairy know she is not been catching 
         }
 
         if (_withPlayerDistance() > 20 && _catchersEnemyMovement.stopChasingBefore == true) 
@@ -68,23 +80,32 @@ public class CatcherHealth : Health
 
     public override void TakeDamage(float _damageAmountTake)
     {
+        if (wantToTakeDamegeByPlayer == true)
+        {
+            base.TakeDamage(_damageAmountTake);
+        }
+        else if (wantToTakeDamegeByPlayer == false)
+        {
+
+        }
         
     }
 
-    public override void HaveToDie()
+    public override void HaveToDie()// Modify HaveToDie function in Health
     {
-        // catcher HaveToDie() will set the _isDead to true first, CatchersEnemyMovement will use the Dead series funcion, after 
-        // _withExitPointDistance < 2 and Catcher catch before(if not might immidiately die), use original HaveToDie() in parrent class
+        
 
-        transform.SetParent(null);
+        transform.SetParent(null); // Set the parent null from EmptyFollowFairy when should die
         
 
         if (_catchFairy == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
 
         isDead = true;
 
+        // Get all CatcherHealth component in the game
         _catcherHealths = Object.FindObjectsByType<CatcherHealth>(FindObjectsSortMode.None);
 
+        // if got one does not dead, _allIsDead is false, else true
         foreach(CatcherHealth _catcherHealth in _catcherHealths)
         {
             _allisDead = true;
@@ -99,10 +120,5 @@ public class CatcherHealth : Health
 
 
     }
-
-
-
-
-
 
 }

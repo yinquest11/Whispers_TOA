@@ -13,21 +13,16 @@ public class Health : MonoBehaviour
 
     public bool gameObjectIsPlayer = false;
 
-    
 
-
-
-
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
         childSprite = GetComponentInChildren<SpriteRenderer>();
 
         Initialization();
+        
     }
 
-    // Update is called once per frame
+    
     protected virtual void Update()
     {
         
@@ -55,12 +50,14 @@ public class Health : MonoBehaviour
         
 
         // Different Action if the gameObject is Enemy or Player
+        // if a Player is TakeDamage(), wont start the coroutine
         if (gameObjectIsPlayer == false)
         {
             _changeColorCoroutine = StartCoroutine(_changeColor());
         }
         else if (gameObjectIsPlayer == true)
         {
+            // if is  Player only will come into here
             // Change player health bar
             Debug.Log("PLayerHealthMinus");
         }
@@ -69,10 +66,9 @@ public class Health : MonoBehaviour
         {
             currentHealth = 0;
 
+            // Directly use HaveToDie function if it should die, its a virtual function, can directly use on FlyEnemy or inherit it to modify
             
-
             HaveToDie();
-
 
         }
 
@@ -81,8 +77,10 @@ public class Health : MonoBehaviour
 
     }
 
-    protected  virtual IEnumerator _changeColor()
+    protected  virtual IEnumerator _changeColor() // Change the color of sprite when is an Enemy are taking damage
     {
+        if (childSprite == null) { Debug.Log(gameObject.name + " has activate defensive programming");  }
+
         childSprite.color = new Color(0.9433962f, 0.5844309f, 0.5844309f);
 
         yield return new WaitForSeconds(0.1f);
@@ -91,7 +89,7 @@ public class Health : MonoBehaviour
 
     }
 
-    public virtual void HaveToDie()
+    public virtual void HaveToDie() // Every time Destroy itself when the HaveToDie Function is called
     {
 
 

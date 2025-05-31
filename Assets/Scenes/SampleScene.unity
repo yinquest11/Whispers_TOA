@@ -465,7 +465,6 @@ MonoBehaviour:
   catchers:
   - {fileID: 2398625624790442291, guid: 6190b9acca4db474e83cd913ca9a7801, type: 3}
   catchersAmount: 3
-  existCatchers: []
   whichIndexCatchers: 0
   _randomSide: 1
 --- !u!4 &896666089
@@ -647,6 +646,10 @@ PrefabInstance:
     - target: {fileID: 2119875360264680058, guid: d0b8cb91e91a06447b8212496650603d, type: 3}
       propertyPath: m_Interpolate
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2272350250379596767, guid: d0b8cb91e91a06447b8212496650603d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4991736299691402666, guid: d0b8cb91e91a06447b8212496650603d, type: 3}
       propertyPath: offSetX

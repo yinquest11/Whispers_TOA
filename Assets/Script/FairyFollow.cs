@@ -19,33 +19,31 @@ public class FairyFollow : MonoBehaviour
 
     public bool isCatchByEnemy;
     
-
     private Transform _catchToLocation;
 
     private void Start()
     {
         _playerTransform = GameObject.FindWithTag("Player").GetComponent<Transform>();
         _catchToLocation = GameObject.FindWithTag("CatchToLocation").GetComponent<Transform>();
-        
+
+        if (_playerTransform == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
+        if (_catchToLocation == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
     }
 
     void Update()
     {
         if (isCatchByEnemy == false)
         {
-            if (_playerTransform == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
-            FairyFollowPlayer();
+            FairyFollowPlayer(); // Use this funtion to move fairy when does not catched by enemy (Catcher)
         }
         else if (isCatchByEnemy == true)
-        {
-            if (_catchToLocation == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
-            CatchByEnemyLiao();
+        { 
+            CatchByEnemyLiao(); // When catch by enemy, use this to move
         }
         
-      
     }
 
-    public void FairyFollowPlayer()
+    public void FairyFollowPlayer() // Ask Nathan
     {
         Vector3 targetPosition = _playerTransform.position + (Vector3)offset;
 
@@ -67,18 +65,13 @@ public class FairyFollow : MonoBehaviour
         transform.position = Vector3.SmoothDamp(transform.position, baseTarget, ref _velocity, 1f / followSpeed);
     }
 
-    public void CatchByEnemyLiao()
+    public void CatchByEnemyLiao() // Can modify this function to have different behaviour when catch by enemy
     {
         Vector3 targetPosition = _catchToLocation.position;
 
-        
-
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref _velocity, catchFollowToLocationSpeed);
 
-        //Vector3 baseTarget = _catchToLocation.position;
-        //baseTarget.y += Mathf.Sin(Time.time * floatFrequency) * floatAmplitude;
-
-        //transform.position = Vector3.SmoothDamp(transform.position, baseTarget, ref _velocity, catchFollowToLocationSpeed);
+        
     }
 
 }

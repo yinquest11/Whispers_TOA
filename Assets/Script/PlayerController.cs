@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private Rigidbody2D rb;
+    private Rigidbody2D _rb;
     private CatcherHealth[] _catcherHealths;
 
 
@@ -13,20 +13,24 @@ public class PlayerController : MonoBehaviour
     public float runSpeed = 8f;
 
     
-    private int jumpCount;
-    private int maxJumps = 2;
+    private int _jumpCount;
+    private int _maxJumps = 2;
 
     private Transform _transform;
 
-    private float lastAPressedTime = float.NegativeInfinity;
-    private float lastDPressedTime = float.NegativeInfinity;
+    private float _lastAPressedTime = float.NegativeInfinity;
+    private float _lastDPressedTime = float.NegativeInfinity;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();
         _transform = GetComponent<Transform>();
-        
-        jumpCount = maxJumps;
+
+
+        if (_rb == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
+        if (_transform == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
+
+        _jumpCount = _maxJumps;
 
     }
 
@@ -40,7 +44,7 @@ public class PlayerController : MonoBehaviour
 
     void HandleMovement()
     {
-        if (Input.GetButton("Fire2"))
+        if (Input.GetButton("Fire2")) // temperarily method to let catcher fly away
         {
             _catcherHealths = Object.FindObjectsByType<CatcherHealth>(FindObjectsSortMode.None);
 
@@ -50,48 +54,60 @@ public class PlayerController : MonoBehaviour
             {
                 _catcherHealth.HaveToDie();
             }
-            
+
         }
 
         float _moveInput = 0f;
         float currentSpeed;
 
-        
+        currentSpeed = SmartMovement(ref _moveInput);
+
+        _rb.linearVelocity = new Vector2(_moveInput * currentSpeed, _rb.linearVelocity.y);
+
+        FlipPlayerSprite(_moveInput);
+
+
+
+    }
+
+    private float SmartMovement(ref float _moveInput) // Avoid get 0 from GetAxisRaw and cause player stop moving
+    {
+        float currentSpeed;
         if (Input.GetKeyDown(KeyCode.A))
         {
-            lastAPressedTime = Time.time;
+            _lastAPressedTime = Time.time;
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
-            lastDPressedTime = Time.time;
+            _lastDPressedTime = Time.time;
         }
 
-       
+
         bool aHeld = Input.GetKey(KeyCode.A);
         bool dHeld = Input.GetKey(KeyCode.D);
 
-        
+
         if (aHeld && dHeld)
         {
-            
-            if (lastDPressedTime > lastAPressedTime)
+
+            if (_lastDPressedTime > _lastAPressedTime)
             {
                 _moveInput = 1f;
             }
             else
             {
-                _moveInput = -1f; 
+                _moveInput = -1f;
             }
         }
         else if (aHeld)
         {
-            _moveInput = -1f; 
+            _moveInput = -1f;
         }
         else if (dHeld)
         {
-            _moveInput = 1f; 
+            _moveInput = 1f;
         }
-        
+
         if (Input.GetKey(KeyCode.LeftShift))
         {
             currentSpeed = runSpeed;
@@ -101,32 +117,25 @@ public class PlayerController : MonoBehaviour
             currentSpeed = moveSpeed;
         }
 
-        rb.linearVelocity = new Vector2(_moveInput * currentSpeed, rb.linearVelocity.y);
-
-        FlipPlayerSprite(_moveInput);
-
-        
-
+        return currentSpeed;
     }
 
     void HandleJumping()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && jumpCount > 0)
+        if (Input.GetKeyDown(KeyCode.Space) && _jumpCount > 0)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-            jumpCount--;
+            _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, jumpForce);
+            _jumpCount--;
             
         }
     }
-
-    
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
             //isGrounded = true;
-            jumpCount = maxJumps;
+            _jumpCount = _maxJumps;
            
         }
 

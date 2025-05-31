@@ -11,11 +11,7 @@ public class CatchFairy : MonoBehaviour
 
     private GameObject[] _allCatchers;
 
-    //private bool _allisDead = false;
-
-    
-
-    public bool HasCatchFiary
+    public bool HasCatchFiary // Set the bolean "isCatchByEnemy" in FairyFollow, when i set HasCatchFiary, directly effect isCatchByEnemy
     {
        
         set
@@ -25,37 +21,25 @@ public class CatchFairy : MonoBehaviour
                 _fairyFollow.isCatchByEnemy = value;
 
             }
+            else
+            {
+                if (_fairyFollow == null) { Debug.Log(gameObject.name + " has activate defensive programming");}
+            }
 
         }
     }
     
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _fairyFollow = GameObject.FindWithTag("Fairy").GetComponent<FairyFollow>();
-        if (_fairyFollow == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
-
         _emptyFollowFairyTransform = GameObject.FindWithTag("EmptyFollowFairy").gameObject.transform;
-
-
         _catcherHealth = GetComponent<CatcherHealth>();
-        if (_catcherHealth == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
-
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter2D(Collider2D _fairyCollider) // When self OnTriggerEnetr with fairy
     {
-         
+        if (_emptyFollowFairyTransform == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
 
-        
-
-    }
-
-    
-
-    private void OnTriggerEnter2D(Collider2D _fairyCollider)
-    {
         if(_fairyCollider.gameObject.CompareTag("Fairy") == false)
         {
             return;
@@ -66,21 +50,14 @@ public class CatchFairy : MonoBehaviour
             return;
         }
 
-        transform.SetParent(_emptyFollowFairyTransform);
+        if (_emptyFollowFairyTransform == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
+
+        transform.SetParent(_emptyFollowFairyTransform);// Set self as a child with an empty object that following fairy, so can
+                                                        // remain the relative position of each catcher when OnTriggerEnetr with fairy
 
 
-        HasCatchFiary = true;
-
-
-
-
-    }
-
-    private void OnDestroy()
-    {
-
-
-        
+        HasCatchFiary = true; // Let the fairy know she is been catching
 
     }
+
 }

@@ -10,7 +10,6 @@ public class Attack : MonoBehaviour
     private void Start()
     {
         _animator = GetComponentInChildren<Animator>();
-
         if (_animator == null){ Debug.Log(gameObject.name + " has activate defensive programming"); return; }
     }
 
@@ -21,6 +20,7 @@ public class Attack : MonoBehaviour
         
     }
 
+    // Change to attack punya animation
     private void DoAttack()
     {
         if (Input.GetButtonDown("Fire1"))
@@ -33,7 +33,7 @@ public class Attack : MonoBehaviour
 
     
 
-
+    // Set the attack aniamtion clip in child punya animator
     private void SetAnimation()
     {
         _animator.SetBool("isMeleeAttack", isMeleeAttack);

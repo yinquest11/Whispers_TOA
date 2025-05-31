@@ -13,23 +13,20 @@ public class Spawner : MonoBehaviour
     public float spawnInterval;
     private float _spawnTimer;
 
-    //private int _randomSideNumber;
+    
     public Vector3 _randomSidePosition;
-
 
     public GameObject[] enemyArray;
 
     public GameObject[] catchers;
     public int catchersAmount;
 
-    public GameObject[] existCatchers;
-
     public int whichIndexCatchers = 0;
 
     private int _currentChance;
 
     public EnumPosition _randomSide;
-    public enum EnumPosition
+    public enum EnumPosition // Use enum to represent the _randomSide
     {
         Top, // 0
         Bottom, // 1
@@ -37,27 +34,26 @@ public class Spawner : MonoBehaviour
         Right // 3
     }
 
-
-
     void Start()
     {
         _mainCamera = Camera.main; // Get main camera
         _spawnTimer = spawnInterval; // Initialize _spawnTimer
+        
 
-        existCatchers = new GameObject[catchersAmount];
+        if (_mainCamera == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
 
     }
 
     
     void Update()
     {
-
+        
         if (startSpawnCatchers == true)
         {
             
             SpawnCatchers();
 
-            startSpawnCatchers = false;
+            startSpawnCatchers = false; // Only got 1 batch of catcher is spawning when startSpawnCatchers is set to true for some reason
 
         }
 
@@ -69,8 +65,9 @@ public class Spawner : MonoBehaviour
                 _spawnTimer -= Time.deltaTime;
                 return;
             }
+
             RandomSpawnOneEnemy();
-            _spawnTimer = spawnInterval;
+            _spawnTimer = spawnInterval; // Reset the coutdown when spawn a FlyEnemy
         }
 
         
@@ -78,6 +75,7 @@ public class Spawner : MonoBehaviour
 
     public void RandomSpawnOneEnemy()
     {
+
         RandomChooseOneScreenEdge();
         RandomChooseOnePosition();
 
@@ -130,11 +128,13 @@ public class Spawner : MonoBehaviour
 
             if (_randomSide == EnumPosition.Top || _randomSide == EnumPosition.Bottom)
             {
-                existCatchers[i] = Instantiate(catchers[whichIndexCatchers], _randomSidePosition, transform.rotation);
+                
+                Instantiate(catchers[whichIndexCatchers], _randomSidePosition, transform.rotation);
             }
             else if (_randomSide == EnumPosition.Left || _randomSide == EnumPosition.Right)
             {
-                existCatchers[i] = Instantiate(catchers[whichIndexCatchers], _randomSidePosition, transform.rotation);
+                
+                Instantiate(catchers[whichIndexCatchers], _randomSidePosition, transform.rotation);
 
             }
 

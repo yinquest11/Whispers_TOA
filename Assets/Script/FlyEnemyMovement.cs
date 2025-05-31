@@ -1,7 +1,7 @@
 using UnityEngine;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
-public class FlyEnemyMovement : MonoBehaviour
+public class FlyEnemyMovement : MonoBehaviour // Simple tracking player base on inputDirection script
 {
     protected GameObject player;
 
@@ -17,16 +17,18 @@ public class FlyEnemyMovement : MonoBehaviour
     protected bool _isMoving = false;
     protected Vector2 _targetRotation = Vector2.zero;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    
     void Start()
     {
         _collider = GetComponent<Collider2D>();
         _rigidBody = GetComponent<Rigidbody2D>();
-
         player = GameObject.FindWithTag("Player");
+
+        if (_collider == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
+        if (_rigidBody == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         HandleInput();
@@ -49,11 +51,6 @@ public class FlyEnemyMovement : MonoBehaviour
     private void HandleMovement()
     {
 
-        if ( _rigidBody  == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
-
-        if (_collider == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
-
-        
 
         Vector2 targetVelocity = Vector2.zero;
 

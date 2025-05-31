@@ -35,7 +35,7 @@ public class CatchersEnemyMovement : MonoBehaviour
 
 
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         _collider = GetComponent<Collider2D>();
@@ -44,25 +44,19 @@ public class CatchersEnemyMovement : MonoBehaviour
         _spawner = GameObject.FindWithTag("Spawner").GetComponent<Spawner>();
         fairy = GameObject.FindWithTag("Fairy");
 
+        // Set their place should die on the Start()
         _spawner.RandomChooseOneScreenEdge();
         _spawner.RandomChooseOnePosition();
-
         exitLocation = _spawner._randomSidePosition;
-
-
-        
 
     }
 
-    // Update is called once per frame
+
     void FixedUpdate()
     {
-        
 
         
-
-        // Catched successful before?
-        if (stopChasingBefore != true && wantToChase == true)
+        if (stopChasingBefore != true && wantToChase == true)// Catched successful before? if no then do the normal Movement
         {
             HandleInput();
             HandleMovement();
@@ -72,7 +66,7 @@ public class CatchersEnemyMovement : MonoBehaviour
         {
             _rigidBody.linearVelocity = Vector2.zero;
         }
-        else if (_catcherHealth.isDead == true&& wantToChase == false) // when CatcherHealth is 0 and activate the overwrite punya Function, use Dead seires funciton
+        else if (_catcherHealth.isDead == true&& wantToChase == false) // When catchers override punya HaveToDie() is called, use the Dead sereis funcion
         {
             if (exitLocation == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
             HandleDeadInput();
@@ -84,25 +78,17 @@ public class CatchersEnemyMovement : MonoBehaviour
 
     }
 
-    private float GetWithFairyDistance()
-    {
-        return Vector2.Distance(transform.position,fairy.transform.position);
-    }
-
-    
-
     public void HandleInput()
     {
         if (fairy == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
        
 
-        // Let enemy face find fairy direction
+        // Let enemy face to fairy direction
         inputDirection =
         new Vector2(fairy.transform.position.x - transform.position.x, fairy.transform.position.y - transform.position.y).normalized;
 
         Debug.DrawRay(transform.position, inputDirection, Color.yellow);
     }
-
     public void HandleMovement()
     {
 
@@ -118,16 +104,15 @@ public class CatchersEnemyMovement : MonoBehaviour
 
         targetVelocity = new Vector2(inputDirection.x * acceleration, inputDirection.y * acceleration);
 
-        //use linearVelocity to let gameObject move
-        //use SmoothDamp to smooth between 2 Vector2
+        // use linearVelocity to let gameObject move
+        // use SmoothDamp to smooth between 2 Vector2
         _rigidBody.linearVelocity = Vector2.SmoothDamp(_rigidBody.linearVelocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
 
-        //either (targetVelocity.x != 0) or (targetVelocity.y != 0) is true, _isMoving is true
+        // either (targetVelocity.x != 0) or (targetVelocity.y != 0) is true, _isMoving is true
         _isMoving = targetVelocity.x != 0 || targetVelocity.y != 0;
 
         _targetRotation = targetVelocity;
     }
-
     public virtual void HandleRotation()
     {
         
@@ -140,7 +125,8 @@ public class CatchersEnemyMovement : MonoBehaviour
         transform.rotation = Quaternion.Euler(0f, 0f, angle);
     }
 
-    private void OnTriggerEnter2D(Collider2D _fairyCollider)
+    
+    private void OnTriggerEnter2D(Collider2D _fairyCollider)// When already OnTriggerenter2D, stop chasing fairy by modify the boolean variable
     {
         
 
@@ -153,23 +139,14 @@ public class CatchersEnemyMovement : MonoBehaviour
         stopChasingBefore = true;
     }
 
-    private void OnTriggerExit2D(Collider2D _fairyCollider)
-    {
-        
+    
 
-        if (_fairyCollider.gameObject.CompareTag("Fairy") == false)
-        {
-            return;
-        }
-
-        wantToChase = true;
-    }
-
+    // Dead series basicly just change the inputDirention to exitLocation
     public void HandleDeadInput()
     {
         
 
-        if (fairy == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
+        
 
 
         // Let enemy face find fairy direction
@@ -194,11 +171,11 @@ public class CatchersEnemyMovement : MonoBehaviour
 
         targetVelocity = new Vector2(inputDirection.x * acceleration, inputDirection.y * acceleration);
 
-        //use linearVelocity to let gameObject move
-        //use SmoothDamp to smooth between 2 Vector2
+        // use linearVelocity to let gameObject move
+        // use SmoothDamp to smooth between 2 Vector2
         _rigidBody.linearVelocity = Vector2.SmoothDamp(_rigidBody.linearVelocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
 
-        //either (targetVelocity.x != 0) or (targetVelocity.y != 0) is true, _isMoving is true
+        // either (targetVelocity.x != 0) or (targetVelocity.y != 0) is true, _isMoving is true
         _isMoving = targetVelocity.x != 0 || targetVelocity.y != 0;
 
         _targetRotation = targetVelocity;

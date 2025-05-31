@@ -13,18 +13,17 @@ public class OnAttack : MonoBehaviour
 
     public void Awake()
     {
-        parrentTransform = transform.parent;
+        parrentTransform = transform.parent; // Get parrent transform, when parent scale.x is change to negative (flip)
+                                             // then can also change my offSetX to negative value
     }
 
-    
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // This funciton will be called by animtion clip event
     private void OnAttacking(float _attackNum)
     {
 
         _attackAreaPosition = transform.position;
 
-        offSetX = parrentTransform.localScale.x < 0 ? -Mathf.Abs(offSetX) : Mathf.Abs(offSetX);
+         offSetX = parrentTransform.localScale.x < 0 ? -Mathf.Abs(offSetX) : Mathf.Abs(offSetX);
 
         _attackAreaPosition.x += offSetX;
         _attackAreaPosition.y += offSetY;
@@ -50,9 +49,7 @@ public class OnAttack : MonoBehaviour
         
     }
 
-     
-
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos() // Draw the visual of OverlapBoxAll()
     {
         _attackAreaPosition = transform.position;
         _attackAreaPosition.x += offSetX;
