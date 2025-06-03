@@ -195,7 +195,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   jumpForce: 15
-  runSpeed: 8
+  dashSpeed: 20
+  dashDuration: 0.2
+  dashCooldown: 0
 --- !u!50 &2119875360264680058
 Rigidbody2D:
   serializedVersion: 5

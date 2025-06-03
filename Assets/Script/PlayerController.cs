@@ -10,11 +10,20 @@ public class PlayerController : MonoBehaviour
 
     public float moveSpeed = 5f;
     public float jumpForce = 5f;
-    public float runSpeed = 8f;
+    //public float runSpeed = 8f;
 
-    
+    public float dashSpeed = 20f;
+    public float dashDuration = 0.2f;
+    public float dashCooldown = 1f;
+
+
     private int _jumpCount;
     private int _maxJumps = 2;
+
+    private bool _isDashing = false;
+    private float _dashEndTime = 0f;
+    private float _lastDashTime = -999f;
+    private int _facingDirection = 1; // 1 = right, -1 = left
 
     private Transform _transform;
 
@@ -38,6 +47,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         HandleMovement();
+        HandleDash();
         HandleJumping();
         
     }
@@ -66,13 +76,15 @@ public class PlayerController : MonoBehaviour
 
         FlipPlayerSprite(_moveInput);
 
-
+        if (_moveInput != 0)
+            _facingDirection = (int)Mathf.Sign(_moveInput);
 
     }
 
-    private float SmartMovement(ref float _moveInput) // Avoid get 0 from GetAxisRaw and cause player stop moving
+    private float SmartMovement(ref float _moveInput)
     {
-        float currentSpeed;
+        float currentSpeed = moveSpeed; // Always return base moveSpeed
+
         if (Input.GetKeyDown(KeyCode.A))
         {
             _lastAPressedTime = Time.time;
@@ -82,22 +94,12 @@ public class PlayerController : MonoBehaviour
             _lastDPressedTime = Time.time;
         }
 
-
         bool aHeld = Input.GetKey(KeyCode.A);
         bool dHeld = Input.GetKey(KeyCode.D);
 
-
         if (aHeld && dHeld)
         {
-
-            if (_lastDPressedTime > _lastAPressedTime)
-            {
-                _moveInput = 1f;
-            }
-            else
-            {
-                _moveInput = -1f;
-            }
+            _moveInput = (_lastDPressedTime > _lastAPressedTime) ? 1f : -1f;
         }
         else if (aHeld)
         {
@@ -108,17 +110,24 @@ public class PlayerController : MonoBehaviour
             _moveInput = 1f;
         }
 
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            currentSpeed = runSpeed;
-        }
-        else
-        {
-            currentSpeed = moveSpeed;
-        }
-
         return currentSpeed;
     }
+    private void HandleDash()
+    {
+        if (!_isDashing && Input.GetButtonDown("Fire3") && Time.time >= _lastDashTime + dashCooldown)
+        {
+            // Update facing direction based on current input
+            if (Input.GetKey(KeyCode.A))
+                _facingDirection = -1;
+            else if (Input.GetKey(KeyCode.D))
+                _facingDirection = 1;
+
+            StartCoroutine(Dash());
+        }
+    }
+
+
+
 
     void HandleJumping()
     {
@@ -128,6 +137,20 @@ public class PlayerController : MonoBehaviour
             _jumpCount--;
             
         }
+    }
+    private IEnumerator Dash()
+    {
+        _isDashing = true;
+        _lastDashTime = Time.time;
+        _dashEndTime = Time.time + dashDuration;
+
+        while (Time.time < _dashEndTime)
+        {
+            _rb.linearVelocity = new Vector2(_facingDirection * dashSpeed, _rb.linearVelocity.y);
+            yield return null;
+        }
+
+        _isDashing = false;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
