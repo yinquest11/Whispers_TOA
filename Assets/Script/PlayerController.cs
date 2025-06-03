@@ -143,6 +143,8 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    // tommy edit2
+    // hello
     private void FlipPlayerSprite(float _moveInput)
     {
         if (_moveInput == 1 && transform.localScale.x < 0)
