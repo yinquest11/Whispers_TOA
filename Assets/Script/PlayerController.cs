@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
 
     // tommy edit1
     // this is a test for merging conflicts
+    //Nathan
 
     void Update()
     {
