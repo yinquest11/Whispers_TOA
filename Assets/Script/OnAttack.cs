@@ -8,12 +8,12 @@ public class OnAttack : MonoBehaviour
     private Vector2 _attackAreaPosition;
     public float offSetX = 1f;
     public float offSetY = 1f;
-    public Transform parrentTransform;
+    public SpriteRenderer parrentSpriteRenderer;
     public LayerMask enemyLayer;
 
     public void Awake()
     {
-        parrentTransform = transform.parent; // Get parrent transform, when parent scale.x is change to negative (flip)
+        parrentSpriteRenderer = GetComponent<SpriteRenderer>(); // Get parrent transform, when parent scale.x is change to negative (flip)
                                              // then can also change my offSetX to negative value
     }
 
@@ -23,7 +23,7 @@ public class OnAttack : MonoBehaviour
 
         _attackAreaPosition = transform.position;
 
-         offSetX = parrentTransform.localScale.x < 0 ? -Mathf.Abs(offSetX) : Mathf.Abs(offSetX);
+         offSetX = parrentSpriteRenderer.flipX? - Mathf.Abs(offSetX) : Mathf.Abs(offSetX);
 
         _attackAreaPosition.x += offSetX;
         _attackAreaPosition.y += offSetY;

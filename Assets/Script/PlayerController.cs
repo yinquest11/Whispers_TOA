@@ -6,11 +6,12 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D _rb;
     private CatcherHealth[] _catcherHealths;
+    private SpriteRenderer _spriteRenderer;
 
 
     public float moveSpeed = 5f;
     public float jumpForce = 5f;
-    //public float runSpeed = 8f;
+    
 
     public float dashSpeed = 20f;
     public float dashDuration = 0.2f;
@@ -30,10 +31,19 @@ public class PlayerController : MonoBehaviour
     private float _lastAPressedTime = float.NegativeInfinity;
     private float _lastDPressedTime = float.NegativeInfinity;
 
+    public float currentMoveInput;
+
+    
+    
+
+    
+    
+
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
         _transform = GetComponent<Transform>();
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
 
         if (_rb == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
@@ -46,43 +56,46 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        HandleMovement();
+        if (Input.GetButton("Fire2") == false) // temporarily
+        {
+            HandleMovement();
+            HandleJumping();
+        }
+
         HandleDash();
-        HandleJumping();
         
     }
 
     void HandleMovement()
     {
-        if (Input.GetButton("Fire2")) // temperarily method to let catcher fly away
-        {
-            _catcherHealths = Object.FindObjectsByType<CatcherHealth>(FindObjectsSortMode.None);
-
-            if (_catcherHealths == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
-
-            foreach (CatcherHealth _catcherHealth in _catcherHealths)
-            {
-                _catcherHealth.HaveToDie();
-            }
-
-        }
+        
 
         float _moveInput = 0f;
         float currentSpeed;
 
+        
         currentSpeed = SmartMovement(ref _moveInput);
 
-        _rb.linearVelocity = new Vector2(_moveInput * currentSpeed, _rb.linearVelocity.y);
+       
+        _rb.linearVelocity = new Vector2(_moveInput * currentSpeed, _rb.linearVelocity.y); // need modify for rope after release
+
 
         FlipPlayerSprite(_moveInput);
 
         if (_moveInput != 0)
+        {
             _facingDirection = (int)Mathf.Sign(_moveInput);
+        }
+            
 
     }
 
     private float SmartMovement(ref float _moveInput)
     {
+        
+        
+        
+
         float currentSpeed = moveSpeed; // Always return base moveSpeed
 
         if (Input.GetKeyDown(KeyCode.A))
@@ -131,9 +144,12 @@ public class PlayerController : MonoBehaviour
 
     void HandleJumping()
     {
+        
+            
+        
         if (Input.GetKeyDown(KeyCode.Space) && _jumpCount > 0)
         {
-            _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, jumpForce);
+            _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, jumpForce); // need modify for rope after release
             _jumpCount--;
             
         }
@@ -157,7 +173,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
-            //isGrounded = true;
+            //isGrounded = true; // need the isGround boolean
             _jumpCount = _maxJumps;
            
         }
@@ -166,14 +182,18 @@ public class PlayerController : MonoBehaviour
 
     private void FlipPlayerSprite(float _moveInput)
     {
-        if (_moveInput == 1 && transform.localScale.x < 0)
+        if (_moveInput == 1 && _spriteRenderer.flipX != false)
         {
-            _transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+            //_transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+            _spriteRenderer.flipX = false;
 
         }
-        else if (_moveInput == -1 && transform.localScale.x > 0)
+        else if (_moveInput == -1 && _spriteRenderer.flipX != true)
         {
-            _transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+            //_transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+            _spriteRenderer.flipX = true;
         }
     }
+
+    
 }
