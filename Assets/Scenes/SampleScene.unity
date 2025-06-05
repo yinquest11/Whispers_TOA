@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 109879465}
   - component: {fileID: 109879467}
   - component: {fileID: 109879466}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Rope
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -174,17 +174,62 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: -1.0603473
+      outSlope: -1.0603473
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
+      time: 0.15058082
+      value: -0.15966797
+      inSlope: 7.0227294
+      outSlope: 7.0227294
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.16378191
+      value: 0.03974511
+      inSlope: 7.2533035
+      outSlope: 7.2533035
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.54152256
+      value: -0.18659666
+      inSlope: 1.2729776
+      outSlope: 1.2729776
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.737581
+      value: 0.43003735
+      inSlope: -0.9861772
+      outSlope: -0.9861772
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.82708675
+      value: -0.028008956
+      inSlope: -2.477763
+      outSlope: -2.477763
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
       time: 1
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: 0.1619827
+      outSlope: 0.1619827
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -342,7 +387,7 @@ GameObject:
   - component: {fileID: 461753966}
   - component: {fileID: 461753965}
   - component: {fileID: 461753964}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -476,7 +521,7 @@ GameObject:
   - component: {fileID: 513084302}
   - component: {fileID: 513084301}
   - component: {fileID: 513084303}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Floor
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -777,7 +822,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 590432500}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: FirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -992,7 +1037,7 @@ GameObject:
   - component: {fileID: 755360952}
   - component: {fileID: 755360951}
   - component: {fileID: 755360950}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: GrapplingGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1028,7 +1073,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grappleRope: {fileID: 109879466}
-  grappleToAll: 1
+  grappleToAll: 0
   grappableLayerNumber: 9
   m_camera: {fileID: 519420031}
   gunHolder: {fileID: 339026786}
@@ -1038,11 +1083,11 @@ MonoBehaviour:
   m_rigidbody: {fileID: 714353606}
   rotateOverTime: 1
   rotationSpeed: 17.6
-  hasMaxDistance: 1
+  hasMaxDistance: 0
   maxDistnace: 20
   launchToPoint: 1
-  launchType: 0
-  launchSpeed: 3
+  launchType: 1
+  launchSpeed: 1.21
   autoConfigureDistance: 0
   targetDistance: 3
   targetFrequncy: 1
@@ -1078,7 +1123,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -1373,11 +1418,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8141489446424420801, guid: d0b8cb91e91a06447b8212496650603d, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8389844923908222274, guid: d0b8cb91e91a06447b8212496650603d, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9185288222540666540, guid: d0b8cb91e91a06447b8212496650603d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1558,6 +1603,14 @@ PrefabInstance:
     - target: {fileID: 919036498981194884, guid: 5edad8f539f75db4fa230644d32310f7, type: 3}
       propertyPath: m_Name
       value: Fairy
+      objectReference: {fileID: 0}
+    - target: {fileID: 919036498981194884, guid: 5edad8f539f75db4fa230644d32310f7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2178914142596527575, guid: 5edad8f539f75db4fa230644d32310f7, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6467628295025300150, guid: 5edad8f539f75db4fa230644d32310f7, type: 3}
       propertyPath: m_LocalPosition.x
