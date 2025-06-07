@@ -117,26 +117,34 @@ public class Tutorial_GrapplingRope : MonoBehaviour
         for (int i = 0; i < percision; i++)
         {
             // 它是想把一个从0开始计数的整数 i 转换成一个从0.0到1.0之间均匀分布的小数 delta
+            // 得到当前的粒子对应整个线的第几 %
             float delta = (float)i / ((float)percision - 1f);
 
             // 一个Vector2，他是起点到重点这条直线 逆时针的垂直向量 -y/x，然后normalized变成1只保留方向，乘对应目前ropeAnimationCurve的delta值
             // 然后 * waveSize进行缩放
+            // 得到目前%的粒子该有的偏移量
             Vector2 offset = Vector2.Perpendicular(grapplingGun.grappleDistanceVector).normalized * ropeAnimationCurve.Evaluate(delta) * waveSize;
 
-            // 用.Lerp来插值，计算枪口到落点这个距离的， 整个距离的%对应我有多少个countPoint
+            // 用.Lerp来插值，计算枪口到落点这个距离的， 整个距离的% 对应我的第几个countPoint
             // +offset 是在直线上的某个位置应用计算之前算好的 需要的 prependicular 偏移量
             // 所以我们先计算了直线，再用先前算好了的在直线上的特定位置该有的偏移量并应用在这个直线上
-            // 目前的点在整个线的，应该的比例长度（在绳索上由 delta 所代表的当前比例位置）上该因为那个AnimationCurve有的垂直偏移量
-            // 完全伸展并带有完整波浪效果时，应该在的理想世界位置
-            Vector2 targetPosition = Vector2.Lerp(grapplingGun.firePoint.position, grapplingGun.grapplePoint, delta) + offset;
+            // 目前的点在整个线的，应该的比例长度（在绳索上由 delta 所代表的当前比例位置）上该因为那个AnimationCurve有的垂直偏移量 
+            // 把对应%粒子直接放到完全伸展并带有完整波浪效果时，应该在的理想世界位置 （对于一样的第i粒子来说, targetPosition每次都是一样的）
+            Vector2 targetPosition = Vector2.Lerp(grapplingGun.firePoint.position, grapplingGun.grapplePoint, delta/*目前的粒子是第几%的长度*/) + offset/*垂直的偏移量*/;
 
             // 负责实现绳索“射出”或“生长”的动画效果
             // 'currentPosition' 计算这个点从发射点向其 'targetPosition' "行进"了多远：
-            // 它实际在屏幕上应该被渲染在哪个位置。
+            // 它实际在屏幕上应该被插值在哪个位置。
             // 插值，在枪口和落点位置之间插值（距离），插值Ratio越靠近1代表越靠近落点位置了
-            // 用一个AnimationCurve，起点 00，终点 11，用之前一直重置的moveTime作为X来获取AnimationCurve这个Graph的Y，来应用给这个插值Ratio
+            // 用一个AnimationCurve，起点 00，终点 11，用之前一直重置的moveTime作为X来自动更新并且获取AnimationCurve这个Graph的 Y 来引用在插值ratio慢慢插去targetPosition
             // 最后乘与一个变量 ropeProgressionSpeed 是为了让Evalute出来的Y值更快到达1，所以有可能我的x还没到1我的y就到1了，提早抵达
-            Vector2 currentPosition = Vector2.Lerp(grapplingGun.firePoint.position, targetPosition, ropeProgressionCurve.Evaluate(moveTime) * ropeProgressionSpeed);
+            // 实质上是在移动点，而点和点之间会自动渲染线条
+            // 所以这些点在游戏的过程中，在我的发射绳索的时候会慢慢被lerp去理想的位置，而点和点之间会绘制线条
+            // 把当前的粒子通过.Lerp慢慢移动到targetPosition，moveTime会一直自动增加，所以会一直自动Lerp去1
+            // 比较远的被插值的更远
+            // 所以每个粒子都是直线向着自己的targetPosition移动，由于总距离不同，所以就算同样的插值比例，targetPosition在比较远的点要前进到下一个插值点的时候会移动到相对远
+            // 核心就是利用自动增加的moveTime Evalaute Graph的Y，慢慢让插值比例变成1
+            Vector2 currentPosition = Vector2.Lerp(grapplingGun.firePoint.position, targetPosition, (ropeProgressionCurve.Evaluate(moveTime) * ropeProgressionSpeed));
 
             m_lineRenderer.SetPosition(i, currentPosition);
         }
