@@ -262,7 +262,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  ropeProgressionSpeed: -9.5
+  ropeProgressionSpeed: 6.7
   isGrappling: 1
 --- !u!120 &109879467
 LineRenderer:
@@ -1303,7 +1303,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 755360948}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -1349,7 +1349,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 755360948}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -1421,12 +1421,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 896666087}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 058e2ee76c97b974b921e1854ccd2f10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startSpawnFlyEnemy: 1
+  startSpawnFlyEnemy: 0
   startSpawnCatchers: 0
   spawnInterval: 1.5
   _randomSidePosition: {x: 0, y: 0, z: 0}
