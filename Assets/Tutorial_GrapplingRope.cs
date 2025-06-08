@@ -26,7 +26,7 @@ public class Tutorial_GrapplingRope : MonoBehaviour
     bool strightLine = true;
 
     
-
+    // 1.
     private void OnEnable()
     {
         moveTime = 0; // 每次启用绳索时（例如，发射新的抓钩时）重置 'moveTime' 计时器。
@@ -48,6 +48,7 @@ public class Tutorial_GrapplingRope : MonoBehaviour
         isGrappling = false;
     }
 
+    // 2.
     private void LinePointsToFirePoint()
     {
         for (int i = 0; i < percision; i++)
@@ -58,6 +59,7 @@ public class Tutorial_GrapplingRope : MonoBehaviour
         }
     }
 
+    // 3.
     private void Update()
     {
         // 将 'moveTime' 增加自上一帧以来经过的时间 (Time.deltaTime)。
@@ -68,6 +70,7 @@ public class Tutorial_GrapplingRope : MonoBehaviour
         DrawRope();
     }
 
+    // 4.
     // 这个方法包含绘制绳索的主要逻辑，决定是用波浪还是用直线绘制它。
     void DrawRope()
     {
@@ -89,6 +92,7 @@ public class Tutorial_GrapplingRope : MonoBehaviour
         }
         else // 如果 'strightLine' 为 true，则执行此块。意思是如果 (m_lineRenderer.GetPosition(percision - 1).x == grapplingGun.grapplePoint.x) true 了
         {
+            // 6.
             if (!isGrappling)
             {
                 grapplingGun.Grapple();
@@ -96,20 +100,26 @@ public class Tutorial_GrapplingRope : MonoBehaviour
             }
             if (waveSize > 0)
             {
+                // 慢慢减少waveSize
                 waveSize -= Time.deltaTime * straightenLineSpeed;
+                // 更新我们的rope
                 DrawRopeWaves();
             }
             else
             {
+                // 小过0之后让它等于0
                 waveSize = 0;
 
+                // 直接强制变两个点，变成直线
                 if (m_lineRenderer.positionCount != 2) { m_lineRenderer.positionCount = 2; }
-
+                // 更新rope
+                // 绘制一条直线，不用到之前的什么percision，固定直线的函数
                 DrawRopeNoWaves();
             }
         }
     }
 
+    // 5.
     // 此方法用波浪效果绘制绳索。
     void DrawRopeWaves()
     {
@@ -145,11 +155,12 @@ public class Tutorial_GrapplingRope : MonoBehaviour
             // 所以每个粒子都是直线向着自己的targetPosition移动，由于总距离不同，所以就算同样的插值比例，targetPosition在比较远的点要前进到下一个插值点的时候会移动到相对远
             // 核心就是利用自动增加的moveTime Evalaute Graph的Y，慢慢让插值比例变成1
             Vector2 currentPosition = Vector2.Lerp(grapplingGun.firePoint.position, targetPosition, (ropeProgressionCurve.Evaluate(moveTime) * ropeProgressionSpeed));
-
             m_lineRenderer.SetPosition(i, currentPosition);
+            
         }
     }
 
+    // 专门独立的，画直线的函数
     void DrawRopeNoWaves()
     {
         m_lineRenderer.SetPosition(0, grapplingGun.firePoint.position);
