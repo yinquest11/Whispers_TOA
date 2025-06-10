@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+﻿using Unity.VisualScripting;
 using UnityEngine;
 
 public class Tutorial_GrapplingGun : MonoBehaviour
@@ -55,7 +55,11 @@ public class Tutorial_GrapplingGun : MonoBehaviour
 
     private void Start()
     {
+        // 禁用 grappleRope 脚本 (视觉绳索一开始不显示)。
+        // 一开始先不要绘制和发射绳子，因为DrawRope这个脚本一被启用就会开始DrawRope了，要我要的时候才Draw
         grappleRope.enabled = false;
+
+        // 禁用 SpringJoint2D 组件 (物理弹簧一开始不生效)。
         m_springJoint2D.enabled = false;
 
         
@@ -101,15 +105,28 @@ public class Tutorial_GrapplingGun : MonoBehaviour
         else
         {
             Vector2 mousePos = m_camera.ScreenToWorldPoint(Input.mousePosition);
+
+            // 什么都没有做也会RotateGun
             RotateGun(mousePos, true);
         }
     }
-
+    // RotateGun 方法用于旋转枪械的轴心 (gunPivot) 使其朝向目标点 (lookPoint)。
+    // lookPoint: Vector3，枪械要瞄准的目标世界坐标。
+    // allowRotationOverTime: 布尔值，如果为true且全局的rotateOverTime也为true，则进行平滑旋转。
     void RotateGun(Vector3 lookPoint, bool allowRotationOverTime)
     {
+        // 计算从枪械轴心点到目标点的方向向量
         Vector3 distanceVector = lookPoint - gunPivot.position;
 
+        // 使用 Mathf.Atan2 计算该向量与X轴正方向的夹角 (弧度制)。
+        // 然后乘以 Mathf.Rad2Deg 将其转换为角度制。
+        // Atan2 返回坐标与正X轴夹角的角度In radian
+        // 没有Sprite的问题默认Atan2的角度就可以用了，因为我这个是操控的GunPivot的，无Sprite，可以直接用
         float angle = Mathf.Atan2(distanceVector.y, distanceVector.x) * Mathf.Rad2Deg;
+
+
+
+        // 
         if (rotateOverTime && allowRotationOverTime)
         {
             gunPivot.rotation = Quaternion.Lerp(gunPivot.rotation, Quaternion.AngleAxis(angle, Vector3.forward), Time.deltaTime * rotationSpeed);
