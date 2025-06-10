@@ -127,7 +127,7 @@ MonoBehaviour:
   attackSize: {x: 1.93, y: 2.11}
   offSetX: 0.59
   offSetY: 0.26
-  parrentTransform: {fileID: 0}
+  spriteRenderer: {fileID: 0}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -140,7 +140,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9185288222540666540}
-  - component: {fileID: 8389844923908222274}
   - component: {fileID: 8141489446424420801}
   - component: {fileID: 2119875360264680058}
   - component: {fileID: 814677275120623147}
@@ -167,20 +166,6 @@ Transform:
   - {fileID: 2272350250379596767}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8389844923908222274
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5708143237451396579}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e010578b1710a8242837ca028a153270, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isMeleeAttack: 0
-  attackSpeed: 1.5
 --- !u!114 &8141489446424420801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -198,6 +183,9 @@ MonoBehaviour:
   dashSpeed: 20
   dashDuration: 0.2
   dashCooldown: 0
+  currentMoveInput: 0
+  isMeleeAttack: 0
+  attackSpeed: 1
 --- !u!50 &2119875360264680058
 Rigidbody2D:
   serializedVersion: 5

@@ -33,19 +33,23 @@ public class PlayerController : MonoBehaviour
 
     public float currentMoveInput;
 
-    
-    
+    private Animator _animator;
+    public bool isMeleeAttack;
 
-    
-    
+    [Range(1,3)] public float attackSpeed = 1; // 3 is maximum
+
+
+
+
 
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
         _transform = GetComponent<Transform>();
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        _animator = GetComponentInChildren<Animator>();
 
-
+        if (_animator == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
         if (_rb == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
         if (_transform == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
 
@@ -62,8 +66,15 @@ public class PlayerController : MonoBehaviour
             HandleJumping();
         }
 
+
+        FlipPlayerSprite();
         HandleDash();
         
+        DoAttack();
+        SetAnimation();
+
+
+
     }
 
     void HandleMovement()
@@ -92,9 +103,7 @@ public class PlayerController : MonoBehaviour
 
     private float SmartMovement(ref float _moveInput)
     {
-        
-        
-        
+
 
         float currentSpeed = moveSpeed; // Always return base moveSpeed
 
@@ -138,9 +147,6 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(Dash());
         }
     }
-
-
-
 
     void HandleJumping()
     {
@@ -195,5 +201,32 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    
+    void FlipPlayerSprite()
+    {
+        if (Input.GetKeyDown(KeyCode.D) && _spriteRenderer.flipX != false)
+        {
+            _spriteRenderer.flipX = false;
+        }
+        if (Input.GetKeyDown(KeyCode.A) && _spriteRenderer.flipX != true)
+        {
+            _spriteRenderer.flipX = true;
+        }
+    }
+
+    private void DoAttack()
+    {
+        if (Input.GetButtonDown("Fire1"))
+        {
+
+            _animator.SetTrigger("meleeAttack");
+            isMeleeAttack = true;
+        }
+    }
+
+    private void SetAnimation()
+    {
+        _animator.SetBool("isMeleeAttack", isMeleeAttack);
+        _animator.SetFloat("attackSpeed", attackSpeed);
+
+    }
 }
