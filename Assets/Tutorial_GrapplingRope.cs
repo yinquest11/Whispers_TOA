@@ -17,7 +17,7 @@ public class Tutorial_GrapplingRope : MonoBehaviour
 
     [Header("Rope Progression:")]
     public AnimationCurve ropeProgressionCurve;
-    [SerializeField][Range(1, 50)] private float ropeProgressionSpeed = 1;
+    [SerializeField][Range(1, 500)] private float ropeProgressionSpeed = 1;
 
     private float moveTime = 0;
 
@@ -33,6 +33,8 @@ public class Tutorial_GrapplingRope : MonoBehaviour
         m_lineRenderer.positionCount = percision; // 根据 'percision' 设置，设定 LineRenderer 将使用的点数。
         waveSize = StartWaveSize; // 将 'waveSize' 初始化为在检视面板中配置的 'StartWaveSize'。
         strightLine = false; // 将 'strightLine' 设置为 false，意味着绳索应该以波浪动画开始。
+
+        
 
         // 调用一个辅助函数，将 LineRenderer 的所有点都设置到枪的发射点。
         // 这可以防止绳索短暂地从 (0,0,0) 或其最后位置出现。
@@ -74,6 +76,7 @@ public class Tutorial_GrapplingRope : MonoBehaviour
     // 这个方法包含绘制绳索的主要逻辑，决定是用波浪还是用直线绘制它。
     void DrawRope()
     {
+        
         // 检查绳索是否还不应该是直线（即，它仍处于初始的波浪状延伸阶段）。
         if (!strightLine)
         {

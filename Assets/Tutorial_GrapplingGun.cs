@@ -96,6 +96,7 @@ public class Tutorial_GrapplingGun : MonoBehaviour
         }
         else if (Input.GetKeyUp(KeyCode.Mouse1))
         {
+            // 放开的时候初始化回去之前的状态
             grappleRope.enabled = false;
             m_springJoint2D.enabled = false;
             m_rigidbody.gravityScale = 5;
@@ -144,6 +145,7 @@ public class Tutorial_GrapplingGun : MonoBehaviour
     void SetGrapplePoint() // 设置钩锁落点
     {
         // 设置一个方向，从gunPivot到鼠标的这个方向，后面由Physics2D.Raycast来无限延生
+        // 之后根据集中的点位设置grapplePoint
         Vector2 distanceVector = m_camera.ScreenToWorldPoint(Input.mousePosition) - gunPivot.position;
 
         
@@ -156,6 +158,8 @@ public class Tutorial_GrapplingGun : MonoBehaviour
                 {
                     grapplePoint = _hit.point;
                     grappleDistanceVector = grapplePoint - (Vector2)gunPivot.position;
+
+                    // 开始画线，线条使用一样用 grapplePoint 来作为终点
                     grappleRope.enabled = true;
                 }
             }
@@ -178,7 +182,10 @@ public class Tutorial_GrapplingGun : MonoBehaviour
                 m_springJoint2D.frequency = 0;
             }
 
+            // 把要连接的点位变成之前那个射线集中的点位
             m_springJoint2D.connectedAnchor = grapplePoint;
+
+            // 再开启弹簧
             m_springJoint2D.enabled = true;
         }
         else
@@ -188,8 +195,11 @@ public class Tutorial_GrapplingGun : MonoBehaviour
                 case LaunchType.Physics_Launch:
                     m_springJoint2D.connectedAnchor = grapplePoint;
 
+                    //  弹簧在“无力状态”下的长度，也叫做 目标距离 或 初始长度。
+                    // 所以是一个距离，没有拉力了的时候会有的长度,弹簧被拉超过这个距离都会产生拉力
                     Vector2 distanceVector = firePoint.position - gunHolder.position;
 
+                    
                     m_springJoint2D.distance = distanceVector.magnitude;
                     m_springJoint2D.frequency = launchSpeed;
                     m_springJoint2D.enabled = true;
