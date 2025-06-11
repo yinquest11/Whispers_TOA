@@ -122,24 +122,31 @@ public class Tutorial_GrapplingGun : MonoBehaviour
         // 然后乘以 Mathf.Rad2Deg 将其转换为角度制。
         // Atan2 返回坐标与正X轴夹角的角度In radian
         // 没有Sprite的问题默认Atan2的角度就可以用了，因为我这个是操控的GunPivot的，无Sprite，可以直接用
+        // 计算出你应该要有点角度
         float angle = Mathf.Atan2(distanceVector.y, distanceVector.x) * Mathf.Rad2Deg;
 
 
 
-        // 
-        if (rotateOverTime && allowRotationOverTime)
+        // 看要慢慢旋转还是不要
+        // 用AngleAxis直接调整gunPivot.rotation
+        if (rotateOverTime && allowRotationOverTime) // 有lerp来帮助旋转
         {
+            //  用 Time.deltaTime * rotationSpeed 来插值，来确保在不同帧率上的设备，每个rotationSpeed最终都会给出一样的插值距离，因为 time * speed = distance
             gunPivot.rotation = Quaternion.Lerp(gunPivot.rotation, Quaternion.AngleAxis(angle, Vector3.forward), Time.deltaTime * rotationSpeed);
         }
-        else
+        else // 直接跟着鼠标，不平滑插值
         {
+            
             gunPivot.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
     }
 
-    void SetGrapplePoint()
+    void SetGrapplePoint() // 设置钩锁落点
     {
+        // 设置一个方向，从gunPivot到鼠标的这个方向，后面由Physics2D.Raycast来无限延生
         Vector2 distanceVector = m_camera.ScreenToWorldPoint(Input.mousePosition) - gunPivot.position;
+
+        
         if (Physics2D.Raycast(firePoint.position, distanceVector.normalized))
         {
             RaycastHit2D _hit = Physics2D.Raycast(firePoint.position, distanceVector.normalized);
