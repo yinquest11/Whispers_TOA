@@ -252,7 +252,7 @@ Transform:
   m_GameObject: {fileID: 385844710}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.7071065, w: 0.7071071}
-  m_LocalPosition: {x: 5.57, y: 8.459999, z: 0}
+  m_LocalPosition: {x: 0.3, y: 8.5, z: 0}
   m_LocalScale: {x: 2.4681299, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -838,7 +838,7 @@ Transform:
   m_GameObject: {fileID: 814074230}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.7071065, w: 0.7071071}
-  m_LocalPosition: {x: -10.66, y: 8.61, z: 0}
+  m_LocalPosition: {x: -8.8, y: 8.6, z: 0}
   m_LocalScale: {x: 2.4681299, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -972,7 +972,7 @@ Transform:
   m_GameObject: {fileID: 895138987}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.7071065, w: 0.7071071}
-  m_LocalPosition: {x: -4.7, y: -1.1, z: 0}
+  m_LocalPosition: {x: -8.57, y: -1.6, z: 0}
   m_LocalScale: {x: 2.4681299, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1161,7 +1161,7 @@ Transform:
   m_GameObject: {fileID: 1794966314}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.7071065, w: 0.7071071}
-  m_LocalPosition: {x: 19.05, y: 8.579999, z: 0}
+  m_LocalPosition: {x: 9.9, y: 8.6, z: 0}
   m_LocalScale: {x: 2.4681299, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1302,6 +1302,10 @@ PrefabInstance:
       propertyPath: m_camera
       value: 
       objectReference: {fileID: 519420031}
+    - target: {fileID: 2414024144879464240, guid: d0b8cb91e91a06447b8212496650603d, type: 3}
+      propertyPath: launchSpeed
+      value: 0.83
+      objectReference: {fileID: 0}
     - target: {fileID: 5708143237451396579, guid: d0b8cb91e91a06447b8212496650603d, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1479,14 +1483,6 @@ PrefabInstance:
     - target: {fileID: 919036498981194884, guid: 5edad8f539f75db4fa230644d32310f7, type: 3}
       propertyPath: m_Name
       value: Fairy
-      objectReference: {fileID: 0}
-    - target: {fileID: 919036498981194884, guid: 5edad8f539f75db4fa230644d32310f7, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2178914142596527575, guid: 5edad8f539f75db4fa230644d32310f7, type: 3}
-      propertyPath: m_Enabled
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6467628295025300150, guid: 5edad8f539f75db4fa230644d32310f7, type: 3}
       propertyPath: m_LocalPosition.x
