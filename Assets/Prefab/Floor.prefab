@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 9152149774853228038}
   - component: {fileID: 287376430260631927}
   m_Layer: 9
-  m_Name: Square (1)
-  m_TagString: Untagged
+  m_Name: Floor
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,9 +26,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 124649030826445478}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.7071065, w: 0.7071071}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 9.9, y: 8.6, z: 0}
-  m_LocalScale: {x: 2.4681299, y: 1, z: 1}
+  m_LocalScale: {x: 24.169657, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
