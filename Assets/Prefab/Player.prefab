@@ -77,7 +77,7 @@ LineRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Positions:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 1}
@@ -329,7 +329,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Sprite: {fileID: 1670995327, guid: fbaab84148a3f154fab5b573fdfd7f13, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -610,7 +610,7 @@ MonoBehaviour:
   maxDistnace: 20
   launchToPoint: 1
   launchType: 1
-  launchSpeed: 1.21
+  launchSpeed: 0.83
   autoConfigureDistance: 0
   targetDistance: 3
   targetFrequncy: 1
@@ -755,6 +755,6 @@ SpringJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 1
-  m_Distance: 0.6
+  m_Distance: 0.7267049
   m_DampingRatio: 1
   m_Frequency: 1
