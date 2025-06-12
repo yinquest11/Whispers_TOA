@@ -14,7 +14,7 @@ public class TestAddForceToBlock : MonoBehaviour
 
     private bool isReverse = false;
 
-
+    
 
 
 
@@ -32,12 +32,11 @@ public class TestAddForceToBlock : MonoBehaviour
     void Update()
     {
         
+        
+
         _playerDirectionToBlock = (_block.transform.position - gameObject.transform.position).normalized;
         _blockPrependicularDirectionToPlayer =  Vector2.Perpendicular(_playerDirectionToBlock);
 
-        
-
-        Debug.DrawRay(_block.transform.position, _blockPrependicularDirectionToPlayer, Color.green);
 
         if (Input.GetKeyDown(KeyCode.C))
         {
@@ -60,6 +59,12 @@ public class TestAddForceToBlock : MonoBehaviour
         }
 
 
-
+        if (_block.linearVelocityY < 0)
+        {
+            // When dropping, your velocity increase
+            // _block 的 Mass 要再2-5之间， GravityScale 5
+            Debug.Log("IsDropping");
+            _block.linearVelocity *= 1.1f;
+        }
     }
 }
