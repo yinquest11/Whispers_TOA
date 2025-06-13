@@ -155,7 +155,7 @@ MonoBehaviour:
   _dampingFactor: 0.98
   _collisionMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 951
   _collisionRadius: 0.1
   _bounceFactor: 0.1
   _numOfConstraintRuns: 50
@@ -466,7 +466,7 @@ GameObject:
   - component: {fileID: 410585248}
   - component: {fileID: 410585247}
   - component: {fileID: 410585251}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Box Test
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -808,7 +808,7 @@ GameObject:
   m_Component:
   - component: {fileID: 877191236}
   - component: {fileID: 877191238}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ConnectedToRopePivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1344,11 +1344,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1247183751676568277, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.77
+      value: 6.71
       objectReference: {fileID: 0}
     - target: {fileID: 1247183751676568277, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.06
+      value: 2.12
       objectReference: {fileID: 0}
     - target: {fileID: 1247183751676568277, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
       propertyPath: m_LocalPosition.z

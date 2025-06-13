@@ -35,8 +35,11 @@ public class AnimationEventFunctionCall : MonoBehaviour
         
         foreach (Collider2D _hitCollider in _hitColliders)
         {
-
-            _hitCollider.gameObject.GetComponent<Health>().TakeDamage(attackMultiplier * _attackNum);
+            if (_hitCollider.gameObject.GetComponent<Health>() != null)
+            {
+                _hitCollider.gameObject.GetComponent<Health>().TakeDamage(attackMultiplier * _attackNum);
+            }
+            
             
 
 
