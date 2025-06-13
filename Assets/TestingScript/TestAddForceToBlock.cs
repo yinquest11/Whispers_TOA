@@ -14,14 +14,13 @@ public class TestAddForceToBlock : MonoBehaviour
 
     private bool isReverse = false;
 
-    
+    public bool isThrowing = false;
 
 
 
 
     private void Start()
     {
-
         _distanceJoint = GetComponentInChildren<DistanceJoint2D>();
         _block.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
     }
@@ -40,6 +39,9 @@ public class TestAddForceToBlock : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.C))
         {
+            
+            isThrowing = true;
+
             // use isReverse to determine want to use the opposite direction or not ?
             isReverse = !isReverse;
 
@@ -59,12 +61,13 @@ public class TestAddForceToBlock : MonoBehaviour
         }
 
 
-        if (_block.linearVelocityY < 0)
+        if (_block.linearVelocityY < 0 &&   isThrowing == true)
         {
             // When dropping, your velocity increase
             // _block 的 Mass 要再2-5之间， GravityScale 5
-            Debug.Log("IsDropping");
+            
             _block.linearVelocity *= 1.1f;
+
         }
     }
 }
