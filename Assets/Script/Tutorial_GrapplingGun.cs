@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+﻿using Unity.VisualScripting;
 using UnityEngine;
 
 public class Tutorial_GrapplingGun : MonoBehaviour
@@ -58,14 +58,13 @@ public class Tutorial_GrapplingGun : MonoBehaviour
         grappleRope.enabled = false;
         m_springJoint2D.enabled = false;
 
-        
+
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Mouse1))
-        {
-            
+        {          
             SetGrapplePoint();
         }
         else if (Input.GetKey(KeyCode.Mouse1))
@@ -76,12 +75,14 @@ public class Tutorial_GrapplingGun : MonoBehaviour
             }
             else
             {
+                // Cant grab
                 Vector2 mousePos = m_camera.ScreenToWorldPoint(Input.mousePosition);
-                RotateGun(mousePos, true);
+                RotateGun(mousePos, false);
             }
 
             if (launchToPoint && grappleRope.isGrappling)
             {
+                // does not enable spring joint, use this to move
                 if (launchType == LaunchType.Transform_Launch)
                 {
                     Vector2 firePointDistnace = firePoint.position - gunHolder.localPosition;
@@ -94,7 +95,7 @@ public class Tutorial_GrapplingGun : MonoBehaviour
         {
             grappleRope.enabled = false;
             m_springJoint2D.enabled = false;
-            m_rigidbody.gravityScale = 5;
+            m_rigidbody.gravityScale = 5; // the original Gravity Scale of player
             
 
         }
@@ -119,7 +120,7 @@ public class Tutorial_GrapplingGun : MonoBehaviour
             gunPivot.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
     }
-
+    
     void SetGrapplePoint()
     {
         Vector2 distanceVector = m_camera.ScreenToWorldPoint(Input.mousePosition) - gunPivot.position;
@@ -140,30 +141,40 @@ public class Tutorial_GrapplingGun : MonoBehaviour
 
     public void Grapple()
     {
-        m_springJoint2D.autoConfigureDistance = false;
-        if (!launchToPoint && !autoConfigureDistance)
+        m_springJoint2D.autoConfigureDistance = false; // The auto distance force to be false
+        // If auto distance is true, we cant activate the spring physics
+
+
+        if (launchToPoint == false)
         {
-            m_springJoint2D.distance = targetDistance;
-            m_springJoint2D.frequency = targetFrequncy;
-        }
-        if (!launchToPoint)
-        {
-            if (autoConfigureDistance)
-            {
+            
+            if (autoConfigureDistance == true) // auto distance == true
+            {     
                 m_springJoint2D.autoConfigureDistance = true;
                 m_springJoint2D.frequency = 0;
+            }
+            else if (autoConfigureDistance == false) // auto distance == false, mean player will at least got {targetDistance} distance with target
+            {
+                //  So if I don't want to launchToPoint,
+                //  then I want player to stay at least a certain distance from the targetPoint according to the target distance.
+                
+                m_springJoint2D.distance = targetDistance;
+                m_springJoint2D.frequency = targetFrequncy;
             }
 
             m_springJoint2D.connectedAnchor = grapplePoint;
             m_springJoint2D.enabled = true;
         }
-        else
+        else if (launchToPoint == true) // When i want to lauch to point, the auto distance is force to be false
         {
             switch (launchType)
             {
+                // Physics launch already include enable spring, auto use spring punya physics to move
                 case LaunchType.Physics_Launch:
                     m_springJoint2D.connectedAnchor = grapplePoint;
-
+                    
+                    // our rope distance is = fire point and gun holder
+                    // got gravity, the final distance will not 100% equal this, will get longer if is being pull down by player
                     Vector2 distanceVector = firePoint.position - gunHolder.position;
 
                     m_springJoint2D.distance = distanceVector.magnitude;

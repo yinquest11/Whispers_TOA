@@ -61,31 +61,37 @@ public class Tutorial_GrapplingRope : MonoBehaviour
 
     void DrawRope()
     {
-        if (!strightLine)
+        if (strightLine == false)
         {
             if (m_lineRenderer.GetPosition(percision - 1).x == grapplingGun.grapplePoint.x)
             {
+                // When hit the point
+                
                 strightLine = true;
             }
             else
             {
+                // Before hit the point
                 DrawRopeWaves();
             }
         }
-        else
+        else 
         {
-            if (!isGrappling)
+            if (isGrappling == false)
             {
+                
                 grapplingGun.Grapple();
-                isGrappling = true;
+                isGrappling = true; // When I hit the point
             }
             if (waveSize > 0)
             {
+                // Decrease the wave rope
                 waveSize -= Time.deltaTime * straightenLineSpeed;
                 DrawRopeWaves();
             }
             else
             {
+                // Decrease wave size to 0, just draw simple staright line
                 waveSize = 0;
 
                 if (m_lineRenderer.positionCount != 2) { m_lineRenderer.positionCount = 2; }
