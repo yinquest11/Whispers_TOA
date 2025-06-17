@@ -78,8 +78,6 @@ public class RopeVerlet : MonoBehaviour
             HandleCollision();
 
 
-
-
         }
 
 
@@ -151,7 +149,7 @@ public class RopeVerlet : MonoBehaviour
         lastSegment.CurrentPosition = ropeEndPoint;
         _ropeSegments[_ropeSegments.Count - 1] = lastSegment;
 
-        //boxTransform.position = lastSegment.CurrentPosition;
+        
 
     }
 
