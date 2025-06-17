@@ -11,6 +11,8 @@ public class RopeVerlet2 : MonoBehaviour
     public float ropeSegLen = 0.25f; // distance between 2 point
     public int segmentlength = 35; // how many point
     private float lineWidth = 0.1f;
+
+    public Vector2 gravityForce = new Vector2(0f, 0f);
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -40,7 +42,7 @@ public class RopeVerlet2 : MonoBehaviour
     public void Simulate() // Let the rope move ! use Verlet Integration update every point position, simulate physic
     {
         // Define  a Gravity force
-        Vector2 forceGravity = new Vector2(0f, -1f);
+        //Vector2 forceGravity = new Vector2(0f, -1f);
 
 
         for(int i = 0; i < this.segmentlength; ++i)
@@ -49,7 +51,7 @@ public class RopeVerlet2 : MonoBehaviour
             Vector2 velocity = eachSegment.posNow - eachSegment.posOld; // calculate the delta position now - old
             eachSegment.posOld = eachSegment.posNow; // next old posiiton is my current position first
             eachSegment.posNow += velocity; // then update my current position += the delta ( applying the formula)
-            eachSegment.posNow += forceGravity * Time.deltaTime; // Applying gravity, a distance should fall down cause by gravity
+            eachSegment.posNow += gravityForce * Time.deltaTime; // Applying gravity, a distance should fall down cause by gravity
             this.ropeSegments[i] = eachSegment; // update the segment in the list with its newPos and oldPos information
         }
 
