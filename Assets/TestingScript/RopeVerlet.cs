@@ -15,7 +15,7 @@ public class RopeVerlet : MonoBehaviour
     [SerializeField] private LayerMask _collisionMask;
     [SerializeField] private float _collisionRadius = 0.1f;
     [SerializeField] private float _bounceFactor = 0.1f;
-    //[SerializeField] private float _correctionClampAmount = 0.1f;
+    
     private Vector3 viewportPos;
 
 
@@ -23,7 +23,7 @@ public class RopeVerlet : MonoBehaviour
     [SerializeField] private int _numOfConstraintRuns = 50;
 
     [Header("Optimazation")]
-    [SerializeField] private int _collisionSegmentInterval = 2;
+    
 
     private LineRenderer _lineRenderer;
     private List<RopeSegment> _ropeSegments = new List<RopeSegment>();
@@ -72,15 +72,10 @@ public class RopeVerlet : MonoBehaviour
         Simulate();
 
         for(int i = 0; i < _numOfConstraintRuns; ++i)
-        {
-            
+        {         
             ApplyConstraints();
             HandleCollision();
-
-
         }
-
-
     }
 
 

@@ -57,7 +57,9 @@ public class TestAddForceToBlock : MonoBehaviour
         {
 
             _distanceJoint.enabled = !_distanceJoint.enabled;
-            
+            _block.gravityScale = 0;
+
+
         }
 
 

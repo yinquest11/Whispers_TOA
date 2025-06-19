@@ -1,6 +1,5 @@
 ﻿
 using System.Collections.Generic;
-
 using UnityEngine;
 
 public class RopeVerlet2 : MonoBehaviour
@@ -65,6 +64,7 @@ public class RopeVerlet2 : MonoBehaviour
     private void ApplyConstraint() // apply constraint to each individual point
     {
         // Constarints ( First segment alaways follow mosue position )
+
         RopeSegment firstSegment = this.ropeSegments[0];
         firstSegment.posNow = Camera.main.ScreenToWorldPoint(Input.mousePosition); // Define the first point position
         this.ropeSegments[0] = firstSegment;
@@ -75,29 +75,37 @@ public class RopeVerlet2 : MonoBehaviour
             RopeSegment firstSeg = ropeSegments[i];
             RopeSegment secondSeg = ropeSegments[i + 1];
 
-            // calculate 2 point distance
-            Vector2 delta = firstSeg.posNow - secondSeg.posNow;
-            float dist = delta.magnitude;
-            if (dist == 0f) continue; // if distance == 0, skip this part
+            
+            Vector2 delta = firstSeg.posNow - secondSeg.posNow;  // Calculate the Vector2 between current i point and its next point
+            
+            
+            if (delta.magnitude == 0f) continue;  // if the length of the Vector2 is 0 (no error, excatly at the correct position), continue 
 
-            float error = dist - ropeSegLen; // error mean the different in length we want and actual length
-            Vector2 changeDir = delta / dist; // ？ 
-            Vector2 changeAmount = changeDir * error;
+            float error = delta.magnitude - ropeSegLen;  // calculate the different legth, delta.magnitue is our actual punya, ropeSegLen is should punya
+          
+            Vector2 changeAmount = delta.normalized * error; // Give the error length a direction,  
 
-            if (i != 0)
-            {
-                firstSeg.posNow -= changeAmount * 0.5f;
-                ropeSegments[i] = firstSeg;
-                secondSeg.posNow += changeAmount * 0.5f;
-                ropeSegments[i + 1] = secondSeg;
-            }
-            else
+            // applying the error value to current and its next point
+
+            
+            if (i == 0) // If this is the first segment (anchored), only move the second point to correct the distance error
             {
                 secondSeg.posNow += changeAmount;
                 ropeSegments[i + 1] = secondSeg;
             }
+            else // else, both of them move away or to the center by half of the error to match the expected  length
+            {
+                                                        // for the relativly first point  
+                firstSeg.posNow -= changeAmount * 0.5f; // positive error mean current length is over long, first point should go behind using -
+                ropeSegments[i] = firstSeg;             // negative error mean current length is shotter than expected, first point -- = +, go forwards
 
 
+                secondSeg.posNow += changeAmount * 0.5f; // for the relativly second point  
+                ropeSegments[i + 1] = secondSeg;         // positive error mean current length is over long, second point should go forwards using +
+                                                         // neegative error mean current lenth is over short, second point should go behind using -
+            }
+
+            // 把粒子修正过了的位置数据储存回去我们自己的数据结构，用 lineRenderer.SetPositions(ropePositions); 实现新的位置
 
 
         }
