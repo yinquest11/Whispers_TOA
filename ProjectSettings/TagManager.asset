@@ -11,6 +11,9 @@ TagManager:
   - CatchToLocation
   - EmptyFollowFairy
   - Spawner
+  - LeftTriggerUI
+  - RightTriggerUI
+  - ViewportRuler
   layers:
   - Default
   - TransparentFX

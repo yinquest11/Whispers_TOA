@@ -1,10 +1,17 @@
-﻿using UnityEngine;
+﻿using NUnit.Framework;
+using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
+using System.Collections;
 
 public class TestAddForceToBlock : MonoBehaviour
 {
-
-    public Rigidbody2D _block;
+    public Rigidbody2D block;
+    public Collider2D blockCollider;
     private DistanceJoint2D _distanceJoint;
+    private ViewportRuler _viewportRuler;
+
+    public GameObject _rope;
 
     public float forceAmount = 200f;
     public Vector2 forceDirection;
@@ -13,63 +20,148 @@ public class TestAddForceToBlock : MonoBehaviour
     Vector2 _blockPrependicularDirectionToPlayer;
 
     private bool isReverse = false;
+    public bool blockIsGround = false;
 
-    public bool isThrowing = false;
+    public float blockX;
+    public float myX;
 
+    public bool throwOut = false;
 
+    public bool canThrow = true;
+    public float throwCooldown = 0.03f;
+
+    private Coroutine _coroutine;
 
 
     private void Start()
     {
         _distanceJoint = GetComponentInChildren<DistanceJoint2D>();
-        _block.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+        _viewportRuler = GameObject.FindWithTag("ViewportRuler").GetComponent<ViewportRuler>();
+        block.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+
+       
+        
+
     }
 
-
-
-    
     void Update()
     {
+
+        UpdateX();
+
+        CalculatePrependicular();
+
+        CheckBlockIsGround();
+
         
-        
 
-        _playerDirectionToBlock = (_block.transform.position - gameObject.transform.position).normalized;
-        _blockPrependicularDirectionToPlayer =  Vector2.Perpendicular(_playerDirectionToBlock);
-
-
-        if (Input.GetKeyDown(KeyCode.C))
+        if(_viewportRuler.HasDirectionReversed == true)
         {
+            if (canThrow)
+            {
+                Throw();
+            }
+
+            //int direction = _viewportRuler.GetMouseMoveDirection;
+
+            //if (direction == 1 && canThrow) // 向右甩，且方块在左边
+            //{
+            //    Throw();
+            //}
+            //if (direction == -1 && canThrow) // 向左甩，且方块在右边
+            //{
+            //    Throw();
+            //}
+
             
-            isThrowing = true;
 
-            // use isReverse to determine want to use the opposite direction or not ?
-            isReverse = !isReverse;
-
-            forceDirection = isReverse ? -_blockPrependicularDirectionToPlayer: _blockPrependicularDirectionToPlayer;
-
-
-
-            _block.linearVelocity = Vector2.zero;
-            _block.AddForce(forceDirection * forceAmount, ForceMode2D.Impulse);
+           
         }
 
-        if (Input.GetKeyDown(KeyCode.V))
+
+        
+
+        ReleaseBlock();
+
+        AccelerateBlockWhenDown();
+
+
+        
+
+
+        //if (Input.GetKeyDown(KeyCode.C))
+        //{
+        //    Throw();
+        //}
+
+
+
+        
+
+
+
+    }
+
+    private void UpdateX()
+    {
+        blockX = block.position.x;
+        myX = transform.position.x;
+    }
+
+    private void CalculatePrependicular()
+    {
+        _playerDirectionToBlock = (block.transform.position - gameObject.transform.position).normalized;
+        _blockPrependicularDirectionToPlayer = Vector2.Perpendicular(_playerDirectionToBlock);
+    }
+
+    private void AccelerateBlockWhenDown()
+    {
+        if (block.linearVelocityY < 0 && blockIsGround == false && throwOut == false)
         {
-
-            _distanceJoint.enabled = !_distanceJoint.enabled;
-            _block.gravityScale = 0;
-
-
-        }
-
-
-        if (_block.linearVelocityY < 0 &&   isThrowing == true)
-        {
-            // When dropping, your velocity increase
-            // _block 的 Mass 要再2-5之间， GravityScale 5
-            
-            _block.linearVelocity *= 1.1f;
-
+            block.linearVelocity *= 1.1f;
         }
     }
+
+    private void ReleaseBlock()
+    {
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            _distanceJoint.enabled = !_distanceJoint.enabled;
+            block.gravityScale = 0f;
+            _rope.SetActive(false);
+            throwOut = true;
+        }
+    }
+
+    private void CheckBlockIsGround()
+    {
+        if (blockCollider.IsTouchingLayers() == true)
+        {
+            blockIsGround = true;
+        }
+        else
+        {
+            blockIsGround = false;
+        }
+    }
+
+    public void Throw()
+    {
+        canThrow = false;
+        isReverse = !isReverse;
+        forceDirection = isReverse ? -_blockPrependicularDirectionToPlayer : _blockPrependicularDirectionToPlayer;
+        block.linearVelocity = Vector2.zero;
+        block.AddForce(forceDirection * forceAmount, ForceMode2D.Impulse);
+
+        _coroutine = StartCoroutine(ThrowCooldown());
+
+    }
+
+
+    private IEnumerator ThrowCooldown()
+    {
+        yield return new WaitForSeconds(throwCooldown);
+        canThrow = true;
+    }
+
 }
