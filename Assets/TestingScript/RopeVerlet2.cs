@@ -9,9 +9,10 @@ public class RopeVerlet2 : MonoBehaviour
     public List<RopeSegment> ropeSegments = new List<RopeSegment>();
     public float ropeSegLen = 0.25f; // distance between 2 point
     public int segmentlength = 35; // how many point
+    public Vector2 gravityForce = new Vector2(0f, 0f);
+
     private float lineWidth = 0.1f;
 
-    public Vector2 gravityForce = new Vector2(0f, 0f);
     
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -83,7 +84,7 @@ public class RopeVerlet2 : MonoBehaviour
 
             float error = delta.magnitude - ropeSegLen;  // calculate the different legth, delta.magnitue is our actual punya, ropeSegLen is should punya
           
-            Vector2 changeAmount = delta.normalized * error; // Give the error length a direction,  
+            Vector2 changeAmount = delta.normalized * error; // Give the error length a direction (delta),  
 
             // applying the error value to current and its next point
 
@@ -93,6 +94,12 @@ public class RopeVerlet2 : MonoBehaviour
                 secondSeg.posNow += changeAmount;
                 ropeSegments[i + 1] = secondSeg;
             }
+            //else if (i == ropeSegments.Count - 2)
+            //{
+            //    firstSeg.posNow -= changeAmount;
+            //    ropeSegments[i] = firstSeg;
+
+            //}
             else // else, both of them move away or to the center by half of the error to match the expected  length
             {
                                                         // for the relativly first point  
@@ -109,7 +116,9 @@ public class RopeVerlet2 : MonoBehaviour
 
 
         }
-
+        //RopeSegment lastSegment = ropeSegments[ropeSegments.Count - 1];
+        //lastSegment.posNow = Vector2.zero;
+        //ropeSegments[ropeSegments.Count - 1] = lastSegment;
 
     }
 

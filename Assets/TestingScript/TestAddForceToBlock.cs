@@ -20,7 +20,7 @@ public class TestAddForceToBlock : MonoBehaviour
 
     private DistanceJoint2D _distanceJoint;
     private ViewportRuler _viewportRuler;
-    private bool isReverse = false; // change direction
+    
     private Coroutine _coroutine;
     private Coroutine _coroutine2;
     private bool CanStartDetecet = false;
@@ -135,8 +135,8 @@ public class TestAddForceToBlock : MonoBehaviour
     {
         if (block.linearVelocityY < 0 && isThrowing == true && _distanceJoint.enabled == true)
         {
-            
-            block.linearVelocity *= 1.1f;
+
+            block.linearVelocity *= new Vector2(1.05f, 1.2f); 
         }
     }
 
