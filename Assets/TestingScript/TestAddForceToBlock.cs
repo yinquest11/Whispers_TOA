@@ -24,6 +24,7 @@ public class TestAddForceToBlock : MonoBehaviour
     private Coroutine _coroutine;
     private Coroutine _coroutine2;
     private bool CanStartDetecet = false;
+    public float isThrowingDelay = 0.08f;
 
     Vector2 _playerDirectionToBlock;
     Vector2 _blockPrependicularDirectionToPlayer;
@@ -72,16 +73,24 @@ public class TestAddForceToBlock : MonoBehaviour
     {
         if (_viewportRuler.HasDirectionReversed == true)
         {
-            
 
-            if (_viewportRuler.GetMouseMoveDirection == 1 && blockX <= myX ) // 向右甩，且方块在左边
+            if (canThrow == true) // 向右甩，且方块在左边
             {
-                Throw();
+                Throw(_viewportRuler.GetMouseMoveDirection);
             }
-            else if (_viewportRuler.GetMouseMoveDirection == -1 && blockX >= myX ) // 向左甩，且方块在右边
+            else if (canThrow == true) // 向左甩，且方块在右边
             {
-                Throw();
+                Throw(_viewportRuler.GetMouseMoveDirection);
             }
+
+            //if (_viewportRuler.GetMouseMoveDirection == 1 && blockX <= myX && canThrow == true) // 向右甩，且方块在左边
+            //{
+            //    Throw();
+            //}
+            //else if (_viewportRuler.GetMouseMoveDirection == -1 && blockX >= myX && canThrow == true) // 向左甩，且方块在右边
+            //{
+            //    Throw();
+            //}
 
         }
     }
@@ -158,21 +167,28 @@ public class TestAddForceToBlock : MonoBehaviour
     }
 
    
+    // .....................................
 
-    public void Throw()
+    public void Throw(int i)
     {
         canThrow = false;
+
+        _coroutine = StartCoroutine(ThrowCooldown());
+
         isThrowing = true;
 
         CanStartDetecet = false;
 
 
-        isReverse = !isReverse;
-        forceDirection = isReverse ? -_blockPrependicularDirectionToPlayer : _blockPrependicularDirectionToPlayer;
+        
+        forceDirection = i == 1 ? -_blockPrependicularDirectionToPlayer : _blockPrependicularDirectionToPlayer;
+
+        //isReverse = !isReverse;
+        //forceDirection = isReverse ? -_blockPrependicularDirectionToPlayer : _blockPrependicularDirectionToPlayer;
         block.linearVelocity = Vector2.zero;
         block.AddForce(forceDirection * forceAmount, ForceMode2D.Impulse);
 
-        _coroutine = StartCoroutine(ThrowCooldown());
+        
 
     }
 
@@ -186,7 +202,7 @@ public class TestAddForceToBlock : MonoBehaviour
 
     private IEnumerator Delay()
     {
-        yield return new WaitForSeconds(0.05f);
+        yield return new WaitForSeconds(isThrowingDelay); 
 
         CanStartDetecet = true;
 

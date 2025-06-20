@@ -82,7 +82,7 @@ public class PlayerController : MonoBehaviour
 
         SetAnimation();
 
-
+        Debug.DrawRay(transform.position,Vector2.up * 10);
 
     }
 
@@ -92,7 +92,9 @@ public class PlayerController : MonoBehaviour
         {
             foreach (var effector in _allPlatformEffectors)
             {
-                effector.colliderMask &= ~(1 << LayerMask.NameToLayer("Player")); // 移除 Player 碰撞层
+                effector.colliderMask &= ~(1 << LayerMask.NameToLayer("Player")); // Remove Player collision layer， 1 << 7
+                                                                                  // &= if all 1, then 1, if got 1 0 then all 0. 1 can keep 
+                                                                                  // the one that already is 1, 0 can turn 1 punya to 0
             }
 
         }
@@ -100,7 +102,9 @@ public class PlayerController : MonoBehaviour
         {
             foreach (var effector in _allPlatformEffectors)
             {
-                effector.colliderMask |= (1 << LayerMask.NameToLayer("Player")); // 恢复 Player 层
+                effector.colliderMask |= (1 << LayerMask.NameToLayer("Player")); // turn back Player collision layer
+                                                                                 // if got 1, then all 1.
+                                                                                 // can let 0 become 1
             }
         }
     }

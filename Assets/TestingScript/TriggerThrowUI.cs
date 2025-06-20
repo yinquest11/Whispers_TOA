@@ -24,7 +24,7 @@ public class TriggerThrowUI : MonoBehaviour, IPointerEnterHandler
         {
             if (_testAddForceToBlock.blockX > _testAddForceToBlock.transform.position.x || _testAddForceToBlock.blockIsCollisioned == false) 
             {
-                _testAddForceToBlock.Throw();
+                _testAddForceToBlock.Throw(-1);
             }
            
         }
@@ -33,7 +33,7 @@ public class TriggerThrowUI : MonoBehaviour, IPointerEnterHandler
         {
             if (_testAddForceToBlock.blockX < _testAddForceToBlock.transform.position.x || _testAddForceToBlock.blockIsCollisioned == false) 
             {
-                _testAddForceToBlock.Throw();
+                _testAddForceToBlock.Throw(1);
             }
             
         }
