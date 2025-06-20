@@ -22,7 +22,7 @@ public class TriggerThrowUI : MonoBehaviour, IPointerEnterHandler
     {
         if (CompareTag("LeftTriggerUI") == true)
         {
-            if (_testAddForceToBlock.blockX > _testAddForceToBlock.transform.position.x || _testAddForceToBlock.blockIsGround == false) 
+            if (_testAddForceToBlock.blockX > _testAddForceToBlock.transform.position.x || _testAddForceToBlock.blockIsCollisioned == false) 
             {
                 _testAddForceToBlock.Throw();
             }
@@ -31,7 +31,7 @@ public class TriggerThrowUI : MonoBehaviour, IPointerEnterHandler
 
         if (CompareTag("RightTriggerUI") == true)
         {
-            if (_testAddForceToBlock.blockX < _testAddForceToBlock.transform.position.x || _testAddForceToBlock.blockIsGround == false) 
+            if (_testAddForceToBlock.blockX < _testAddForceToBlock.transform.position.x || _testAddForceToBlock.blockIsCollisioned == false) 
             {
                 _testAddForceToBlock.Throw();
             }

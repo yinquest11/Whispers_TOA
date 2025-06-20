@@ -14,92 +14,106 @@ public class TestAddForceToBlock : MonoBehaviour
     public GameObject _rope;
 
     public float forceAmount = 200f;
-    public Vector2 forceDirection;
+    [HideInInspector] public Vector2 forceDirection;
 
     Vector2 _playerDirectionToBlock;
     Vector2 _blockPrependicularDirectionToPlayer;
 
     private bool isReverse = false;
-    public bool blockIsGround = false;
+    [HideInInspector] public bool blockIsCollisioned = false;
 
-    public float blockX;
-    public float myX;
+    [HideInInspector] public float blockX;
+    [HideInInspector] public float myX;
 
-    public bool throwOut = false;
+    [HideInInspector] public bool throwOut = false;
 
-    public bool canThrow = true;
+    [HideInInspector] public bool canThrow = true;
     public float throwCooldown = 0.03f;
 
     private Coroutine _coroutine;
+
+    [HideInInspector] public bool GotCatch = false;
+
+    
 
 
     private void Start()
     {
         _distanceJoint = GetComponentInChildren<DistanceJoint2D>();
-        _viewportRuler = GameObject.FindWithTag("ViewportRuler").GetComponent<ViewportRuler>();
+        
         block.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
 
-       
-        
 
     }
 
+    public void Awake()
+    {
+        _viewportRuler = GameObject.FindWithTag("ViewportRuler").GetComponent<ViewportRuler>();
+        
+    }
+
+
     void Update()
     {
+
+        CheckGorCatch();
+
+
+
+        if (GotCatch == false)
+            return;
+
+        
 
         UpdateX();
 
         CalculatePrependicular();
 
-        CheckBlockIsGround();
+        CheckBlockIsCollisioned();
 
-        
-
-        if(_viewportRuler.HasDirectionReversed == true)
-        {
-            if (canThrow)
-            {
-                Throw();
-            }
-
-            //int direction = _viewportRuler.GetMouseMoveDirection;
-
-            //if (direction == 1 && canThrow) // 向右甩，且方块在左边
-            //{
-            //    Throw();
-            //}
-            //if (direction == -1 && canThrow) // 向左甩，且方块在右边
-            //{
-            //    Throw();
-            //}
-
-            
-
-           
-        }
-
-
-        
+        SwingToThrow();
 
         ReleaseBlock();
 
         AccelerateBlockWhenDown();
 
 
+
+    }
+
+    private void SwingToThrow()
+    {
+        if (_viewportRuler.HasDirectionReversed == true)
+        {
+            //if (canThrow)
+            //{
+            //    Throw();
+            //}
+
+            if (_viewportRuler.GetMouseMoveDirection == 1 && blockX < myX ) // 向右甩，且方块在左边
+            {
+                Throw();
+            }
+            else if (_viewportRuler.GetMouseMoveDirection == -1 && blockX > myX ) // 向左甩，且方块在右边
+            {
+                Throw();
+            }
+
+        }
+    }
+
+    private void CheckGorCatch()
+    {
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            GotCatch = true;
+            throwOut = false;
+            _distanceJoint.enabled = true;
+            _rope.SetActive(true);
+        }
+            
+
         
-
-
-        //if (Input.GetKeyDown(KeyCode.C))
-        //{
-        //    Throw();
-        //}
-
-
-
-        
-
-
-
     }
 
     private void UpdateX()
@@ -116,7 +130,7 @@ public class TestAddForceToBlock : MonoBehaviour
 
     private void AccelerateBlockWhenDown()
     {
-        if (block.linearVelocityY < 0 && blockIsGround == false && throwOut == false)
+        if (block.linearVelocityY < 0 && blockIsCollisioned == false && throwOut == false)
         {
             block.linearVelocity *= 1.1f;
         }
@@ -130,18 +144,21 @@ public class TestAddForceToBlock : MonoBehaviour
             block.gravityScale = 0f;
             _rope.SetActive(false);
             throwOut = true;
+            GotCatch = false;
+
+
         }
     }
 
-    private void CheckBlockIsGround()
+    private void CheckBlockIsCollisioned()
     {
         if (blockCollider.IsTouchingLayers() == true)
         {
-            blockIsGround = true;
+            blockIsCollisioned = true;
         }
         else
         {
-            blockIsGround = false;
+            blockIsCollisioned = false;
         }
     }
 

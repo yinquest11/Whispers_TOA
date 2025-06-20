@@ -5,14 +5,15 @@ public class ViewportRuler : MonoBehaviour
 {
     public  int totalDivision = 20;
 
+
     public int currentZone;
-    public int previousZone; //
+    [HideInInspector] public int previousZone; 
 
     public Vector2 mouseViewportPos;
 
     private int _mouseMoveDirection = 0; //   -1 = left, 0 = stationary, 1 = right
 
-
+    public bool needDraw = true;
 
     public int GetMouseMoveDirection // 
     {
@@ -27,6 +28,8 @@ public class ViewportRuler : MonoBehaviour
         get { return currentZone; }
     }
 
+    
+
     void Start()
     {
         currentZone = CalculateCurrentZone();
@@ -38,6 +41,10 @@ public class ViewportRuler : MonoBehaviour
     {
         CalculateZone();
 
+
+       if (needDraw == false)
+            return;
+
         DrawDivisionLines();
 
 
@@ -47,7 +54,6 @@ public class ViewportRuler : MonoBehaviour
     {
         CalculateCurrentZone();
 
-        // new 
 
         HasDirectionReversed = false;
 
@@ -76,8 +82,6 @@ public class ViewportRuler : MonoBehaviour
 
 
         }
-
-
 
     }
 
