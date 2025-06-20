@@ -66,9 +66,11 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetButton("Fire2") == false) // temporarily
         {
-            HandleMovement();
-            HandleJumping();
+            
         }
+
+        HandleMovement();
+        HandleJumping();
 
         HandlePlatformCollision();
 

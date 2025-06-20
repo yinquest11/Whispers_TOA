@@ -7,6 +7,7 @@ public class ViewportRuler : MonoBehaviour
 
 
     public int currentZone;
+
     [HideInInspector] public int previousZone; 
 
     public Vector2 mouseViewportPos;
