@@ -38,6 +38,8 @@ public class PlayerController : MonoBehaviour
 
     [Range(1,3)] public float attackSpeed = 1; // 3 is maximum
 
+    private PlatformEffector2D[] _allPlatformEffectors;
+
 
 
 
@@ -55,6 +57,8 @@ public class PlayerController : MonoBehaviour
 
         _jumpCount = _maxJumps;
 
+        _allPlatformEffectors = FindObjectsByType<PlatformEffector2D>(FindObjectsSortMode.None);
+
     }
 
 
@@ -66,15 +70,37 @@ public class PlayerController : MonoBehaviour
             HandleJumping();
         }
 
+        HandlePlatformCollision();
 
         FlipPlayerSprite();
+
         HandleDash();
-        
+
         DoAttack();
+
         SetAnimation();
 
 
 
+    }
+
+    private void HandlePlatformCollision()
+    {
+        if (Input.GetKey(KeyCode.S))
+        {
+            foreach (var effector in _allPlatformEffectors)
+            {
+                effector.colliderMask &= ~(1 << LayerMask.NameToLayer("Player")); // 移除 Player 碰撞层
+            }
+
+        }
+        else if (Input.GetKeyUp(KeyCode.S))
+        {
+            foreach (var effector in _allPlatformEffectors)
+            {
+                effector.colliderMask |= (1 << LayerMask.NameToLayer("Player")); // 恢复 Player 层
+            }
+        }
     }
 
     void HandleMovement()
