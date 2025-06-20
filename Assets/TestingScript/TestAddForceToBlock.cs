@@ -8,33 +8,24 @@ public class TestAddForceToBlock : MonoBehaviour
 {
     public Rigidbody2D block;
     public Collider2D blockCollider;
+    public GameObject _rope;
+    public float forceAmount = 2111;
+    [HideInInspector] public Vector2 forceDirection;
+    [HideInInspector] public bool blockIsCollisioned = false; // got collision ?
+    [HideInInspector] public float blockX;
+    [HideInInspector] public float myX;
+    [HideInInspector] public bool canThrow = true; // cooldown
+    public float throwCooldown = 0.03f;
+    public bool isThrowing = false;
+
     private DistanceJoint2D _distanceJoint;
     private ViewportRuler _viewportRuler;
-
-    public GameObject _rope;
-
-    public float forceAmount = 200f;
-    [HideInInspector] public Vector2 forceDirection;
+    private bool isReverse = false; // change direction
+    private Coroutine _coroutine;
 
     Vector2 _playerDirectionToBlock;
     Vector2 _blockPrependicularDirectionToPlayer;
 
-    private bool isReverse = false;
-    [HideInInspector] public bool blockIsCollisioned = false;
-
-    [HideInInspector] public float blockX;
-    [HideInInspector] public float myX;
-
-    [HideInInspector] public bool throwOut = false;
-
-    [HideInInspector] public bool canThrow = true;
-    public float throwCooldown = 0.03f;
-
-    private Coroutine _coroutine;
-
-    [HideInInspector] public bool GotCatch = false;
-
-    
 
 
     private void Start()
@@ -56,28 +47,32 @@ public class TestAddForceToBlock : MonoBehaviour
     void Update()
     {
 
-        CheckGorCatch();
+        TryToCatch();
+        ReleaseBlock();
 
-
-
-        if (GotCatch == false)
+        if (_distanceJoint.enabled  == false)
             return;
 
+        UpdateX();
+        CalculatePrependicular();
+        CheckBlockIsCollisioned();
+
+        UpdateThrowingState();
         
 
-        UpdateX();
+        if (isThrowing)
+            WantAccelerateBlockWhenDownMa();
+    
+        
 
-        CalculatePrependicular();
-
-        CheckBlockIsCollisioned();
 
         SwingToThrow();
 
-        ReleaseBlock();
+        
 
-        AccelerateBlockWhenDown();
+        
 
-
+        
 
     }
 
@@ -85,16 +80,13 @@ public class TestAddForceToBlock : MonoBehaviour
     {
         if (_viewportRuler.HasDirectionReversed == true)
         {
-            //if (canThrow)
-            //{
-            //    Throw();
-            //}
+            
 
-            if (_viewportRuler.GetMouseMoveDirection == 1 && blockX < myX ) // 向右甩，且方块在左边
+            if (_viewportRuler.GetMouseMoveDirection == 1 && blockX <= myX ) // 向右甩，且方块在左边
             {
                 Throw();
             }
-            else if (_viewportRuler.GetMouseMoveDirection == -1 && blockX > myX ) // 向左甩，且方块在右边
+            else if (_viewportRuler.GetMouseMoveDirection == -1 && blockX >= myX ) // 向左甩，且方块在右边
             {
                 Throw();
             }
@@ -102,18 +94,37 @@ public class TestAddForceToBlock : MonoBehaviour
         }
     }
 
-    private void CheckGorCatch()
+    void UpdateThrowingState()
     {
-        if (Input.GetKeyDown(KeyCode.C))
+        if (blockIsCollisioned)
         {
-            GotCatch = true;
-            throwOut = false;
+            isThrowing = false;
+        }
+        else if (!blockIsCollisioned && block.linearVelocity.magnitude > 0.1f)
+        {
+            isThrowing = true;
+        }
+    }
+
+    private void TryToCatch()
+    {
+        if (Input.GetKey(KeyCode.Mouse1))
+        { 
             _distanceJoint.enabled = true;
             _rope.SetActive(true);
         }
-            
 
-        
+    }
+
+    private void ReleaseBlock()
+    {
+        if (Input.GetKeyUp(KeyCode.Mouse1))
+        {
+            _distanceJoint.enabled = !_distanceJoint.enabled;
+            block.gravityScale = 0f;
+            _rope.SetActive(false);
+
+        }
     }
 
     private void UpdateX()
@@ -128,27 +139,16 @@ public class TestAddForceToBlock : MonoBehaviour
         _blockPrependicularDirectionToPlayer = Vector2.Perpendicular(_playerDirectionToBlock);
     }
 
-    private void AccelerateBlockWhenDown()
+    private void WantAccelerateBlockWhenDownMa()
     {
-        if (block.linearVelocityY < 0 && blockIsCollisioned == false && throwOut == false)
+        if (block.linearVelocityY < 0 && isThrowing == true && _distanceJoint.enabled == true)
         {
+            
             block.linearVelocity *= 1.1f;
         }
     }
 
-    private void ReleaseBlock()
-    {
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            _distanceJoint.enabled = !_distanceJoint.enabled;
-            block.gravityScale = 0f;
-            _rope.SetActive(false);
-            throwOut = true;
-            GotCatch = false;
-
-
-        }
-    }
+   
 
     private void CheckBlockIsCollisioned()
     {
@@ -162,9 +162,13 @@ public class TestAddForceToBlock : MonoBehaviour
         }
     }
 
+   
+
     public void Throw()
     {
         canThrow = false;
+        
+
         isReverse = !isReverse;
         forceDirection = isReverse ? -_blockPrependicularDirectionToPlayer : _blockPrependicularDirectionToPlayer;
         block.linearVelocity = Vector2.zero;
