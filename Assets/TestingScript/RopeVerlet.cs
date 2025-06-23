@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -31,9 +32,13 @@ public class RopeVerlet : MonoBehaviour
     public Transform playerTransform;
     public Transform boxTransform;
 
+    // Whether collide with a smart anchor object 
     public List<bool> booleanCollection = new List<bool>();
 
-    private bool _isSmartAnchorObject = false;
+    public Vector2 firstCollisionPoint;
+    public Vector2 lastCollisionPoint;
+
+    public bool changeToMultiRope;
     
 
     private void Awake()
@@ -82,9 +87,39 @@ public class RopeVerlet : MonoBehaviour
             ApplyConstraints();
             HandleCollision();
         }
+
+        DrawFirstAndLastCollisionAnchor(); // 避免放在 HandleCollision里，因为 HandleCollision会在一帧执行多次，而我只要一帧画一次，在帧的最后才绘画观测结果
+        
     }
 
 
+    private void DrawFirstAndLastCollisionAnchor()
+    {
+        int firstTrueIndex = booleanCollection.FindIndex(b => b);
+
+        int lastTrueIndex = booleanCollection.FindLastIndex(b => b);
+
+
+        if (firstTrueIndex != -1 && lastTrueIndex != -1)
+        {
+            firstCollisionPoint = _ropeSegments[firstTrueIndex].CurrentPosition;
+            //Debug.Log($"First collision index:{firstTrueIndex} at {firstCollisionPoint}");
+            Debug.DrawRay(firstCollisionPoint, Vector2.up * 0.3f, Color.yellow, Time.fixedDeltaTime);
+
+            lastCollisionPoint = _ropeSegments[lastTrueIndex].CurrentPosition;
+            //Debug.Log($"Last collision index:{lastTrueIndex} at {lastCollisionPoint}");
+            Debug.DrawRay(lastCollisionPoint, Vector2.up * 0.3f, Color.yellow, Time.fixedDeltaTime);
+
+
+            changeToMultiRope = true;
+        }
+        else
+        {
+            changeToMultiRope = false;
+        }
+
+
+    }
 
     private void DrawRope()
     {
@@ -93,7 +128,7 @@ public class RopeVerlet : MonoBehaviour
         for (int i = 0; i < _ropeSegments.Count; ++i)  //
         {
             ropePosition[i] = _ropeSegments[i].CurrentPosition;
-            Debug.DrawRay(_ropeSegments[i].CurrentPosition, Vector2.up *0.3f,Color.yellow);
+            
         }
 
         
@@ -183,37 +218,63 @@ public class RopeVerlet : MonoBehaviour
             // 找到 以segment.CurrentPosition为坐标，以_collisionRadius 为半径的圆圈内的所有 命中的 Collider，如果有，收在 colliders 数组里
             Collider2D[] colliders = Physics2D.OverlapCircleAll(segment.CurrentPosition, _collisionRadius, _collisionMask);
 
+            // 我有撞到东西，我自己要被标记
+            if (colliders.Length == 0)
+            {
+                booleanCollection[i] = false;
+            }
+            else 
+            {
+
+                booleanCollection[i] = false; // 主动从 true 变去 false，如果下一帧直接撞到 不是 SmartAnchorObject_Tag，且没有收回
+
+                foreach (Collider2D c in colliders)
+                {
+                    if (c.GetComponent<SmartAnchorObject_Tag>() != null)
+                    {
+                        booleanCollection[i] = true;
+                        break;
+                    }
+                        
+                }
+                
+            }
 
             
 
-            foreach(Collider2D collider in colliders) // if the length of colliders is 0, then will not loop anything, nothing happen
+
+            foreach (Collider2D collider in colliders)  // if the length of colliders is 0, then will not loop anything, nothing happen
             {
-                Vector2 clossestPoint = collider.ClosestPoint(segment.CurrentPosition); // 找到离我最近的碰撞点（在撞到的东西上）
+
+                
+
+
+                Vector2 clossestPoint = collider.ClosestPoint(segment.CurrentPosition); // 找到离我最近的碰撞点（在撞到的东西上）;\
 
                 float distance = Vector2.Distance(segment.CurrentPosition, clossestPoint); // 看下这个距离多少
 
                 // if within the collision radius, resolve
-                if (distance < _collisionRadius)// 如果小过我一开始判断的 _collisionRadius 大小，代表真正穿透了
-                                                // 因为要避免完美接触的情况，OverlapCircleAll 会返回 <= _collisionRadius，实际上我们只要 <_collisionRadius
-                                                // 通常只希望修复真正穿入（distance < radius） 的情况而非刚好接触边缘0.1000007
-                {
-                    Vector2 normal = (segment.CurrentPosition - clossestPoint).normalized; // 计算出 推开 或 逃离 的方向
-                                                                                           // 这个方向是我远离 coolider  ClosestPoint 的方向
-
-                    if (normal == Vector2.zero) // 如果被卡在 collider里面了
-                                                // 只有当 segment.CurrentPosition - clossestPoint 等于 Vector2.zero 时，问题才会发生。
+                if (distance < _collisionRadius) // 如果小过我一开始判断的 _collisionRadius 大小，代表真正穿透了
+                                                    // 因为要避免完美接触的情况，OverlapCircleAll 会返回 <= _collisionRadius，实际上我们只要 <_collisionRadius
+                                                    // 通常只希望修复真正穿入（distance < radius） 的情况而非刚好接触边缘0.1000007
                     {
-                        
-                        normal = (segment.CurrentPosition - (Vector2)collider.transform.position).normalized; // 卡着的话就直接向物 Collider 的中心逃离
-                    }
+                    Vector2 normal = (segment.CurrentPosition - clossestPoint).normalized; // 计算出 推开 或 逃离 的方向
+                                                                                               // 这个方向是我远离 coolider  ClosestPoint 的方向
 
-                    float depth = _collisionRadius - distance; // 绳子节段“钻入”碰撞体内部到底有多深
+                        if (normal == Vector2.zero) // 如果被卡在 collider里面了
+                                                    // 只有当 segment.CurrentPosition - clossestPoint 等于 Vector2.zero 时，问题才会发生。
+                        {
 
-                    segment.CurrentPosition += normal * depth; // 利用上一步算出的“深度”，将绳段沿着“逃离方向”（normal）推出去，不多不少，正好推回到碰撞体的表面
+                        normal = (segment.CurrentPosition - (Vector2)collider.transform.position).normalized;// 卡着的话就直接向物 Collider 的中心逃离
+                        }
 
-                    velocity = Vector2.Reflect(velocity, normal) * _bounceFactor;   // 更新反弹之后应该有的 速度方向
-                                                                                    // 我们确认了碰撞之后，才去调用 Reflect 函数。
-                                                                                    // _bounceFactor 用来变大或变小整个方向的长度，看要不要弹更远
+                    float depth = _collisionRadius - distance;// 绳子节段“钻入”碰撞体内部到底有多深
+
+                        segment.CurrentPosition += normal * depth; // 利用上一步算出的“深度”，将绳段沿着“逃离方向”（normal）推出去，不多不少，正好推回到碰撞体的表面
+
+                        velocity = Vector2.Reflect(velocity, normal) * _bounceFactor;   // 更新反弹之后应该有的 速度方向
+                                                                                        // 我们确认了碰撞之后，才去调用 Reflect 函数。
+                                                                                        // _bounceFactor 用来变大或变小整个方向的长度，看要不要弹更远
 
 
 
@@ -233,6 +294,9 @@ public class RopeVerlet : MonoBehaviour
             _ropeSegments[i] = segment; // 重新“保存”或“写回到”列表中原来的位置去
 
         }
+
+        
+
     }
 
     public struct RopeSegment //

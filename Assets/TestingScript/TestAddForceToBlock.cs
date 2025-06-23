@@ -113,7 +113,7 @@ public class TestAddForceToBlock : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Mouse1))
         {
             _distanceJoint.enabled = !_distanceJoint.enabled;
-            block.gravityScale = 0f;
+            //block.gravityScale = 0f;
             _rope.SetActive(false);
 
         }
