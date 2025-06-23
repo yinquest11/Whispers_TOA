@@ -31,7 +31,9 @@ public class RopeVerlet : MonoBehaviour
     public Transform playerTransform;
     public Transform boxTransform;
 
-    
+    public List<bool> booleanCollection = new List<bool>();
+
+    private bool _isSmartAnchorObject = false;
     
 
     private void Awake()
@@ -50,6 +52,15 @@ public class RopeVerlet : MonoBehaviour
     }
 
 
+
+    private void Start()
+    {
+        for (int i = 0; i < _ropeSegments.Count; ++i)
+        {
+            booleanCollection.Add(false);
+        }
+    }
+
     private void Update()
     {
         ropeStartPoint = playerTransform.position; 
@@ -59,6 +70,8 @@ public class RopeVerlet : MonoBehaviour
 
         
     }
+
+    
 
     private void FixedUpdate()
     {
@@ -80,8 +93,10 @@ public class RopeVerlet : MonoBehaviour
         for (int i = 0; i < _ropeSegments.Count; ++i)  //
         {
             ropePosition[i] = _ropeSegments[i].CurrentPosition;
+            Debug.DrawRay(_ropeSegments[i].CurrentPosition, Vector2.up *0.3f,Color.yellow);
         }
 
+        
         _lineRenderer.SetPositions(ropePosition); //
     }
 
@@ -167,6 +182,9 @@ public class RopeVerlet : MonoBehaviour
 
             // 找到 以segment.CurrentPosition为坐标，以_collisionRadius 为半径的圆圈内的所有 命中的 Collider，如果有，收在 colliders 数组里
             Collider2D[] colliders = Physics2D.OverlapCircleAll(segment.CurrentPosition, _collisionRadius, _collisionMask);
+
+
+            
 
             foreach(Collider2D collider in colliders) // if the length of colliders is 0, then will not loop anything, nothing happen
             {

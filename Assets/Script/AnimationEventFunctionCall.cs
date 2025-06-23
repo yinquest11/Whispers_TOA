@@ -52,7 +52,7 @@ public class AnimationEventFunctionCall : MonoBehaviour
 
     }
 
-    private void OnDrawGizmos() // Draw the visual of OverlapBoxAll()
+    private void OnDrawGizmosSelected() // Draw the visual of OverlapBoxAll()
     {
         _attackAreaPosition = transform.position;
         _attackAreaPosition.x += offSetX;
