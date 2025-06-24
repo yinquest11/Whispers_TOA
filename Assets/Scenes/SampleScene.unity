@@ -255,6 +255,7 @@ MonoBehaviour:
   firstCollisionPoint: {x: 0, y: 0}
   lastCollisionPoint: {x: 0, y: 0}
   changeToMultiRope: 0
+  lastPointEscapeDirection: {x: 0, y: 0}
 --- !u!120 &124612465
 LineRenderer:
   serializedVersion: 2
@@ -1089,9 +1090,13 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 287376430260631927, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1247183751676568277, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
       propertyPath: m_LocalScale.x
-      value: 3.6254487
+      value: 9.536889
       objectReference: {fileID: 0}
     - target: {fileID: 1247183751676568277, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
       propertyPath: m_LocalScale.y
@@ -1099,11 +1104,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1247183751676568277, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.4
+      value: 5.05
       objectReference: {fileID: 0}
     - target: {fileID: 1247183751676568277, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.95
+      value: 1.59
       objectReference: {fileID: 0}
     - target: {fileID: 1247183751676568277, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1918,6 +1923,10 @@ PrefabInstance:
       propertyPath: m_Interpolate
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2119875360264680058, guid: d0b8cb91e91a06447b8212496650603d, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2414024144879464240, guid: d0b8cb91e91a06447b8212496650603d, type: 3}
       propertyPath: m_camera
       value: 
@@ -2197,11 +2206,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1446946728857380794, guid: 0d014190276dfa6468809df05888ebe6, type: 3}
       propertyPath: m_Size.x
-      value: 0.92552125
+      value: 0.9465351
       objectReference: {fileID: 0}
     - target: {fileID: 1446946728857380794, guid: 0d014190276dfa6468809df05888ebe6, type: 3}
       propertyPath: m_Size.y
-      value: 0.92552245
+      value: 0.98188084
       objectReference: {fileID: 0}
     - target: {fileID: 1446946728857380794, guid: 0d014190276dfa6468809df05888ebe6, type: 3}
       propertyPath: m_Offset.x
@@ -2209,7 +2218,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1446946728857380794, guid: 0d014190276dfa6468809df05888ebe6, type: 3}
       propertyPath: m_Offset.y
-      value: -0.028593123
+      value: -0.00041392446
       objectReference: {fileID: 0}
     - target: {fileID: 3294459698461957275, guid: 0d014190276dfa6468809df05888ebe6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2258,7 +2267,7 @@ PrefabInstance:
     - target: {fileID: 7827796526560197884, guid: 0d014190276dfa6468809df05888ebe6, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 6200000, guid: 55b7f5c4c7c06784e93e29b552e1b030, type: 2}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -8,6 +8,7 @@ public class SmartDistanceJointWithVerletRope : MonoBehaviour
 
     
     Vector2 _boxWorldToLocal;
+
     float _myWalkDistance;
     float _myInitialDistanceToFirstPoint;
     float _baseJointDistance;
@@ -61,14 +62,17 @@ public class SmartDistanceJointWithVerletRope : MonoBehaviour
 
             myDistanceJoint.distance = _baseJointDistance + distanceDelta;
 
-            myDistanceJoint.anchor = transform.InverseTransformPoint(myRope.lastCollisionPoint);
+            //myDistanceJoint.anchor = transform.InverseTransformPoint(myRope.lastCollisionPoint + (myRope.lastPointEscapeDirection * 0.5f));
+            myDistanceJoint.anchor = transform.InverseTransformPoint((2 * myRope.lastCollisionPoint - (Vector2)myDistanceJoint.connectedBody.transform.position)  +myRope.lastPointEscapeDirection);
 
             
-            
+
 
             _myWalkDistance = _myInitialDistanceToFirstPoint - Vector2.Distance(myRope.firstCollisionPoint, transform.position);
 
-            myDistanceJoint.distance += _myWalkDistance;
+            myDistanceJoint.distance += _myWalkDistance * 1.2f;
+
+            
 
 
             myDistanceJoint.maxDistanceOnly = true;

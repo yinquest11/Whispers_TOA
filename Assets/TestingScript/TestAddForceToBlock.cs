@@ -99,12 +99,11 @@ public class TestAddForceToBlock : MonoBehaviour
 
     private void TryToCatch()
     {
-        if (Input.GetKey(KeyCode.Mouse1))
-        { 
+        
             _distanceJoint.enabled = true;
             _rope.SetActive(true);
             block.gravityScale = 5f;
-        }
+        
 
     }
 
