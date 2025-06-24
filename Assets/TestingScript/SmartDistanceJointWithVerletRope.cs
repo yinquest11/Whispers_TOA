@@ -42,7 +42,6 @@ public class SmartDistanceJointWithVerletRope : MonoBehaviour
         else 
         {
             
-
             // multi rope
             
             _boxWorldToLocal = transform.InverseTransformPoint(myDistanceJoint.connectedBody.transform.position);
@@ -63,6 +62,7 @@ public class SmartDistanceJointWithVerletRope : MonoBehaviour
             myDistanceJoint.distance = _baseJointDistance + distanceDelta;
 
             myDistanceJoint.anchor = transform.InverseTransformPoint(myRope.lastCollisionPoint);
+
             
             
 
