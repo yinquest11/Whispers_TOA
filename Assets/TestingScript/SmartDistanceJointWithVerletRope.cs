@@ -38,7 +38,11 @@ public class SmartDistanceJointWithVerletRope : MonoBehaviour
         
 
         RaycastHit2D furthestHit = raycastHit2Ds.Where(hit => hit.collider.GetComponent<SmartAnchorObject_Tag>() != null).OrderByDescending(hit => hit.distance).FirstOrDefault();
-        _lastSmartAnchorObject_Tag = furthestHit.collider.GetComponent<SmartAnchorObject_Tag>();
+        if (furthestHit == true)
+        {
+            _lastSmartAnchorObject_Tag = furthestHit.collider.GetComponent<SmartAnchorObject_Tag>();
+        }
+        
 
         if (furthestHit.collider != null)
         {
@@ -51,7 +55,7 @@ public class SmartDistanceJointWithVerletRope : MonoBehaviour
             // normal
             myDistanceJoint.anchor = Vector2.zero;
             myDistanceJoint.distance = jointDistance;
-            myDistanceJoint.maxDistanceOnly = true;
+            //myDistanceJoint.maxDistanceOnly = true;
             myDistanceJoint.autoConfigureConnectedAnchor = false;
 
             _nextIsFirstEnterMulti = true;
