@@ -1,16 +1,107 @@
+using NUnit.Framework;
+using System;
 using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
 public class SmartAnchorObject_Tag : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [HideInInspector] public Vector2 Q1Point; // 45
+    [HideInInspector] public Vector2 Q2Point; // 135
+    [HideInInspector] public Vector2 Q3Point; // 225
+    [HideInInspector] public Vector2 Q4Point; // 315
+
+    private Collider2D _collider;
+    private Vector2 _colliderSize;
+
+    private Vector2 _toQ1Edge;
+    private Vector2 _toQ2Edge;
+    private Vector2 _toQ3Edge;
+    private Vector2 _toQ4Edge;
+
+    public float pointDistance = 0.4f;
+
     void Start()
     {
+        _collider = GetComponent<BoxCollider2D>();
+        _colliderSize = _collider.bounds.size;
+
+        _toQ1Edge = new Vector2(_colliderSize.x / 2, _colliderSize.y / 2);
+        _toQ2Edge = new Vector2(- _colliderSize.x / 2, _colliderSize.y / 2);
+        _toQ3Edge = -_toQ1Edge;
+        _toQ4Edge = -_toQ2Edge;
+
+        Q1Point = _toQ1Edge + new Vector2(1,1) * pointDistance;       
+        Q2Point = _toQ2Edge + new Vector2(-1,1) * pointDistance;
+        Q3Point = _toQ3Edge + new Vector2(-1,-1) * pointDistance;
+        Q4Point = _toQ4Edge + new Vector2(1,-1) * pointDistance;
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        UpdateQPoint();
+        DrawPoint();
+
+
+
+    }
+
+
+    private void UpdateQPoint()
+    {
+        _colliderSize = _collider.bounds.size;
+
+        _toQ1Edge = new Vector2(_colliderSize.x / 2, _colliderSize.y / 2);
+        _toQ2Edge = new Vector2(-_colliderSize.x / 2, _colliderSize.y / 2);
+        _toQ3Edge = -_toQ1Edge;
+        _toQ4Edge = -_toQ2Edge;
+
+        Q1Point = _toQ1Edge + new Vector2(1, 1) * pointDistance + (Vector2)transform.position;
+        Q2Point = _toQ2Edge + new Vector2(-1, 1) * pointDistance + (Vector2)transform.position;
+        Q3Point = _toQ3Edge + new Vector2(-1, -1) * pointDistance + (Vector2)transform.position;
+        Q4Point = _toQ4Edge + new Vector2(1, -1) * pointDistance + (Vector2)transform.position;
+    }
+
+    private void DrawPoint()
+    {
+        Debug.DrawRay(Vector2.zero, Q1Point, Color.blue);
+        Debug.DrawRay(Vector2.zero, Q2Point, Color.blue);
+        Debug.DrawRay(Vector2.zero, Q3Point, Color.blue);
+        Debug.DrawRay(Vector2.zero, Q4Point, Color.blue);
+    }
+
+    public Vector2 ReturnClosestQPoint(Vector2 firstPointPosition)
+    {
+        List<float> distanceList = new List<float>();
+
+        distanceList.Add(Vector2.Distance(firstPointPosition, Q1Point));
+        distanceList.Add(Vector2.Distance(firstPointPosition, Q2Point));
+        distanceList.Add(Vector2.Distance(firstPointPosition, Q3Point));
+        distanceList.Add(Vector2.Distance(firstPointPosition, Q4Point));
+
+        int minimumPunyaIndex = distanceList.IndexOf(distanceList.Min());
+
+        Vector2 closestPointPosition = Vector2.zero;
+
+        switch (minimumPunyaIndex)
+        {
+            case 0:
+                closestPointPosition = Q1Point;
+                break;
+            case 1:
+                closestPointPosition = Q2Point;
+                break;
+            case 2:
+                closestPointPosition = Q3Point;
+                break;
+             case 3:
+                closestPointPosition = Q4Point;
+                break;
+             
+        }
+
+        return closestPointPosition;
     }
 }

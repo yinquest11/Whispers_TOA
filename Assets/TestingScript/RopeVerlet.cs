@@ -105,7 +105,7 @@ public class RopeVerlet : MonoBehaviour
 
         int lastTrueIndex = booleanCollection.FindLastIndex(b => b);
 
-
+        // got collision
         if (firstTrueIndex != -1 && lastTrueIndex != -1)
         {
             firstCollisionPoint = _ropeSegments[firstTrueIndex].CurrentPosition;
@@ -119,6 +119,7 @@ public class RopeVerlet : MonoBehaviour
 
             changeToMultiRope = true;
         }
+        // does not got collision
         else
         {
             changeToMultiRope = false;
@@ -224,6 +225,8 @@ public class RopeVerlet : MonoBehaviour
 
             // 找到 以segment.CurrentPosition为坐标，以_collisionRadius 为半径的圆圈内的所有 命中的 Collider，如果有，收在 colliders 数组里
             Collider2D[] colliders = Physics2D.OverlapCircleAll(segment.CurrentPosition, _collisionRadius, _collisionMask);
+
+            
 
             // 我有撞到东西，我自己要被标记
             if (colliders.Length == 0)

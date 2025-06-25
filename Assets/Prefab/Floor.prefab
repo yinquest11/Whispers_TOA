@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1247183751676568277}
   - component: {fileID: 9152149774853228038}
-  - component: {fileID: 287376430260631927}
+  - component: {fileID: 5662571621891215833}
+  - component: {fileID: 823952097855612756}
   m_Layer: 9
   m_Name: Floor
   m_TagString: Ground
@@ -28,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 9.9, y: 8.6, z: 0}
-  m_LocalScale: {x: 24.169657, y: 1, z: 1}
+  m_LocalScale: {x: 3.8147557, y: 0.60833, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -88,7 +89,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &287376430260631927
+--- !u!114 &5662571621891215833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 124649030826445478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2921e0f8b3f54714fba5ad49dce46d75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Q1: 0
+  Q2: 0
+  Q3: 0
+  Q4: 0
+--- !u!61 &823952097855612756
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

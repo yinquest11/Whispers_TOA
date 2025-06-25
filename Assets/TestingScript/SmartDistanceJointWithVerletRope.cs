@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class SmartDistanceJointWithVerletRope : MonoBehaviour
@@ -6,7 +7,9 @@ public class SmartDistanceJointWithVerletRope : MonoBehaviour
 
     public DistanceJoint2D myDistanceJoint;
 
-    
+    private SmartAnchorObject_Tag _lastSmartAnchorObject_Tag;
+
+
     Vector2 _boxWorldToLocal;
 
     float _myWalkDistance;
@@ -23,10 +26,25 @@ public class SmartDistanceJointWithVerletRope : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
+   
 
+    
+    void Update()
+    {
+        RaycastHit2D[] raycastHit2Ds = Physics2D.RaycastAll(transform.position, myDistanceJoint.connectedBody.transform.position - transform.position.normalized);
+
+        if (raycastHit2Ds.Length == 0)
+            return;
+        
+
+        RaycastHit2D furthestHit = raycastHit2Ds.Where(hit => hit.collider.GetComponent<SmartAnchorObject_Tag>() != null).OrderByDescending(hit => hit.distance).FirstOrDefault();
+        _lastSmartAnchorObject_Tag = furthestHit.collider.GetComponent<SmartAnchorObject_Tag>();
+
+        if (furthestHit.collider != null)
+        {
+            Debug.Log(furthestHit.collider.name);
+
+        }
 
         if (myRope.changeToMultiRope == false)
         {
@@ -62,18 +80,12 @@ public class SmartDistanceJointWithVerletRope : MonoBehaviour
 
             myDistanceJoint.distance = _baseJointDistance + distanceDelta;
 
-            //myDistanceJoint.anchor = transform.InverseTransformPoint(myRope.lastCollisionPoint + (myRope.lastPointEscapeDirection * 0.5f));
-            myDistanceJoint.anchor = transform.InverseTransformPoint((2 * myRope.lastCollisionPoint - (Vector2)myDistanceJoint.connectedBody.transform.position)  +myRope.lastPointEscapeDirection);
-
             
-
+            myDistanceJoint.anchor = transform.InverseTransformPoint((2 * myRope.lastCollisionPoint - (Vector2)myDistanceJoint.connectedBody.transform.position)  +myRope.lastPointEscapeDirection);
 
             _myWalkDistance = _myInitialDistanceToFirstPoint - Vector2.Distance(myRope.firstCollisionPoint, transform.position);
 
             myDistanceJoint.distance += _myWalkDistance * 1.2f;
-
-            
-
 
             myDistanceJoint.maxDistanceOnly = true;
             myDistanceJoint.autoConfigureConnectedAnchor = false;
