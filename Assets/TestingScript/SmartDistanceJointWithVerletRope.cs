@@ -31,24 +31,33 @@ public class SmartDistanceJointWithVerletRope : MonoBehaviour
     
     void Update()
     {
-        RaycastHit2D[] raycastHit2Ds = Physics2D.RaycastAll(transform.position, myDistanceJoint.connectedBody.transform.position - transform.position.normalized);
+        // Get all hit collider
+        RaycastHit2D[] raycastHit2Ds = Physics2D.RaycastAll
+                                       (
+                                       transform.position, // origin
+                                       (myDistanceJoint.connectedBody.transform.position - transform.position).normalized, // direction
+                                       Vector2.Distance(transform.position, myDistanceJoint.connectedBody.transform.position) // Length
+                                       );
+
 
         if (raycastHit2Ds.Length == 0)
+        {
+            Debug.Log("raycastHit2Ds does not hit any thing");
             return;
+        }
+
+        // _lastSmartAnchorObject_Tag equal the longest distance collider to player that got SmartAnchorObject_Tag
+        _lastSmartAnchorObject_Tag = raycastHit2Ds.Where(hit => hit.collider.GetComponent<SmartAnchorObject_Tag>() != null).OrderByDescending(hit => hit.distance).FirstOrDefault() is RaycastHit2D furthestHit && furthestHit.collider != null ?
+                                     furthestHit.collider.GetComponent<SmartAnchorObject_Tag>():
+                                     null;
         
 
-        RaycastHit2D furthestHit = raycastHit2Ds.Where(hit => hit.collider.GetComponent<SmartAnchorObject_Tag>() != null).OrderByDescending(hit => hit.distance).FirstOrDefault();
-        if (furthestHit == true)
+        if (_lastSmartAnchorObject_Tag != null)
         {
-            _lastSmartAnchorObject_Tag = furthestHit.collider.GetComponent<SmartAnchorObject_Tag>();
+            //Debug.Log("HI");
+            Debug.Log(_lastSmartAnchorObject_Tag.name);
         }
-        
 
-        if (furthestHit.collider != null)
-        {
-            Debug.Log(furthestHit.collider.name);
-
-        }
 
         if (myRope.changeToMultiRope == false)
         {
