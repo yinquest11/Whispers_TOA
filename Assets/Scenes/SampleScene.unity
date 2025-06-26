@@ -119,6 +119,48 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &12769178 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 124649030826445478, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
+  m_PrefabInstance: {fileID: 1112488495}
+  m_PrefabAsset: {fileID: 0}
+--- !u!70 &12769183
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 12769178}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 1, y: 1}
+  m_Direction: 1
 --- !u!1001 &37239831
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1086,13 +1128,29 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 823952097855612756, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 823952097855612756, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1247183751676568277, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 8.348578
+      objectReference: {fileID: 0}
+    - target: {fileID: 1247183751676568277, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.80357677
+      objectReference: {fileID: 0}
     - target: {fileID: 1247183751676568277, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.99
       objectReference: {fileID: 0}
     - target: {fileID: 1247183751676568277, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.49
+      value: 1.36
       objectReference: {fileID: 0}
     - target: {fileID: 1247183751676568277, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1128,12 +1186,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5662571621891215833, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
       propertyPath: pointDistance
+      value: 0.43
+      objectReference: {fileID: 0}
+    - target: {fileID: 5662571621891215833, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
+      propertyPath: offsetQ1Point.y
       value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5662571621891215833, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
+      propertyPath: offsetQ2Point.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5662571621891215833, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
+      propertyPath: offsetQ3Point.x
+      value: -0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5662571621891215833, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
+      propertyPath: offsetQ4Point.x
+      value: 0.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 124649030826445478, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 12769183}
   m_SourcePrefab: {fileID: 100100000, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
 --- !u!1 &1193286741
 GameObject:
@@ -1561,7 +1638,7 @@ MonoBehaviour:
   canThrow: 1
   throwCooldown: 0
   isThrowing: 0
-  isThrowingDelay: 0.06
+  isThrowingDelay: 0.025
 --- !u!114 &1976120858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2137,7 +2214,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6041865030755596097, guid: ddb29115426fcd1458ae67e9ca3e4c82, type: 3}
       propertyPath: totalDivision
-      value: 15
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2285,6 +2362,10 @@ PrefabInstance:
     - target: {fileID: 1446946728857380794, guid: 0d014190276dfa6468809df05888ebe6, type: 3}
       propertyPath: m_Offset.y
       value: -0.00041392446
+      objectReference: {fileID: 0}
+    - target: {fileID: 3294459698461957275, guid: 0d014190276dfa6468809df05888ebe6, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3294459698461957275, guid: 0d014190276dfa6468809df05888ebe6, type: 3}
       propertyPath: m_LocalPosition.x
