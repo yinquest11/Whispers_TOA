@@ -1,4 +1,4 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using UnityEngine;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ public class SmartAnchorObject_Tag : MonoBehaviour
     [HideInInspector] public Vector2 Q3Point; // 225
     [HideInInspector] public Vector2 Q4Point; // 315
 
-    private Collider2D _collider;
+    private CapsuleCollider2D _collider;
     private Vector2 _colliderSize;
 
     private Vector2 _toQ1Edge;
@@ -19,12 +19,17 @@ public class SmartAnchorObject_Tag : MonoBehaviour
     private Vector2 _toQ3Edge;
     private Vector2 _toQ4Edge;
 
+    public Vector2 offsetQ1Point = Vector2.zero;
+    public Vector2 offsetQ2Point = Vector2.zero;
+    public Vector2 offsetQ3Point = Vector2.zero;
+    public Vector2 offsetQ4Point = Vector2.zero;
+
     public float pointDistance = 0.4f;
 
     void Start()
     {
-        _collider = GetComponent<BoxCollider2D>();
-        _colliderSize = _collider.bounds.size;
+        _collider = GetComponent<CapsuleCollider2D>();
+        
 
         _toQ1Edge = new Vector2(_colliderSize.x / 2, _colliderSize.y / 2);
         _toQ2Edge = new Vector2(- _colliderSize.x / 2, _colliderSize.y / 2);
@@ -35,12 +40,15 @@ public class SmartAnchorObject_Tag : MonoBehaviour
         Q2Point = _toQ2Edge + new Vector2(-1,1) * pointDistance;
         Q3Point = _toQ3Edge + new Vector2(-1,-1) * pointDistance;
         Q4Point = _toQ4Edge + new Vector2(1,-1) * pointDistance;
+
         
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         UpdateQPoint();
         DrawPoint();
 
@@ -48,10 +56,13 @@ public class SmartAnchorObject_Tag : MonoBehaviour
 
     }
 
+    
 
     private void UpdateQPoint()
     {
-        _colliderSize = _collider.bounds.size;
+
+
+        _colliderSize = _collider.size * transform.localScale;
 
         _toQ1Edge = new Vector2(_colliderSize.x / 2, _colliderSize.y / 2);
         _toQ2Edge = new Vector2(-_colliderSize.x / 2, _colliderSize.y / 2);
@@ -62,6 +73,13 @@ public class SmartAnchorObject_Tag : MonoBehaviour
         Q2Point = _toQ2Edge + new Vector2(-1, 1) * pointDistance + (Vector2)transform.position;
         Q3Point = _toQ3Edge + new Vector2(-1, -1) * pointDistance + (Vector2)transform.position;
         Q4Point = _toQ4Edge + new Vector2(1, -1) * pointDistance + (Vector2)transform.position;
+
+        Q1Point += offsetQ1Point;
+        Q2Point += offsetQ2Point;
+        Q3Point += offsetQ3Point;
+        Q4Point += offsetQ4Point;
+
+
     }
 
     private void DrawPoint()

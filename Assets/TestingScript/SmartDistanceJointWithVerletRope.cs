@@ -51,7 +51,7 @@ public class SmartDistanceJointWithVerletRope : MonoBehaviour
                                      furthestHit.collider.GetComponent<SmartAnchorObject_Tag>():
                                      null;
         
-
+        // if i got a collider thats got smart tag, its smart component
         if (_lastSmartAnchorObject_Tag != null)
         {
             //Debug.Log("HI");
@@ -71,7 +71,7 @@ public class SmartDistanceJointWithVerletRope : MonoBehaviour
             // other smart feature, eg: dynamic enemy punya rigidbody
 
         }
-        else 
+        else if(myRope.changeToMultiRope == true && _lastSmartAnchorObject_Tag != null)
         {
             
             // multi rope
@@ -94,13 +94,13 @@ public class SmartDistanceJointWithVerletRope : MonoBehaviour
             myDistanceJoint.distance = _baseJointDistance + distanceDelta;
 
             
-            myDistanceJoint.anchor = transform.InverseTransformPoint((2 * myRope.lastCollisionPoint - (Vector2)myDistanceJoint.connectedBody.transform.position)  +myRope.lastPointEscapeDirection);
+            myDistanceJoint.anchor = transform.InverseTransformPoint(_lastSmartAnchorObject_Tag.ReturnClosestQPoint(myRope.lastCollisionPoint));
 
             _myWalkDistance = _myInitialDistanceToFirstPoint - Vector2.Distance(myRope.firstCollisionPoint, transform.position);
 
             myDistanceJoint.distance += _myWalkDistance * 1.2f;
 
-            myDistanceJoint.maxDistanceOnly = true;
+            //myDistanceJoint.maxDistanceOnly = false;
             myDistanceJoint.autoConfigureConnectedAnchor = false;
 
 
