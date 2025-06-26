@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 
 public class SmartDistanceJointWithVerletRope : MonoBehaviour
@@ -32,53 +32,28 @@ public class SmartDistanceJointWithVerletRope : MonoBehaviour
     void Update()
     {
         // Get all hit collider
-        RaycastHit2D[] raycastHit2Ds = Physics2D.RaycastAll
-                                       (
-                                       transform.position, // origin
-                                       (myDistanceJoint.connectedBody.transform.position - transform.position).normalized, // direction
-                                       Vector2.Distance(transform.position, myDistanceJoint.connectedBody.transform.position) // Length
-                                       );
+        bool flowControl = GetSmartTagCollider();
 
-
-        if (raycastHit2Ds.Length == 0)
+        // if raycant does not hit any thing, return
+        if (!flowControl)
         {
-            Debug.Log("raycastHit2Ds does not hit any thing");
             return;
         }
 
-        // _lastSmartAnchorObject_Tag equal the longest distance collider to player that got SmartAnchorObject_Tag
-        _lastSmartAnchorObject_Tag = raycastHit2Ds.Where(hit => hit.collider.GetComponent<SmartAnchorObject_Tag>() != null).OrderByDescending(hit => hit.distance).FirstOrDefault() is RaycastHit2D furthestHit && furthestHit.collider != null ?
-                                     furthestHit.collider.GetComponent<SmartAnchorObject_Tag>():
-                                     null;
+        UpdateAnchorBaseOnRopeMode();
+    }
+    // 。。。。。。
+    private void UpdateAnchorBaseOnRopeMode()
+    {
         
-        // if i got a collider thats got smart tag, its smart component
-        if (_lastSmartAnchorObject_Tag != null)
+        if (myRope.changeToMultiRope == true && _lastSmartAnchorObject_Tag != null)
         {
-            //Debug.Log("HI");
-            Debug.Log(_lastSmartAnchorObject_Tag.name);
-        }
 
-
-        if (myRope.changeToMultiRope == false)
-        {
-            // normal
-            myDistanceJoint.anchor = Vector2.zero;
-            myDistanceJoint.distance = jointDistance;
-            //myDistanceJoint.maxDistanceOnly = true;
-            myDistanceJoint.autoConfigureConnectedAnchor = false;
-
-            _nextIsFirstEnterMulti = true;
-            // other smart feature, eg: dynamic enemy punya rigidbody
-
-        }
-        else if(myRope.changeToMultiRope == true && _lastSmartAnchorObject_Tag != null)
-        {
-            
             // multi rope
-            
+
             _boxWorldToLocal = transform.InverseTransformPoint(myDistanceJoint.connectedBody.transform.position);
 
-            if(_nextIsFirstEnterMulti == true)
+            if (_nextIsFirstEnterMulti == true)
             {
                 _myInitialDistanceToFirstPoint = Vector2.Distance(myRope.firstCollisionPoint, transform.position);
                 _baseJointDistance = Vector2.Distance(myRope.lastCollisionPoint, myDistanceJoint.connectedBody.transform.position);
@@ -93,7 +68,7 @@ public class SmartDistanceJointWithVerletRope : MonoBehaviour
 
             myDistanceJoint.distance = _baseJointDistance + distanceDelta;
 
-            
+
             myDistanceJoint.anchor = transform.InverseTransformPoint(_lastSmartAnchorObject_Tag.ReturnClosestQPoint(myRope.lastCollisionPoint));
 
             _myWalkDistance = _myInitialDistanceToFirstPoint - Vector2.Distance(myRope.firstCollisionPoint, transform.position);
@@ -105,7 +80,48 @@ public class SmartDistanceJointWithVerletRope : MonoBehaviour
 
 
         }
+        else
+        {
+            // normal
+            myDistanceJoint.anchor = Vector2.zero;
+            myDistanceJoint.distance = jointDistance;
+            //myDistanceJoint.maxDistanceOnly = true;
+            myDistanceJoint.autoConfigureConnectedAnchor = false;
+
+            _nextIsFirstEnterMulti = true;
+            // other smart feature, eg: dynamic enemy punya rigidbody
+        }
     }
 
-    
+    private bool GetSmartTagCollider()
+    {
+        RaycastHit2D[] raycastHit2Ds = Physics2D.RaycastAll
+                                               (
+                                               transform.position, // origin
+                                               (myDistanceJoint.connectedBody.transform.position - transform.position).normalized, // direction
+                                               Vector2.Distance(transform.position, myDistanceJoint.connectedBody.transform.position) // Length
+                                               );
+
+
+        if (raycastHit2Ds.Length == 0)
+        {
+            Debug.Log("raycastHit2Ds does not hit any thing");
+            return false;
+        }
+
+        // _lastSmartAnchorObject_Tag equal the longest distance collider to player that got SmartAnchorObject_Tag
+        _lastSmartAnchorObject_Tag = raycastHit2Ds.Where(hit => hit.collider.GetComponent<SmartAnchorObject_Tag>() != null).OrderByDescending(hit => hit.distance).FirstOrDefault() is RaycastHit2D furthestHit && furthestHit.collider != null ?
+                                     furthestHit.collider.GetComponent<SmartAnchorObject_Tag>() :
+                                     null;
+
+        // if i got a collider thats got smart tag, its smart component
+        if (_lastSmartAnchorObject_Tag != null)
+        {
+            //Debug.Log("HI");
+            Debug.Log(_lastSmartAnchorObject_Tag.name);
+        }
+
+        return true;
+    }
+
 }

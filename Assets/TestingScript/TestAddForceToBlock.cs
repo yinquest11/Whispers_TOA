@@ -23,11 +23,15 @@ public class TestAddForceToBlock : MonoBehaviour
     
     private Coroutine _coroutine;
     private Coroutine _coroutine2;
-    private bool CanStartDetecet = false;
+
     public float isThrowingDelay = 0.08f;
 
     Vector2 _playerDirectionToBlock;
     Vector2 _blockPrependicularDirectionToPlayer;
+
+    private BlockCollisionDetector blockCollisionDetector;
+
+    
 
 
 
@@ -37,7 +41,7 @@ public class TestAddForceToBlock : MonoBehaviour
         
         block.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
 
-
+        blockCollisionDetector = block.GetComponent<BlockCollisionDetector>();
     }
 
     public void Awake()
@@ -50,6 +54,7 @@ public class TestAddForceToBlock : MonoBehaviour
     void Update()
     {
 
+
         TryToCatch();
         ReleaseBlock();
 
@@ -59,14 +64,15 @@ public class TestAddForceToBlock : MonoBehaviour
         UpdateX();
         CalculatePrependicular();
 
-        CheckBlockIsCollisioned();
-
-        if (isThrowing)
-            WantAccelerateBlockWhenDownMa();
+        //CheckBlockIsCollisioned();
 
         SwingToThrow();
 
-         
+        WantAccelerateBlockWhenDownMa();
+
+        
+
+        
     }
 
     private void SwingToThrow()
@@ -78,19 +84,6 @@ public class TestAddForceToBlock : MonoBehaviour
             {
                 Throw(_viewportRuler.GetMouseMoveDirection);
             }
-            else if (canThrow == true) // 向左甩，且方块在右边
-            {
-                Throw(_viewportRuler.GetMouseMoveDirection);
-            }
-
-            //if (_viewportRuler.GetMouseMoveDirection == 1 && blockX <= myX && canThrow == true) // 向右甩，且方块在左边
-            //{
-            //    Throw();
-            //}
-            //else if (_viewportRuler.GetMouseMoveDirection == -1 && blockX >= myX && canThrow == true) // 向左甩，且方块在右边
-            //{
-            //    Throw();
-            //}
 
         }
     }
@@ -100,9 +93,9 @@ public class TestAddForceToBlock : MonoBehaviour
     private void TryToCatch()
     {
         
-            _distanceJoint.enabled = true;
-            _rope.SetActive(true);
-            block.gravityScale = 5f;
+        _distanceJoint.enabled = true;
+        _rope.SetActive(true);
+        block.gravityScale = 5f;
         
 
     }
@@ -112,7 +105,7 @@ public class TestAddForceToBlock : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Mouse1))
         {
             _distanceJoint.enabled = !_distanceJoint.enabled;
-            //block.gravityScale = 0f;
+            // block.gravityScale = 0f;
             _rope.SetActive(false);
 
         }
@@ -132,58 +125,31 @@ public class TestAddForceToBlock : MonoBehaviour
 
     private void WantAccelerateBlockWhenDownMa()
     {
-        if (block.linearVelocityY < 0 && isThrowing == true && _distanceJoint.enabled == true)
+        if(isThrowing == true)
         {
-
-            block.linearVelocity *= new Vector2(1.05f, 1.2f); 
+            if (block.linearVelocity.y < 0 && _distanceJoint.enabled == true)
+            {
+                
+                block.linearVelocity *= new Vector2(1.05f, 1.2f);
+            }
         }
+        
     }
 
-   
-   
 
-    private void CheckBlockIsCollisioned()
-    {
-        _coroutine2 = StartCoroutine(Delay());
-
-        if (CanStartDetecet == false)
-            return;
-
-
-        if (blockCollider.IsTouchingLayers() == true)
-        {
-            blockIsCollisioned = true;
-            isThrowing = false;
-            StopCoroutine(_coroutine2);
-
-        }
-        else
-        {
-            blockIsCollisioned = false;
-            
-
-        }
-    }
-
-   
-    // .....................................
 
     public void Throw(int i)
     {
-        canThrow = false;
 
+        canThrow = false;
         _coroutine = StartCoroutine(ThrowCooldown());
 
         isThrowing = true;
-
-        CanStartDetecet = false;
-
-
         
+
+
         forceDirection = i == 1 ? -_blockPrependicularDirectionToPlayer : _blockPrependicularDirectionToPlayer;
 
-        //isReverse = !isReverse;
-        //forceDirection = isReverse ? -_blockPrependicularDirectionToPlayer : _blockPrependicularDirectionToPlayer;
         block.linearVelocity = Vector2.zero;
         block.AddForce(forceDirection * forceAmount, ForceMode2D.Impulse);
 
@@ -199,12 +165,11 @@ public class TestAddForceToBlock : MonoBehaviour
 
     }
 
-    private IEnumerator Delay()
+  
+    private IEnumerator DelaySetIsThrowingFalse()
     {
-        yield return new WaitForSeconds(isThrowingDelay); 
-
-        CanStartDetecet = true;
-
+        yield return null;
+        isThrowing = false;
     }
 
 }
