@@ -16,6 +16,10 @@ TagManager:
   - ViewportRuler
   - Platform
   - Wall
+  - HeavyEnemy
+  - LightEnemy
+  - RopeController
+  - ThrowRope
   layers:
   - Default
   - TransparentFX

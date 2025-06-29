@@ -31,8 +31,13 @@ public class SmartDistanceJointWithVerletRope : MonoBehaviour
     
     void Update()
     {
+        if (myDistanceJoint.enabled == false)
+            return;
+
         // Get all hit collider
         bool flowControl = GetSmartTagCollider();
+
+        
 
         // if raycant does not hit any thing, return
         if (!flowControl)
@@ -95,6 +100,9 @@ public class SmartDistanceJointWithVerletRope : MonoBehaviour
 
     private bool GetSmartTagCollider()
     {
+        
+            
+
         RaycastHit2D[] raycastHit2Ds = Physics2D.RaycastAll
                                                (
                                                transform.position, // origin
@@ -118,7 +126,7 @@ public class SmartDistanceJointWithVerletRope : MonoBehaviour
         if (_lastSmartAnchorObject_Tag != null)
         {
             //Debug.Log("HI");
-            Debug.Log(_lastSmartAnchorObject_Tag.name);
+            
         }
 
         return true;

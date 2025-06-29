@@ -39,9 +39,9 @@ public class TestAddForceToBlock : MonoBehaviour
     {
         _distanceJoint = GetComponentInChildren<DistanceJoint2D>();
         
-        block.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+        block.collisionDetectionMode = CollisionDetectionMode2D.Continuous; //
 
-        blockCollisionDetector = block.GetComponent<BlockCollisionDetector>();
+        blockCollisionDetector = block.GetComponent<BlockCollisionDetector>(); //
     }
 
     public void Awake()
@@ -57,6 +57,9 @@ public class TestAddForceToBlock : MonoBehaviour
 
         TryToCatch();
         ReleaseBlock();
+
+        if (_distanceJoint == null) // temperaily
+            return;
 
         if (_distanceJoint.enabled  == false)
             return;
@@ -92,7 +95,9 @@ public class TestAddForceToBlock : MonoBehaviour
 
     private void TryToCatch()
     {
-        
+        if (_distanceJoint == null) // temperaily
+            return;
+
         _distanceJoint.enabled = true;
         _rope.SetActive(true);
         block.gravityScale = 5f;
@@ -104,6 +109,9 @@ public class TestAddForceToBlock : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.Mouse1))
         {
+            if (_distanceJoint == null) // temporaily
+                return;
+
             _distanceJoint.enabled = !_distanceJoint.enabled;
             // block.gravityScale = 0f;
             _rope.SetActive(false);

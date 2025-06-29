@@ -3,7 +3,7 @@ using UnityEngine;
 public class BlockCollisionDetector : MonoBehaviour
 {
 
-    private TestAddForceToBlock _playerAddForceScript;
+    private RopeController ropeController;
 
     public bool GetCollisionState
     {
@@ -17,13 +17,13 @@ public class BlockCollisionDetector : MonoBehaviour
 
     void Start()
     {
-        _playerAddForceScript = GameObject.FindWithTag("Player").GetComponent<TestAddForceToBlock>();
+        ropeController = GameObject.FindWithTag("RopeController").GetComponent<RopeController>();
         
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         _isCollision = true;
-        _playerAddForceScript.isThrowing = false;
+        ropeController.isThrowing = false;
     }
 
     private void OnCollisionExit2D(Collision2D collision)

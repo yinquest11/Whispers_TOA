@@ -63,13 +63,13 @@ public class Tutorial_GrapplingGun : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        if (Input.GetKeyDown(KeyCode.Mouse1)) 
         {          
             SetGrapplePoint();
         }
         else if (Input.GetKey(KeyCode.Mouse1))
         {
-            if (grappleRope.enabled)
+            if (grappleRope.enabled) // holding right click
             {
                 RotateGun(grapplePoint, false);
             }
@@ -91,7 +91,7 @@ public class Tutorial_GrapplingGun : MonoBehaviour
                 }
             }
         }
-        else if (Input.GetKeyUp(KeyCode.Mouse1))
+        else if (Input.GetKeyUp(KeyCode.Mouse1)) // release right click
         {
             grappleRope.enabled = false;
             m_springJoint2D.enabled = false;
@@ -99,18 +99,19 @@ public class Tutorial_GrapplingGun : MonoBehaviour
             
 
         }
-        else
+        else // if no shoot, gufollow mouse position
         {
             Vector2 mousePos = m_camera.ScreenToWorldPoint(Input.mousePosition);
             RotateGun(mousePos, true);
         }
     }
-
+    // 通过 rotate gun pivot 来 rotate 枪
     void RotateGun(Vector3 lookPoint, bool allowRotationOverTime)
     {
         Vector3 distanceVector = lookPoint - gunPivot.position;
 
         float angle = Mathf.Atan2(distanceVector.y, distanceVector.x) * Mathf.Rad2Deg;
+
         if (rotateOverTime && allowRotationOverTime)
         {
             gunPivot.rotation = Quaternion.Lerp(gunPivot.rotation, Quaternion.AngleAxis(angle, Vector3.forward), Time.deltaTime * rotationSpeed);
