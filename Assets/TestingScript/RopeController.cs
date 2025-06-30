@@ -73,7 +73,17 @@ public class RopeController : MonoBehaviour
     public float forceAmount = 111;
     [HideInInspector] public Vector2 forceDirection;
 
+    // Use movement helper to pull enemy to me  
+    public AnimationCurve acceleration;
+    public MovementHelper movementHelper;
+    public Vector3 target;
+    public float moveSpeed;
+    public Vector2 pullDestination; // Setting in inspector
+    public SpriteRenderer spriteRenderer;
+
     
+
+
 
     void Start()
     {
@@ -100,7 +110,7 @@ public class RopeController : MonoBehaviour
     
     void Update()
     {
-
+        Debug.DrawRay(Vector2.zero, PullOffSet(), Color.cyan);
         
 
         if (Input.GetKeyDown(KeyCode.Mouse1) == true)
@@ -122,6 +132,7 @@ public class RopeController : MonoBehaviour
                 break;
 
             case RopeMode.PullEnemyToMe:
+                PullEnemy();
                 break;
 
             case RopeMode.ThrowEnemy:
@@ -136,6 +147,25 @@ public class RopeController : MonoBehaviour
 
     }
 
+
+    void PullEnemy()
+    {
+        movementHelper.MoveToBySpeed(_hitTarget.collider.transform, PullOffSet(), moveSpeed, acceleration);
+
+        // special case, have to close your self
+        grappleRope.enabled = false;
+        ropeMode = RopeMode.Nothing;
+    }
+
+    Vector2 PullOffSet()
+    {
+        pullDestination.x = spriteRenderer.flipX ? -Mathf.Abs(pullDestination.x) : Mathf.Abs(pullDestination.x);
+
+        Vector2 _pullDestination = (Vector2)transform.position + pullDestination;
+
+        return _pullDestination;
+    }
+    
     private void RopeSwing()
     {
         if (swingType == SwingType.Physic)
@@ -265,6 +295,8 @@ public class RopeController : MonoBehaviour
 
     private void InitializePlayer()
     {
+        
+
         if (m_playerController.enabled == false)
         {
             m_playerController.enabled = true;
@@ -274,7 +306,7 @@ public class RopeController : MonoBehaviour
         m_distanceJoint2D.enabled = false;
         m_rigidbody.gravityScale = 5; // the original Gravity Scale of player
 
-
+        
 
         if (targetRigidbody != null)
         {
@@ -338,6 +370,8 @@ public class RopeController : MonoBehaviour
             // pull back
             
             ropeMode = RopeMode.PullEnemyToMe;
+
+            
         }
         else if (holdBefore == false && gotHold == false && grappleRope.enabled == true)
         {
@@ -439,7 +473,9 @@ public class RopeController : MonoBehaviour
 
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, maxDistnace);
+
         
+
     }
 
     
