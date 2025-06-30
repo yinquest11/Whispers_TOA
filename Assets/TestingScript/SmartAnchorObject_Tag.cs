@@ -86,10 +86,10 @@ public class SmartAnchorObject_Tag : MonoBehaviour
 
     private void DrawPoint()
     {
-        Debug.DrawRay(Vector2.zero, Q1Point, Color.blue);
-        Debug.DrawRay(Vector2.zero, Q2Point, Color.blue);
-        Debug.DrawRay(Vector2.zero, Q3Point, Color.blue);
-        Debug.DrawRay(Vector2.zero, Q4Point, Color.blue);
+        Debug.DrawRay(transform.position, Q1Point - (Vector2)transform.position, Color.red);
+        Debug.DrawRay(transform.position, Q2Point- (Vector2)transform.position, Color.red);
+        Debug.DrawRay(transform.position, Q3Point-(Vector2)transform.position, Color.red);
+        Debug.DrawRay(transform.position, Q4Point- (Vector2)transform.position, Color.red);
     }
 
     public Vector2 ReturnClosestQPoint(Vector2 firstPointPosition)

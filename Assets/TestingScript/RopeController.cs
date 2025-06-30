@@ -111,7 +111,7 @@ public class RopeController : MonoBehaviour
     void Update()
     {
         Debug.DrawRay(Vector2.zero, PullOffSet(), Color.cyan);
-        
+
 
         if (Input.GetKeyDown(KeyCode.Mouse1) == true)
         {
