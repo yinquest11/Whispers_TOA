@@ -44,7 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e96543f80003e3b4f8f3a418468dbdea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalDivision: 20
+  totalDivision: 7
   currentZone: 0
   previousZone: 0
   mouseViewportPos: {x: 0, y: 0}
+  needDraw: 0
