@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 6087485250898460089}
   m_Layer: 6
   m_Name: FlyEnemy
-  m_TagString: Enemy
+  m_TagString: LightEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
