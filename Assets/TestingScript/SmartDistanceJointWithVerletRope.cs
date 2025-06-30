@@ -34,6 +34,15 @@ public class SmartDistanceJointWithVerletRope : MonoBehaviour
         if (myDistanceJoint.enabled == false)
             return;
 
+        if (myDistanceJoint.connectedBody == null)
+        {
+            myDistanceJoint.enabled = false;
+            myRope.gameObject.SetActive(false);
+            return;
+        }
+            
+        
+
         // Get all hit collider
         bool flowControl = GetSmartTagCollider();
 

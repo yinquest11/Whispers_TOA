@@ -176,6 +176,7 @@ public class RopeController : MonoBehaviour
         targetRigidbody.freezeRotation = true;
         targetRigidbody.gravityScale = 5f;
         targetRigidbody.mass = 2f;
+        targetRigidbody.interpolation = RigidbodyInterpolation2D.Interpolate;
 
         // add a tempChild to the target
         if (targetRigidbody.transform.Find("tempChild") == null)

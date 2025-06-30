@@ -74,6 +74,9 @@ public class RopeVerlet : MonoBehaviour
 
     private void Update()
     {
+        if (playerTransform == null || boxTransform == null)
+            return;
+
         ropeStartPoint = playerTransform.position; 
         ropeEndPoint = boxTransform.position;
         
