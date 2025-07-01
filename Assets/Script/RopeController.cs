@@ -3,41 +3,41 @@ using System.Collections;
 
 public class RopeController : MonoBehaviour
 {
-    // 名字最后改
-
+    
+    // camera
     [HideInInspector] public Camera m_camera;
+
+    // rope dependency
     [HideInInspector] public Tutorial_GrapplingRope grappleRope;
-
-    [HideInInspector] public Vector2 grapplePoint;
-    [HideInInspector] public Vector2 grappleDistanceVector;
-
     public LineRenderer lineRenderer;
 
     [Header("Layers Settings:")]
     public LayerMask interstedLayer;
 
-    [Header("Distance:")]
+    [Header("Rope Max Distance:")]
     public float maxDistnace = 20;
 
     [Header("Holding Status")]
-    public bool gotHold = false;
+    public bool gotHold = false; // observe the hold status at inspector
 
     [Header("Physics Ref:")]
-    public SpringJoint2D m_springJoint2D;
-    public Rigidbody2D m_rigidbody;
-
-    public DistanceJoint2D m_distanceJoint2D;
-    public Rigidbody2D throwPivotRigidbody;
-
     public PlayerController m_playerController;
+    public Rigidbody2D      m_rigidbody;
+
+    public Rigidbody2D      throwPivotRigidbody;
+
+    public SpringJoint2D    m_springJoint2D;
+    public DistanceJoint2D  m_distanceJoint2D;
     
 
     // Hit information
 
-    RaycastHit2D _hitTarget;
-    int targetLayer;
-    string targetLayerName;
-    bool holdBefore = false;
+     public  Vector2       grapplePoint;
+     public  Vector2       grappleDistanceVector;
+     private RaycastHit2D  _hitTarget;
+     private int           _targetLayer;
+     private string        _targetLayerName;
+     private bool          _holdBefore = false;
 
     public enum RopeMode
     {
@@ -58,60 +58,65 @@ public class RopeController : MonoBehaviour
     public SwingType swingType;
 
     // Move TestAddForce punya variable
-    Rigidbody2D targetRigidbody;
     private ViewportRuler _viewportRuler;
-    public GameObject throwRope;
-    private float targetX;
-    private float myX;
-    Vector2 _playerDirectionToBlock;
-    Vector2 _blockPrependicularDirectionToPlayer;
-    [HideInInspector] public bool canThrow = true; // cooldown
+    public  Rigidbody2D targetRigidbody;
+    public  GameObject throwRope;
+    public  bool canThrow = true; // cooldown
+    public  bool isThrowing = false;
+    private float _targetX;
+    private float _myX;
+    public  float throwCooldown = 0.03f;
+    public  float forceAmount = 111;
+    private Vector2 _playerDirectionToBlock;
+    private Vector2 _blockPrependicularDirectionToPlayer;
+    public  Vector2 forceDirection;
     private Coroutine _coroutine;
     private Coroutine _coroutine2;
-    public float throwCooldown = 0.03f;
-    public bool isThrowing = false;
-    public float forceAmount = 111;
-    [HideInInspector] public Vector2 forceDirection;
 
     // Use movement helper to pull enemy to me  
     public AnimationCurve acceleration;
     public MovementHelper movementHelper;
-    public Vector3 target;
-    public float moveSpeed;
-    public Vector2 pullDestination; // Setting in inspector
     public SpriteRenderer spriteRenderer;
+    public Vector3 target;
+    public Vector2 pullDestination; // Setting in inspector
+    public float moveSpeed;
 
-    
 
+    private void Awake()
+    {
+        // get my ruler for Throw()
+        _viewportRuler = GameObject.FindWithTag("ViewportRuler").GetComponent<ViewportRuler>(); 
+    }
 
 
     void Start()
     {
-        m_camera = Camera.main;
+        // set my grapple rope
         grappleRope = GetComponent<Tutorial_GrapplingRope>();
         grappleRope.enabled = false;
         ropeMode = RopeMode.Nothing;
 
-        m_springJoint2D = transform.parent.GetComponent<SpringJoint2D>();
-        m_springJoint2D.enabled = false;
+        // get main camera
+        m_camera = Camera.main;
 
-        m_rigidbody = transform.parent.GetComponent<Rigidbody2D>();
+        // get dependecy form player self
         m_playerController = transform.parent.GetComponent<PlayerController>();
-
-        throwPivotRigidbody = GetComponentInChildren<Rigidbody2D>();
-
+        m_springJoint2D = transform.parent.GetComponent<SpringJoint2D>();
         m_distanceJoint2D = GetComponentInChildren<DistanceJoint2D>();
+        throwPivotRigidbody = GetComponentInChildren<Rigidbody2D>();
+        m_rigidbody = transform.parent.GetComponent<Rigidbody2D>();
+        lineRenderer = GetComponentInChildren<LineRenderer>();
 
+        //  disable all the joint first
+        m_springJoint2D.enabled = false;
         m_distanceJoint2D.enabled = false;
 
-        lineRenderer = GetComponentInChildren<LineRenderer>();
     }
 
     
     void Update()
     {
-        Debug.DrawRay(Vector2.zero, PullOffSet(), Color.cyan);
-
+        DebugDraw();
 
         if (Input.GetKeyDown(KeyCode.Mouse1) == true)
         {
@@ -125,6 +130,18 @@ public class RopeController : MonoBehaviour
 
         TryDetermineRopeMode();
 
+        SwitchRopeMode();
+
+    }
+
+    private void DebugDraw()
+    {
+        // draw my pull to direction
+        Debug.DrawRay(transform.position, PullOffSet() - (Vector2)transform.position, Color.cyan);
+    }
+
+    private void SwitchRopeMode()
+    {
         switch (ropeMode)
         {
             case RopeMode.Swing:
@@ -136,7 +153,6 @@ public class RopeController : MonoBehaviour
                 break;
 
             case RopeMode.ThrowEnemy:
-
                 RopeThrow();
                 break;
 
@@ -144,17 +160,14 @@ public class RopeController : MonoBehaviour
                 InitializePlayer();
                 break;
         }
-
     }
-
 
     void PullEnemy()
     {
-        movementHelper.MoveToBySpeed(_hitTarget.collider.transform, PullOffSet(), moveSpeed, acceleration);
+        movementHelper.MoveToBySpeed(_hitTarget.collider.transform, PullOffSet(), moveSpeed, acceleration); // move coroutine
 
-        // special case, have to close your self
-        grappleRope.enabled = false;
-        ropeMode = RopeMode.Nothing;
+        // special case, close the rope and set to Nothing yourself
+        CloseGrappleRopeAndInitialize();
     }
 
     Vector2 PullOffSet()
@@ -170,10 +183,11 @@ public class RopeController : MonoBehaviour
     {
         if (swingType == SwingType.Physic)
         {
-            m_springJoint2D.connectedAnchor = grapplePoint;
-            m_springJoint2D.distance = 0.5f;
-            m_playerController.enabled = false;
-            m_springJoint2D.enabled = true;
+            m_springJoint2D.connectedAnchor = grapplePoint; // connect to point
+            m_springJoint2D.distance = 0.5f; // set spring joint distance
+            m_springJoint2D.enabled = true; // enable spring joint
+
+            m_playerController.enabled = false; // disable player movement
         }
         else if (swingType == SwingType.Transform)
         {
@@ -186,7 +200,7 @@ public class RopeController : MonoBehaviour
         
         lineRenderer.enabled = false; // close own line renderer
 
-        // get hit target punya rigid body
+        // get the hit target punya rigid body
         if (_hitTarget.collider.GetComponent<Rigidbody2D>() != null) 
         {
             targetRigidbody = _hitTarget.collider.GetComponent<Rigidbody2D>();
@@ -196,266 +210,233 @@ public class RopeController : MonoBehaviour
             Debug.Log("Enemy no have rigid body ?");
         }
 
-        // setting distance joint
-        m_distanceJoint2D.enabled = true;
+        // set distance joint
         m_distanceJoint2D.autoConfigureConnectedAnchor = false;
         m_distanceJoint2D.connectedBody = targetRigidbody;
+        m_distanceJoint2D.enabled = true;
 
-        // setting target rigid body
-        targetRigidbody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
-        targetRigidbody.freezeRotation = true;
-        targetRigidbody.gravityScale = 5f;
-        targetRigidbody.mass = 2f;
-        targetRigidbody.interpolation = RigidbodyInterpolation2D.Interpolate;
 
-        // add a tempChild to the target
-        if (targetRigidbody.transform.Find("tempChild") == null)
-        {
-            GameObject child = new GameObject("tempChild");
-            child.transform.SetParent(targetRigidbody.gameObject.transform, false);
+        // set target punya rigid body
+        targetRigidbody.collisionDetectionMode = CollisionDetectionMode2D.Continuous; // continous collision detec
+        targetRigidbody.interpolation = RigidbodyInterpolation2D.Interpolate; // interpolate mode
+        targetRigidbody.freezeRotation = true; // freeze rotation
+        targetRigidbody.gravityScale = 5f; // set to suitable gravity for throw
+        targetRigidbody.mass = 2f; // set to suitable mass  for throw
 
-            Rigidbody2D rb = child.AddComponent<Rigidbody2D>();
-            rb.freezeRotation = true;
-            rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
-            rb.bodyType = RigidbodyType2D.Kinematic;
 
-        }
-
-        //  add a box collider detedtor to him
+        //  add a box collider detector to him
         if (targetRigidbody.gameObject.GetComponent<BlockCollisionDetector>() == false)
         {
             targetRigidbody.gameObject.AddComponent<BlockCollisionDetector>();
         }
 
-        // enable my verlet rope
+        // show my verlet rope
         throwRope.SetActive(true);
 
-        if (targetRigidbody.transform.Find("tempChild") != null)
-        {
-            throwRope.GetComponent<RopeVerlet>().boxTransform = targetRigidbody.transform.Find("tempChild");
-        }
-        else
-        {
-            Debug.Log("Enemy temp child transform cant find");
-        }
+        
+        // acess my verlet rope Game Object and access the boxTransform (Rope end position), set to target punya transform
+        throwRope.GetComponent<RopeVerlet>().boxTransform = targetRigidbody.gameObject.transform;
+        
+        
+
+        // check the x coordinates
+        _targetX = _hitTarget.collider.transform.position.x;
+        _myX = transform.position.x;
 
 
-        // update the x coordinates
-        targetX = _hitTarget.collider.transform.position.x;
-        myX = transform.position.x;
-
-        // calculate perpendicular
+        // calculate perpendicular direction
         _playerDirectionToBlock = (_hitTarget.collider.transform.position - gameObject.transform.position).normalized;
         _blockPrependicularDirectionToPlayer = Vector2.Perpendicular(_playerDirectionToBlock);
 
+
         // check if need to throw, then throw
-        if (_viewportRuler.HasDirectionReversed == true)
+        if (_viewportRuler.HasDirectionReversed == true && canThrow == true)
         {
-
-            if (canThrow == true) 
-            {
-                Throw(_viewportRuler.GetMouseMoveDirection);
-            }
-
+            Throw(_viewportRuler.GetMouseMoveDirection);        
         }
 
         // check if need to acceleration the box
-        if (isThrowing == true)
+        if (isThrowing == true && targetRigidbody.linearVelocity.y < 0 && m_distanceJoint2D.enabled == true)
         {
-            if (targetRigidbody.linearVelocity.y < 0 && m_distanceJoint2D.enabled == true)
-            {
-
-                targetRigidbody.linearVelocity *= new Vector2(1.05f, 1.2f);
-            }
+            targetRigidbody.linearVelocity *= new Vector2(1.05f, 1.2f);     
         }
+
     }
 
 
     public void Throw(int i)
     {
         canThrow = false;
-        _coroutine = StartCoroutine(ThrowCooldown());
         isThrowing = true;
-        forceDirection = i == 1 ? -_blockPrependicularDirectionToPlayer : _blockPrependicularDirectionToPlayer;
-        targetRigidbody.linearVelocity = Vector2.zero;
-        targetRigidbody.AddForce(forceDirection * forceAmount, ForceMode2D.Impulse);
+
+        forceDirection = i == 1 ? -_blockPrependicularDirectionToPlayer : _blockPrependicularDirectionToPlayer; // check force direction
+
+        targetRigidbody.linearVelocity = Vector2.zero;// refresh target speed first
+
+        targetRigidbody.AddForce(forceDirection * forceAmount, ForceMode2D.Impulse); // then i add force with no resistance
+
+        _coroutine = StartCoroutine(ThrowCooldown()); // strat colddown
     }
 
     private IEnumerator ThrowCooldown()
     {
         yield return new WaitForSeconds(throwCooldown);
+
         canThrow = true;
     }
 
-    private void Awake()
-    {
-        _viewportRuler = GameObject.FindWithTag("ViewportRuler").GetComponent<ViewportRuler>();
-        
-    }
+    
 
     private void InitializePlayer()
     {
         
-
-        if (m_playerController.enabled == false)
+        if (m_playerController.enabled == false) 
         {
-            m_playerController.enabled = true;
+            m_playerController.enabled = true; // enable my player movement
         }
 
-        m_springJoint2D.enabled = false;
-        m_distanceJoint2D.enabled = false;
-        m_rigidbody.gravityScale = 5; // the original Gravity Scale of player
-
-        
-
-        if (targetRigidbody != null)
+        if (m_rigidbody != null)
         {
-            
-            targetRigidbody.gravityScale = 2f;
+            m_rigidbody.gravityScale = 5; // set back the original gravity for player
+        }
+
+        if (m_springJoint2D.enabled != false)
+        {
+            m_springJoint2D.enabled = false; // disable spring joint
+        }
+        
+        if(m_distanceJoint2D.enabled != false)
+        {
+            m_distanceJoint2D.enabled = false; // disable distance joint
+        }   
+           
+        if (targetRigidbody != null)
+        {        
+            targetRigidbody.gravityScale = 2f; // set back target gravity
         }
 
         if (throwRope != null)
         {
-            throwRope.SetActive(false);
+            throwRope.SetActive(false); // disable my verlet rope for throw
         }
         
-        if(_hitTarget == true)
-        {
-            if (_hitTarget.collider.gameObject.GetComponent<BlockCollisionDetector>() == true)
-            {
-                Destroy(_hitTarget.collider.gameObject.GetComponent<BlockCollisionDetector>());
-            }
+        if(_hitTarget == true && _hitTarget.collider.gameObject.GetComponent<BlockCollisionDetector>() == true)
+        {    
+            Destroy(_hitTarget.collider.gameObject.GetComponent<BlockCollisionDetector>()); // destroy the block collision detector that i add to him
         }
 
     }
 
     private void TryDetermineRopeMode()
     {
-        
-            
 
-        if (grappleRope.daZhong == true && gotHold == true && grappleRope.enabled == true)
+        if (grappleRope.daZhong == true && gotHold == true && grappleRope.enabled == true) // Hold
         {
-            holdBefore = true;
+            _holdBefore = true;
 
             // Hold a grabable
-            if (targetLayerName == "Grabable")
-            {
-                
+            if (_targetLayerName == "Grabable")
+            {          
                 ropeMode = RopeMode.Swing;
             }
-            // Hold a enemy
-            else if (targetLayerName == "Enemy")
+            
+            else if (_targetLayerName == "Enemy")
             {
+                // Hold a light enemy
                 if (_hitTarget.collider.CompareTag("LightEnemy"))
-                {
-                    
+                {               
                     ropeMode = RopeMode.ThrowEnemy;
                 }
+
+                // Hold a heavy enemy
                 else if (_hitTarget.collider.CompareTag("HeavyEnemy"))
-                {
-                    
+                {             
                     ropeMode = RopeMode.Swing;
                 }
 
             }
 
-
-
         }
 
-        // Press
-        else if (holdBefore == false && gotHold == false && targetLayerName == "Enemy" && _hitTarget.collider.CompareTag("LightEnemy") && grappleRope.enabled == true)
+        
+
+        
+        else if (_holdBefore == false && gotHold == false && _hitTarget.collider != null && grappleRope.enabled == true) // Press
         {
-            // pull back
-            
-            ropeMode = RopeMode.PullEnemyToMe;
-
-            
-        }
-        else if (holdBefore == false && gotHold == false && grappleRope.enabled == true)
-        {
-
-
-            if (_hitTarget.collider != null)
+            // Press a grabable
+            if (_targetLayerName == "Grabable")
             {
-
-
-                if (targetLayerName == "Grabable")
+                CloseGrappleRopeAndInitialize();
+            }
+            else if(_targetLayerName == "Enemy")
+            {
+                // Press a light enemy
+                if (_hitTarget.collider.CompareTag("LightEnemy"))
                 {
-                    
-                    grappleRope.enabled = false;
-
-                    ropeMode = RopeMode.Nothing;
+                    ropeMode = RopeMode.PullEnemyToMe;
                 }
+
+                // Press a heavy enemy
                 else if (_hitTarget.collider.CompareTag("HeavyEnemy"))
                 {
-                    
-                    grappleRope.enabled = false;
-                    ropeMode = RopeMode.Nothing;
+                    CloseGrappleRopeAndInitialize();
                 }
+                
             }
+            
+            
 
         }
-        else if (holdBefore == true && gotHold == false && grappleRope.enabled == true)
-        {
-            holdBefore = false;
-            grappleRope.enabled = false;
-
-            ropeMode = RopeMode.Nothing;
+        
+        else if (_holdBefore == true && gotHold == false && grappleRope.enabled == true) // if I release my hold
+        { 
+            _holdBefore = false;
+            CloseGrappleRopeAndInitialize();
         }
+    }
+
+    void CloseGrappleRopeAndInitialize()
+    {
+        grappleRope.enabled = false;
+        ropeMode = RopeMode.Nothing;
     }
 
     private void UpdateGotHold()
     {
-        if (gotHold == true)
+        if (gotHold == true && Input.GetKeyUp(KeyCode.Mouse1) == true)
         {
-            if (Input.GetKeyUp(KeyCode.Mouse1) == true)
-            {
-                gotHold = false;
-                
-            }
-            
+            gotHold = false;
         }
     }
 
+    
     void SetGrapplePoint()
     {
-        Vector2 fireDirection = (m_camera.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized; // 
+        Vector2 fireDirection = (m_camera.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized; // set fire direction
 
-        if (Physics2D.Raycast(transform.position, fireDirection) == true)
+        if (Physics2D.Raycast(transform.position, fireDirection, maxDistnace, interstedLayer) == true) // raycast to the direction, if got hit the thing I want
         {
-            _hitTarget = Physics2D.Raycast(transform.position, fireDirection, maxDistnace, interstedLayer);
+            _hitTarget = Physics2D.Raycast(transform.position, fireDirection, maxDistnace, interstedLayer); // record the thing
 
+            gotHold = true;
 
+            AnalysisTarget(_hitTarget.collider.gameObject); // the target layer will only include in interstedLayer, if not even pass the Raycast test
 
-            if (_hitTarget.collider != null)  // if got hit any thing base on max distance and intesdtedLayer when Raycast
-            {
+            grapplePoint = _hitTarget.point; // record the hit point
 
-                
+            grappleDistanceVector = grapplePoint - (Vector2)transform.position; // record the length from hit point to this
 
-                gotHold = true;
-
-                AnalysisTarget(_hitTarget.collider.gameObject); // the target layer will only include in interstedLayer, if not even pass the Raycast test
-
-                grapplePoint = _hitTarget.point; // record the hit point
-
-                grappleDistanceVector = grapplePoint - (Vector2)transform.position; // record the length from hit point to this
-
-                grappleRope.enabled = true; // enable the draw rope, when this script is enable, will enable the line renderer 
-
-            }
+            grappleRope.enabled = true; // enable the draw rope, when this script is enable, will enable the line renderer 
+   
         }
     }
 
     void AnalysisTarget(GameObject target)
     {
-        targetLayer = target.layer;
-        targetLayerName = LayerMask.LayerToName(targetLayer);
+        _targetLayer = target.layer;
+        _targetLayerName = LayerMask.LayerToName(_targetLayer);
 
-        
-
-        switch (targetLayerName)
+        switch (_targetLayerName)
         {
             case "Enemy":
                 //Debug.Log($"Target is on Enemy layer")
@@ -470,12 +451,10 @@ public class RopeController : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        // draw rope max distance
 
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, maxDistnace);
-
-        
-
     }
 
     
