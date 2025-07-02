@@ -20,6 +20,7 @@ TagManager:
   - LightEnemy
   - RopeController
   - ThrowRope
+  - AudioManager
   layers:
   - Default
   - TransparentFX

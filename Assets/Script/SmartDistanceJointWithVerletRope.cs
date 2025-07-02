@@ -9,6 +9,8 @@ public class SmartDistanceJointWithVerletRope : MonoBehaviour
 
     private SmartAnchorObject_Tag _lastSmartAnchorObject_Tag;
 
+    public PhysicsMaterial2D smothPhysicMaterial;
+
 
     Vector2 _boxWorldToLocal;
 
@@ -56,7 +58,8 @@ public class SmartDistanceJointWithVerletRope : MonoBehaviour
 
         UpdateAnchorBaseOnRopeMode();
     }
-    // 。。。。。。
+    
+
     private void UpdateAnchorBaseOnRopeMode()
     {
         
@@ -112,12 +115,13 @@ public class SmartDistanceJointWithVerletRope : MonoBehaviour
         
             
 
-        RaycastHit2D[] raycastHit2Ds = Physics2D.RaycastAll
-                                               (
-                                               transform.position, // origin
-                                               (myDistanceJoint.connectedBody.transform.position - transform.position).normalized, // direction
-                                               Vector2.Distance(transform.position, myDistanceJoint.connectedBody.transform.position) // Length
-                                               );
+        RaycastHit2D[] raycastHit2Ds = 
+                                       Physics2D.RaycastAll
+                                       (
+                                            (transform.position), // origin
+                                            (myDistanceJoint.connectedBody.transform.position - transform.position).normalized, // direction
+                                            Vector2.Distance(transform.position, myDistanceJoint.connectedBody.transform.position) // Length
+                                       );
 
 
         if (raycastHit2Ds.Length == 0)

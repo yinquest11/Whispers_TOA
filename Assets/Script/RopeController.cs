@@ -63,8 +63,7 @@ public class RopeController : MonoBehaviour
     public  GameObject throwRope;
     public  bool canThrow = true; // cooldown
     public  bool isThrowing = false;
-    private float _targetX;
-    private float _myX;
+    
     public  float throwCooldown = 0.03f;
     public  float forceAmount = 111;
     private Vector2 _playerDirectionToBlock;
@@ -80,6 +79,15 @@ public class RopeController : MonoBehaviour
     public Vector3 target;
     public Vector2 pullDestination; // Setting in inspector
     public float moveSpeed;
+
+    // Record target collider properties
+    private bool _reocrdPropertiesBefore;
+    [SerializeField] private CollisionDetectionMode2D _targetOriginalDetectionMode;
+    [SerializeField] private RigidbodyInterpolation2D _targetOriginalInterepolation;
+    [SerializeField] private bool _targetOriginalFreezeRotation;
+    [SerializeField] private float _targetOriginalGravity;
+    [SerializeField] private float _targetOriginalMass;
+    
 
 
     private void Awake()
@@ -110,6 +118,8 @@ public class RopeController : MonoBehaviour
         //  disable all the joint first
         m_springJoint2D.enabled = false;
         m_distanceJoint2D.enabled = false;
+
+        _reocrdPropertiesBefore = false;
 
     }
 
@@ -215,6 +225,18 @@ public class RopeController : MonoBehaviour
         m_distanceJoint2D.connectedBody = targetRigidbody;
         m_distanceJoint2D.enabled = true;
 
+        if(_reocrdPropertiesBefore == false)
+        {
+            // record the initial properties
+            _targetOriginalDetectionMode = targetRigidbody.collisionDetectionMode;
+            _targetOriginalInterepolation = targetRigidbody.interpolation;
+            _targetOriginalFreezeRotation = targetRigidbody.freezeRotation;
+            _targetOriginalGravity = targetRigidbody.gravityScale;
+            _targetOriginalMass = targetRigidbody.mass;
+
+            _reocrdPropertiesBefore = true;
+        }
+        
 
         // set target punya rigid body
         targetRigidbody.collisionDetectionMode = CollisionDetectionMode2D.Continuous; // continous collision detec
@@ -237,15 +259,9 @@ public class RopeController : MonoBehaviour
         // acess my verlet rope Game Object and access the boxTransform (Rope end position), set to target punya transform
         throwRope.GetComponent<RopeVerlet>().boxTransform = targetRigidbody.gameObject.transform;
         
-        
-
-        // check the x coordinates
-        _targetX = _hitTarget.collider.transform.position.x;
-        _myX = transform.position.x;
-
 
         // calculate perpendicular direction
-        _playerDirectionToBlock = (_hitTarget.collider.transform.position - gameObject.transform.position).normalized;
+        _playerDirectionToBlock = (targetRigidbody.transform.position - gameObject.transform.position).normalized;
         _blockPrependicularDirectionToPlayer = Vector2.Perpendicular(_playerDirectionToBlock);
 
 
@@ -268,11 +284,13 @@ public class RopeController : MonoBehaviour
     {
         canThrow = false;
         isThrowing = true;
-
+        
+        // 1 = to right, -1 = to left
         forceDirection = i == 1 ? -_blockPrependicularDirectionToPlayer : _blockPrependicularDirectionToPlayer; // check force direction
 
         targetRigidbody.linearVelocity = Vector2.zero;// refresh target speed first
 
+        
         targetRigidbody.AddForce(forceDirection * forceAmount, ForceMode2D.Impulse); // then i add force with no resistance
 
         _coroutine = StartCoroutine(ThrowCooldown()); // strat colddown
@@ -302,17 +320,35 @@ public class RopeController : MonoBehaviour
 
         if (m_springJoint2D.enabled != false)
         {
+            m_springJoint2D.connectedAnchor = Vector2.zero; // initialize the anchor position
             m_springJoint2D.enabled = false; // disable spring joint
         }
         
         if(m_distanceJoint2D.enabled != false)
         {
+            m_distanceJoint2D.connectedBody = null; // clean the connected body
             m_distanceJoint2D.enabled = false; // disable distance joint
         }   
            
         if (targetRigidbody != null)
-        {        
-            targetRigidbody.gravityScale = 2f; // set back target gravity
+        {
+            
+            // set back target rigid body properties
+            targetRigidbody.collisionDetectionMode = _targetOriginalDetectionMode;
+            targetRigidbody.interpolation = _targetOriginalInterepolation;
+            targetRigidbody.freezeRotation = _targetOriginalFreezeRotation;
+            targetRigidbody.gravityScale = _targetOriginalGravity;
+            targetRigidbody.mass = _targetOriginalMass;
+
+            _reocrdPropertiesBefore = false;
+            
+
+            if(targetRigidbody.GetComponent<BlockCollisionDetector>() == true)
+            {
+                Destroy(targetRigidbody.GetComponent<BlockCollisionDetector>()); // destroy the block collision detector that i add to him
+            }
+
+            targetRigidbody = null; // clean my target rigid body is who
         }
 
         if (throwRope != null)
@@ -320,10 +356,7 @@ public class RopeController : MonoBehaviour
             throwRope.SetActive(false); // disable my verlet rope for throw
         }
         
-        if(_hitTarget == true && _hitTarget.collider.gameObject.GetComponent<BlockCollisionDetector>() == true)
-        {    
-            Destroy(_hitTarget.collider.gameObject.GetComponent<BlockCollisionDetector>()); // destroy the block collision detector that i add to him
-        }
+       
 
     }
 
@@ -418,6 +451,8 @@ public class RopeController : MonoBehaviour
         {
             _hitTarget = Physics2D.Raycast(transform.position, fireDirection, maxDistnace, interstedLayer); // record the thing
 
+            
+
             gotHold = true;
 
             AnalysisTarget(_hitTarget.collider.gameObject); // the target layer will only include in interstedLayer, if not even pass the Raycast test
@@ -457,5 +492,4 @@ public class RopeController : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, maxDistnace);
     }
 
-    
 }
