@@ -19,13 +19,14 @@ public class BlockCollisionDetector : MonoBehaviour
     {
         if (ropeController.isThrowing == true)
         {
+            ropeController.MaxDistanceOnly(true);
             ropeController.isThrowing = false;
             ropeController.targetRigidbody.linearVelocity = Vector2.zero;
 
             if (targetHealth != null)
             {
                 AudioManager.Instance.PlaySfx("ThrowHit");
-                targetHealth.LightEnemyErhhhh(Vector2.up);
+                //targetHealth.LightEnemyErhhhh(Vector2.up);
                 targetHealth.TakeDamage(0.01f,1f);
             }
         }

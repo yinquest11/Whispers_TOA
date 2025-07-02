@@ -87,8 +87,10 @@ public class RopeController : MonoBehaviour
     [SerializeField] private bool _targetOriginalFreezeRotation;
     [SerializeField] private float _targetOriginalGravity;
     [SerializeField] private float _targetOriginalMass;
-    
 
+    //
+    public float distaceJointInitialDistance = 5f;
+    public float whenThrowDistance;
 
     private void Awake()
     {
@@ -118,8 +120,9 @@ public class RopeController : MonoBehaviour
         //  disable all the joint first
         m_springJoint2D.enabled = false;
         m_distanceJoint2D.enabled = false;
-
         _reocrdPropertiesBefore = false;
+
+        
 
     }
 
@@ -223,6 +226,7 @@ public class RopeController : MonoBehaviour
         // set distance joint
         m_distanceJoint2D.autoConfigureConnectedAnchor = false;
         m_distanceJoint2D.connectedBody = targetRigidbody;
+        
         m_distanceJoint2D.enabled = true;
 
         if(_reocrdPropertiesBefore == false)
@@ -285,16 +289,22 @@ public class RopeController : MonoBehaviour
     {
         canThrow = false;
         isThrowing = true;
-        
+
+        MaxDistanceOnly(false);
+
         // 1 = to right, -1 = to left
         forceDirection = i == 1 ? -_blockPrependicularDirectionToPlayer : _blockPrependicularDirectionToPlayer; // check force direction
 
         targetRigidbody.linearVelocity = Vector2.zero;// refresh target speed first
-
-        
+     
         targetRigidbody.AddForce(forceDirection * forceAmount, ForceMode2D.Impulse); // then i add force with no resistance
 
         _coroutine = StartCoroutine(ThrowCooldown()); // strat colddown
+    }
+
+    public void MaxDistanceOnly(bool equalTo)
+    {     
+        m_distanceJoint2D.maxDistanceOnly = equalTo;
     }
 
     private IEnumerator ThrowCooldown()
@@ -329,6 +339,7 @@ public class RopeController : MonoBehaviour
         {
             m_distanceJoint2D.connectedBody = null; // clean the connected body
             m_distanceJoint2D.enabled = false; // disable distance joint
+            m_distanceJoint2D.maxDistanceOnly = true; // max distance only
         }   
            
         if (targetRigidbody != null)
