@@ -6,16 +6,29 @@ public class Health : MonoBehaviour
 
     public float maxHealth = 10f;
     public float currentHealth = 10f;
-    public GameObject takeDamageSound;
+    
+    
     public GameObject spawnWhenDead;
     protected SpriteRenderer childSprite;
-    protected Coroutine _changeColorCoroutine;
     protected Coroutine _delayDieCoroutine;
-    
+    protected Coroutine _changeColorCoroutine;
     protected Color _originalColor;
 
-    public bool gameObjectIsPlayer = false;
+    [Header("For Light Enemy erhh")]
+    public GameObject erhhGameObjectPrefab;
+    protected GameObject _erhhGameObject;
+    public float erhhForce;
 
+
+
+    public enum gameObjectType
+    {
+        LightEnemy,
+        HeavyEnemy,
+        Player
+    }
+
+    public gameObjectType type;
 
     protected virtual void Start()
     {
@@ -24,10 +37,8 @@ public class Health : MonoBehaviour
 
         Initialization();
 
-       
     }
 
-    
     protected virtual void Update()
     {
         
@@ -45,27 +56,9 @@ public class Health : MonoBehaviour
             return;
         }
 
-        if (takeDamageSound != null)
-        {
-            GameObject.Instantiate(takeDamageSound, transform.position, transform.rotation);
-        }
-        
-
         currentHealth -= _damageAmountTake;
-        
 
-        // Different Action if the gameObject is Enemy or Player
-        // if a Player is TakeDamage(), wont start the coroutine
-        if (gameObjectIsPlayer == false)
-        {
-            _changeColorCoroutine = StartCoroutine(_changeColor());
-        }
-        else if (gameObjectIsPlayer == true)
-        {
-            // if is  Player only will come into here
-            // Change player health bar
-            Debug.Log("PLayerHealthMinus");
-        }
+        TakeDamageRespond();
 
         if (currentHealth <= 0)
         {
@@ -75,43 +68,45 @@ public class Health : MonoBehaviour
 
     }
 
-    public virtual void TakeDamage(float _damageAmountTake,float delayDie)
+    public virtual void TakeDamage(float _damageAmountTake, float delayDie)
     {
         if (this.enabled == false)
         {
+            Debug.Log($"{gameObject.name} not found");
             return;
-        }
-
-        if (takeDamageSound != null)
-        {
-            GameObject.Instantiate(takeDamageSound, transform.position, transform.rotation);
         }
 
 
         currentHealth -= _damageAmountTake;
 
-
-        // Different Action if the gameObject is Enemy or Player
-        // if a Player is TakeDamage(), wont start the coroutine
-        if (gameObjectIsPlayer == false)
-        {
-            _changeColorCoroutine = StartCoroutine(_changeColor());
-        }
-        else if (gameObjectIsPlayer == true)
-        {
-            // if is  Player only will come into here
-            // Change player health bar
-            Debug.Log("PLayerHealthMinus");
-        }
+        TakeDamageRespond();
 
         if (currentHealth <= 0)
         {
             currentHealth = 0;
-         
+
             _delayDieCoroutine = StartCoroutine(DelayDieCoroutine(delayDie));
 
         }
 
+    }
+
+    protected virtual void TakeDamageRespond()
+    {
+        switch (type)
+        {
+            case gameObjectType.LightEnemy:
+                _changeColorCoroutine = StartCoroutine(_changeColor());
+                break;
+
+            case gameObjectType.HeavyEnemy:
+                _changeColorCoroutine = StartCoroutine(_changeColor());
+                break;
+
+            case gameObjectType.Player:
+                Debug.Log("PLayerHealthMinus");
+                break;
+        }
     }
 
     protected virtual IEnumerator DelayDieCoroutine(float delay) 
@@ -127,8 +122,8 @@ public class Health : MonoBehaviour
     {
         if (childSprite == null) { Debug.Log(gameObject.name + " has activate defensive programming");  }
 
-        //childSprite.color = new Color(0.9433962f, 0.5844309f, 0.5844309f);
-        childSprite.color = Color.white;
+        
+        childSprite.color = Color.white; //childSprite.color = new Color(0.9433962f, 0.5844309f, 0.5844309f);
 
         yield return new WaitForSeconds(0.1f);
 
@@ -136,20 +131,53 @@ public class Health : MonoBehaviour
 
     }
 
-    public virtual void HaveToDie() // Every time Destroy itself when the HaveToDie Function is called
+    public virtual void HaveToDie()
     {
 
-
-        if (gameObjectIsPlayer == false && _changeColorCoroutine != null) 
+        switch (type)
         {
-            StopCoroutine(_changeColorCoroutine);
+            case gameObjectType.LightEnemy:
+                StopCoroutine(_changeColorCoroutine);
+
+                Destroy(this.gameObject);
+                break;
+
+            case gameObjectType.HeavyEnemy:
+                StopCoroutine(_changeColorCoroutine);
+
+                Destroy(this.gameObject);
+                break;
+
+            case gameObjectType.Player:
+                Debug.Log("PLayerShouldDie");
+                break;
         }
+
+        
 
         if (spawnWhenDead != null)
         {
             Instantiate(spawnWhenDead, transform.position, transform.rotation);
         }
         
-        Destroy(this.gameObject);
+        
+    }
+
+    public virtual void LightEnemyErhhhh(Vector2 fromPlayerDirection)
+    {
+        if (type != gameObjectType.LightEnemy)
+            return;
+
+        if(erhhGameObjectPrefab != null)
+        {
+            _erhhGameObject = Instantiate(erhhGameObjectPrefab, fromPlayerDirection + (Vector2)transform.position * 1.1f, transform.rotation);
+            _erhhGameObject.GetComponent<Rigidbody2D>().AddForce(fromPlayerDirection * erhhForce, ForceMode2D.Impulse);
+
+            Destroy(_erhhGameObject, 2f);
+
+        }
+
+        
+
     }
 }

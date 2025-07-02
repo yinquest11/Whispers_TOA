@@ -75,7 +75,7 @@ public class SmartAnchorObject_Tag : MonoBehaviour
         Q4Point = _toQ4Edge + new Vector2(1, -1) * pointDistance + (Vector2)transform.position;
 
         
-
+        // open a new function start from here, adjust the Q point smart
         Q1Point += offsetQ1Point;
         Q2Point += offsetQ2Point;
         Q3Point += offsetQ3Point;

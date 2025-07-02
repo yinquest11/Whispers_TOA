@@ -66,7 +66,7 @@ public class RopeController : MonoBehaviour
     
     public  float throwCooldown = 0.03f;
     public  float forceAmount = 111;
-    private Vector2 _playerDirectionToBlock;
+    public Vector2 playerDirectionToBlock;
     private Vector2 _blockPrependicularDirectionToPlayer;
     public  Vector2 forceDirection;
     private Coroutine _coroutine;
@@ -261,8 +261,9 @@ public class RopeController : MonoBehaviour
         
 
         // calculate perpendicular direction
-        _playerDirectionToBlock = (targetRigidbody.transform.position - gameObject.transform.position).normalized;
-        _blockPrependicularDirectionToPlayer = Vector2.Perpendicular(_playerDirectionToBlock);
+        playerDirectionToBlock = (targetRigidbody.transform.position - gameObject.transform.position).normalized;
+        Debug.DrawRay(transform.position, playerDirectionToBlock, Color.red);
+        _blockPrependicularDirectionToPlayer = Vector2.Perpendicular(playerDirectionToBlock);
 
 
         // check if need to throw, then throw
