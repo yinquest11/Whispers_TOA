@@ -170,8 +170,10 @@ public class Health : MonoBehaviour
 
         if(erhhGameObjectPrefab != null)
         {
-            _erhhGameObject = Instantiate(erhhGameObjectPrefab, fromPlayerDirection + (Vector2)transform.position * 1.1f, transform.rotation);
-            _erhhGameObject.GetComponent<Rigidbody2D>().AddForce(fromPlayerDirection * erhhForce, ForceMode2D.Impulse);
+            //_erhhGameObject = Instantiate(erhhGameObjectPrefab, fromPlayerDirection + (Vector2)transform.position * 1.1f, transform.rotation);
+            _erhhGameObject = Instantiate(erhhGameObjectPrefab, (Vector2)transform.position, transform.rotation);
+            //_erhhGameObject.GetComponent<Rigidbody2D>().AddForce(fromPlayerDirection * erhhForce, ForceMode2D.Impulse);
+            _erhhGameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.up * erhhForce, ForceMode2D.Impulse);
 
             Destroy(_erhhGameObject, 2f);
 
