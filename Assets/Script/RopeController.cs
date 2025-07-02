@@ -266,13 +266,13 @@ public class RopeController : MonoBehaviour
 
 
         // check if need to throw, then throw
-        if (_viewportRuler.HasDirectionReversed == true && canThrow == true)
+        if (_viewportRuler.HasDirectionReversed == true && canThrow == true ) 
         {
             Throw(_viewportRuler.GetMouseMoveDirection);        
         }
 
         // check if need to acceleration the box
-        if (isThrowing == true && targetRigidbody.linearVelocity.y < 0 && m_distanceJoint2D.enabled == true)
+        if (isThrowing == true && targetRigidbody.linearVelocity.y < 0 && m_distanceJoint2D.enabled == true )
         {
             targetRigidbody.linearVelocity *= new Vector2(1.05f, 1.2f);     
         }

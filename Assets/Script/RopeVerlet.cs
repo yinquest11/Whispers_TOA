@@ -55,7 +55,7 @@ public class RopeVerlet : MonoBehaviour
         for (int i = 0; i < _numOfRopeSegment; ++i) //
         {
             _ropeSegments.Add(new RopeSegment(ropeStartPoint));
-            ropeStartPoint.y -= _ropeSegmentLength;
+            ropeStartPoint.y += _ropeSegmentLength;
         }
     }
 
@@ -270,8 +270,7 @@ public class RopeVerlet : MonoBehaviour
 
                     if (normal == Vector2.zero) // 如果被卡在 collider里面了
                                                     // 只有当 segment.CurrentPosition - clossestPoint 等于 Vector2.zero 时，问题才会发生。
-                    {
-                        
+                    {             
                         normal = (segment.CurrentPosition - (Vector2)collider.transform.position).normalized; // 卡着的话就直接向物 Collider 的中心逃离
 
                     }

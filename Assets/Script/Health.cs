@@ -10,6 +10,9 @@ public class Health : MonoBehaviour
     public GameObject spawnWhenDead;
     protected SpriteRenderer childSprite;
     protected Coroutine _changeColorCoroutine;
+    protected Coroutine _delayDieCoroutine;
+    
+    protected Color _originalColor;
 
     public bool gameObjectIsPlayer = false;
 
@@ -17,9 +20,11 @@ public class Health : MonoBehaviour
     protected virtual void Start()
     {
         childSprite = GetComponentInChildren<SpriteRenderer>();
+        _originalColor = childSprite.color;
 
         Initialization();
-        
+
+       
     }
 
     
@@ -65,15 +70,56 @@ public class Health : MonoBehaviour
         if (currentHealth <= 0)
         {
             currentHealth = 0;
-
-            // Directly use HaveToDie function if it should die, its a virtual function, can directly use on FlyEnemy or inherit it to modify
-            
             HaveToDie();
+        }
 
+    }
+
+    public virtual void TakeDamage(float _damageAmountTake,float delayDie)
+    {
+        if (this.enabled == false)
+        {
+            return;
+        }
+
+        if (takeDamageSound != null)
+        {
+            GameObject.Instantiate(takeDamageSound, transform.position, transform.rotation);
         }
 
 
+        currentHealth -= _damageAmountTake;
 
+
+        // Different Action if the gameObject is Enemy or Player
+        // if a Player is TakeDamage(), wont start the coroutine
+        if (gameObjectIsPlayer == false)
+        {
+            _changeColorCoroutine = StartCoroutine(_changeColor());
+        }
+        else if (gameObjectIsPlayer == true)
+        {
+            // if is  Player only will come into here
+            // Change player health bar
+            Debug.Log("PLayerHealthMinus");
+        }
+
+        if (currentHealth <= 0)
+        {
+            currentHealth = 0;
+         
+            _delayDieCoroutine = StartCoroutine(DelayDieCoroutine(delayDie));
+
+        }
+
+    }
+
+    protected virtual IEnumerator DelayDieCoroutine(float delay) 
+    {
+
+        yield return new WaitForSeconds(0.1f);
+        
+        HaveToDie();
 
     }
 
@@ -81,11 +127,12 @@ public class Health : MonoBehaviour
     {
         if (childSprite == null) { Debug.Log(gameObject.name + " has activate defensive programming");  }
 
-        childSprite.color = new Color(0.9433962f, 0.5844309f, 0.5844309f);
+        //childSprite.color = new Color(0.9433962f, 0.5844309f, 0.5844309f);
+        childSprite.color = Color.white;
 
         yield return new WaitForSeconds(0.1f);
 
-        childSprite.color = Color.white;
+        childSprite.color = _originalColor;
 
     }
 

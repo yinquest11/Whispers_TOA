@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviour
 
         SetAnimation();
 
-        Debug.DrawRay(transform.position,Vector2.up * 10);
+        
 
     }
 

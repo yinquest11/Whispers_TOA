@@ -4,13 +4,15 @@ public class BlockCollisionDetector : MonoBehaviour
 {
 
     private RopeController ropeController;
+    private Health targetHealth;
 
     
-    private bool _isCollision;
+    
 
     void Start()
     {
         ropeController = GameObject.FindWithTag("RopeController").GetComponent<RopeController>();
+        targetHealth = GetComponent<Health>();
         
     }
     private void OnCollisionEnter2D(Collision2D collision)
@@ -19,6 +21,11 @@ public class BlockCollisionDetector : MonoBehaviour
         {
             ropeController.isThrowing = false;
             ropeController.targetRigidbody.linearVelocity = Vector2.zero;
+
+            if (targetHealth != null)
+            {
+                targetHealth.TakeDamage(1f,1f);
+            }
         }
 
         //foreach (ContactPoint2D contact in collision.contacts)

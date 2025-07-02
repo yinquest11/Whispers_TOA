@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 92515525526699280}
   - component: {fileID: 4209641731480915502}
   m_Layer: 11
-  m_Name: Platform
+  m_Name: PlatformCollider
   m_TagString: Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
