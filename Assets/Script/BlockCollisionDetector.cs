@@ -25,7 +25,7 @@ public class BlockCollisionDetector : MonoBehaviour
             if (targetHealth != null)
             {
                 AudioManager.Instance.PlaySfx("ThrowHit");
-                targetHealth.LightEnemyErhhhh(ropeController.playerDirectionToBlock);
+                targetHealth.LightEnemyErhhhh(Vector2.up);
                 targetHealth.TakeDamage(0.01f,1f);
             }
         }

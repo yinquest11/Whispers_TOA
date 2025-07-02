@@ -163,23 +163,22 @@ public class Health : MonoBehaviour
         
     }
 
-    public virtual void LightEnemyErhhhh(Vector2 fromPlayerDirection)
+    public virtual void LightEnemyErhhhh(Vector2 erhhDirection)
     {
         if (type != gameObjectType.LightEnemy)
             return;
 
         if(erhhGameObjectPrefab != null)
         {
-            //_erhhGameObject = Instantiate(erhhGameObjectPrefab, fromPlayerDirection + (Vector2)transform.position * 1.1f, transform.rotation);
+            
             _erhhGameObject = Instantiate(erhhGameObjectPrefab, (Vector2)transform.position, transform.rotation);
-            //_erhhGameObject.GetComponent<Rigidbody2D>().AddForce(fromPlayerDirection * erhhForce, ForceMode2D.Impulse);
-            _erhhGameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.up * erhhForce, ForceMode2D.Impulse);
+            
+            _erhhGameObject.GetComponent<Rigidbody2D>().AddForce(erhhDirection * erhhForce, ForceMode2D.Impulse);
 
             Destroy(_erhhGameObject, 2f);
 
         }
 
-        
-
     }
+   
 }
