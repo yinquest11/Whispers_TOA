@@ -132,12 +132,14 @@ public class RopeController : MonoBehaviour
     
     void Update()
     {
-        DebugDraw();
+        
 
         if (Input.GetKeyDown(KeyCode.Mouse1) == true)
         {
             SetGrapplePoint();
         }
+
+        DebugDraw();
 
         if (_hitTarget == false)
             return;
@@ -154,7 +156,7 @@ public class RopeController : MonoBehaviour
     {
         // draw my pull to direction
         Debug.DrawRay(transform.position, PullOffSet() - (Vector2)transform.position, Color.cyan);
-        Debug.DrawRay(transform.position, ((m_camera.ScreenToWorldPoint(Input.mousePosition) - transform.position)), Color.green);
+        //Debug.DrawRay(transform.position, ((m_camera.ScreenToWorldPoint(Input.mousePosition) - transform.position)), Color.green);
     }
 
     private void SwitchRopeMode()
