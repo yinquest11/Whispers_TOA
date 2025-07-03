@@ -223,6 +223,11 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    public void CanJumpAgain()
+    {
+        _jumpCount = _maxJumps;
+    }
+
     private void FlipPlayerSprite(float _moveInput)
     {
         if (_moveInput == 1 && _spriteRenderer.flipX != false)

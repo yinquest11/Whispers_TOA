@@ -92,6 +92,9 @@ public class RopeController : MonoBehaviour
     public float distaceJointInitialDistance = 5f;
     public float whenThrowDistance;
 
+    // player controller
+    public PlayerController playerController;
+
     private void Awake()
     {
         // get my ruler for Throw()
@@ -151,6 +154,7 @@ public class RopeController : MonoBehaviour
     {
         // draw my pull to direction
         Debug.DrawRay(transform.position, PullOffSet() - (Vector2)transform.position, Color.cyan);
+        Debug.DrawRay(transform.position, ((m_camera.ScreenToWorldPoint(Input.mousePosition) - transform.position)), Color.green);
     }
 
     private void SwitchRopeMode()
@@ -461,9 +465,9 @@ public class RopeController : MonoBehaviour
 
         if (Physics2D.Raycast(transform.position, fireDirection, maxDistnace, interstedLayer) == true) // raycast to the direction, if got hit the thing I want
         {
-            _hitTarget = Physics2D.Raycast(transform.position, fireDirection, maxDistnace, interstedLayer); // record the thing
+            playerController.CanJumpAgain(); // enable jump
 
-            
+            _hitTarget = Physics2D.Raycast(transform.position, fireDirection, maxDistnace, interstedLayer); // record the thing
 
             gotHold = true;
 
@@ -474,6 +478,8 @@ public class RopeController : MonoBehaviour
             grappleDistanceVector = grapplePoint - (Vector2)transform.position; // record the length from hit point to this
 
             grappleRope.enabled = true; // enable the draw rope, when this script is enable, will enable the line renderer 
+
+
    
         }
     }
