@@ -95,6 +95,10 @@ public class RopeController : MonoBehaviour
     // player controller
     public PlayerController playerController;
 
+    // auto aim
+    public float angle;
+    public int rayCountEvenNumber;
+
     private void Awake()
     {
         // get my ruler for Throw()
@@ -465,25 +469,71 @@ public class RopeController : MonoBehaviour
     {
         Vector2 fireDirection = (m_camera.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized; // set fire direction
 
-        if (Physics2D.Raycast(transform.position, fireDirection, maxDistnace, interstedLayer) == true) // raycast to the direction, if got hit the thing I want
+        RaycastHit2D successfulHit = Physics2D.Raycast(transform.position, fireDirection, maxDistnace, interstedLayer); // raycast to the direction
+
+        if (successfulHit == true) // if got hit the thing I want
         {
-            playerController.CanJumpAgain(); // enable jump
-
-            _hitTarget = Physics2D.Raycast(transform.position, fireDirection, maxDistnace, interstedLayer); // record the thing
-
-            gotHold = true;
-
-            AnalysisTarget(_hitTarget.collider.gameObject); // the target layer will only include in interstedLayer, if not even pass the Raycast test
-
-            grapplePoint = _hitTarget.point; // record the hit point
-
-            grappleDistanceVector = grapplePoint - (Vector2)transform.position; // record the length from hit point to this
-
-            grappleRope.enabled = true; // enable the draw rope, when this script is enable, will enable the line renderer 
-
-
-   
+            OnGrappleHit(successfulHit);
         }
+        else
+        {
+            RaycastHit2D autoAimHit = AutoAim(fireDirection);
+
+            if (autoAimHit.collider != null)
+            {
+                
+                // 如果成功，也调用同一个命中处理函数
+                OnGrappleHit(autoAimHit);
+            }
+        }
+    }
+
+    private RaycastHit2D AutoAim(Vector2 originalDirection)
+    {
+        float baseAngle = Mathf.Atan2(originalDirection.y, originalDirection.x) * Mathf.Rad2Deg; // find the direction that I start with
+
+        for (int i = 1; i <= rayCountEvenNumber; ++i)
+        {
+            float currentAngle = 0f;
+
+            if (i % 2 != 0) // i is odd number
+            {
+                currentAngle = baseAngle + ((angle * 0.5f) / rayCountEvenNumber) * ((i * 0.5f) + 0.5f);
+
+            }
+            else if (i % 2 == 0) // i is even number
+            {
+                currentAngle = baseAngle - ((angle * 0.5f) / rayCountEvenNumber) * (i * 0.5f);
+
+            }
+
+            currentAngle *= Mathf.Deg2Rad;
+            Vector2 direction = new Vector2(Mathf.Cos(currentAngle), Mathf.Sin(currentAngle));
+
+
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, maxDistnace, interstedLayer);
+            Debug.DrawRay(transform.position, direction * maxDistnace, Color.magenta, 0.5f);
+
+            if (hit.collider != null)
+            {
+                return hit;
+            }
+        }
+
+        return new RaycastHit2D();
+    }
+    
+
+    private void OnGrappleHit(RaycastHit2D successfulHit)
+    {
+        _hitTarget = successfulHit; // record the thing
+
+        gotHold = true;
+        AnalysisTarget(_hitTarget.collider.gameObject); // the target layer will only include in interstedLayer, if not even pass the Raycast test
+        grapplePoint = _hitTarget.point; // record the hit point
+        grappleDistanceVector = grapplePoint - (Vector2)transform.position; // record the length from hit point to this
+        grappleRope.enabled = true; // enable the draw rope, when this script is enable, will enable the line renderer 
+        playerController.CanJumpAgain(); // enable jump
     }
 
     void AnalysisTarget(GameObject target)
