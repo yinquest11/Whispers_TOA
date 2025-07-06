@@ -80,10 +80,11 @@ public class RopeController : MonoBehaviour
     public Vector2 pullDestination; // Setting in inspector
     public float moveSpeed;
 
-    // Record target collider properties
+    // Record target rigidbody properties
     private bool _reocrdPropertiesBefore;
     [SerializeField] private CollisionDetectionMode2D _targetOriginalDetectionMode;
     [SerializeField] private RigidbodyInterpolation2D _targetOriginalInterepolation;
+    [SerializeField] private RigidbodyType2D _targetBpdyType;
     [SerializeField] private bool _targetOriginalFreezeRotation;
     [SerializeField] private float _targetOriginalGravity;
     [SerializeField] private float _targetOriginalMass;
@@ -239,14 +240,16 @@ public class RopeController : MonoBehaviour
         
         m_distanceJoint2D.enabled = true;
 
-        if(_reocrdPropertiesBefore == false)
-        {
-            // record the initial properties
+        // record the initial properties
+        if (_reocrdPropertiesBefore == false)
+        {        
             _targetOriginalDetectionMode = targetRigidbody.collisionDetectionMode;
             _targetOriginalInterepolation = targetRigidbody.interpolation;
             _targetOriginalFreezeRotation = targetRigidbody.freezeRotation;
             _targetOriginalGravity = targetRigidbody.gravityScale;
             _targetOriginalMass = targetRigidbody.mass;
+            _targetBpdyType = targetRigidbody.bodyType;
+
 
             _reocrdPropertiesBefore = true;
         }
@@ -255,9 +258,11 @@ public class RopeController : MonoBehaviour
         // set target punya rigid body
         targetRigidbody.collisionDetectionMode = CollisionDetectionMode2D.Continuous; // continous collision detec
         targetRigidbody.interpolation = RigidbodyInterpolation2D.Interpolate; // interpolate mode
+        targetRigidbody.bodyType = RigidbodyType2D.Dynamic;
         targetRigidbody.freezeRotation = true; // freeze rotation
         targetRigidbody.gravityScale = 5f; // set to suitable gravity for throw
         targetRigidbody.mass = 2f; // set to suitable mass  for throw
+
 
 
         //  add a box collider detector to him
@@ -358,6 +363,7 @@ public class RopeController : MonoBehaviour
             // set back target rigid body properties
             targetRigidbody.collisionDetectionMode = _targetOriginalDetectionMode;
             targetRigidbody.interpolation = _targetOriginalInterepolation;
+            targetRigidbody.bodyType = _targetBpdyType;
             targetRigidbody.freezeRotation = _targetOriginalFreezeRotation;
             targetRigidbody.gravityScale = _targetOriginalGravity;
             targetRigidbody.mass = _targetOriginalMass;
