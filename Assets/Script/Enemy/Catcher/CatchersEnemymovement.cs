@@ -192,4 +192,6 @@ public class CatchersEnemyMovement : MonoBehaviour
         float angle = (Mathf.Atan2(inputDirection.y, inputDirection.x) * Mathf.Rad2Deg) - 90f;
         transform.rotation = Quaternion.Euler(0f, 0f, angle);
     }
+
+   
 }

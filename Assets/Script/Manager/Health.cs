@@ -38,10 +38,10 @@ public class Health : MonoBehaviour
         Initialization();
 
     }
-
     protected virtual void Update()
     {
-        
+       
+
     }
 
     protected void Initialization()
@@ -152,7 +152,6 @@ public class Health : MonoBehaviour
                 Debug.Log("PLayerShouldDie");
                 break;
         }
-
         
 
         if (spawnWhenDead != null)
