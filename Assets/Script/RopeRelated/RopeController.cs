@@ -166,9 +166,7 @@ public class RopeController : MonoBehaviour
 
     private void DebugDraw()
     {
-        // draw my pull to direction
-        Debug.DrawRay(transform.position, PullOffSet() - (Vector2)transform.position, Color.cyan);
-        //Debug.DrawRay(transform.position, ((m_camera.ScreenToWorldPoint(Input.mousePosition) - transform.position)), Color.green);
+        
     }
 
     private void SwitchRopeMode()
