@@ -1,7 +1,7 @@
 using UnityEngine;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
-public class CatchersEnemyMovement : MonoBehaviour
+public class CatchersEnemyMovement : MonoBehaviour, ICanMove
 {
     protected GameObject fairy;
     private CatcherHealth _catcherHealth;

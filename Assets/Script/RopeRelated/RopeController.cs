@@ -96,9 +96,16 @@ public class RopeController : MonoBehaviour
     // player controller
     public PlayerController playerController;
 
+    // light enemy movement script
+    public ICanMove _enemyICanMove;
+
     // auto aim
     public float angle;
     public int rayCountEvenNumber;
+
+    // for heavy enemy need to update anchor
+    public Transform heavyEnemyTransform;
+    public Vector3 heavyEnemyOriginalPosition;
 
     private void Awake()
     {
@@ -181,7 +188,7 @@ public class RopeController : MonoBehaviour
                 break;
 
             case RopeMode.Nothing: // break all rope connection
-                InitializePlayer();
+                InitializePlayerAndTarget();
                 break;
         }
     }
@@ -203,11 +210,18 @@ public class RopeController : MonoBehaviour
         return _pullDestination;
     }
     
-    private void RopeSwing()
+    private void RopeSwing() // this need continuos update anchor
     {
+        if (heavyEnemyTransform == null)
+        {
+            heavyEnemyTransform = _hitTarget.collider.transform;
+            heavyEnemyOriginalPosition = heavyEnemyTransform.position;
+        }
+        
+
         if (swingType == SwingType.Physic)
         {
-            m_springJoint2D.connectedAnchor = grapplePoint; // connect to point
+            m_springJoint2D.connectedAnchor = grapplePoint + ((Vector2)(heavyEnemyTransform.position - heavyEnemyOriginalPosition)); // connect to transform as point
             m_springJoint2D.distance = 0.5f; // set spring joint distance
             m_springJoint2D.enabled = true; // enable spring joint
 
@@ -225,7 +239,7 @@ public class RopeController : MonoBehaviour
         lineRenderer.enabled = false; // close own line renderer
 
         // get the hit target punya rigid body
-        if (_hitTarget.collider.GetComponent<Rigidbody2D>() != null) 
+        if (_hitTarget.collider.GetComponent<Rigidbody2D>() != null)
         {
             targetRigidbody = _hitTarget.collider.GetComponent<Rigidbody2D>();
         }
@@ -245,16 +259,15 @@ public class RopeController : MonoBehaviour
         {        
             _targetOriginalDetectionMode = targetRigidbody.collisionDetectionMode;
             _targetOriginalInterepolation = targetRigidbody.interpolation;
+            _targetBpdyType = targetRigidbody.bodyType;
             _targetOriginalFreezeRotation = targetRigidbody.freezeRotation;
             _targetOriginalGravity = targetRigidbody.gravityScale;
             _targetOriginalMass = targetRigidbody.mass;
-            _targetBpdyType = targetRigidbody.bodyType;
 
 
             _reocrdPropertiesBefore = true;
         }
-        
-
+       
         // set target punya rigid body
         targetRigidbody.collisionDetectionMode = CollisionDetectionMode2D.Continuous; // continous collision detec
         targetRigidbody.interpolation = RigidbodyInterpolation2D.Interpolate; // interpolate mode
@@ -269,6 +282,17 @@ public class RopeController : MonoBehaviour
         if (targetRigidbody.gameObject.GetComponent<BlockCollisionDetector>() == false)
         {
             targetRigidbody.gameObject.AddComponent<BlockCollisionDetector>();
+        }
+
+        // disable hit target punya ICanMove type script
+        if (_hitTarget.collider.GetComponent<ICanMove>() != null)
+        {
+            _enemyICanMove = _hitTarget.collider.GetComponent<ICanMove>();
+            ((MonoBehaviour)_enemyICanMove).enabled = false;
+        }
+        else
+        {
+            Debug.Log("Enemy Movement does not apply ICanMove interface");
         }
 
         // show my verlet rope
@@ -331,7 +355,7 @@ public class RopeController : MonoBehaviour
 
     
 
-    private void InitializePlayer()
+    private void InitializePlayerAndTarget()
     {
         
         if (m_playerController.enabled == false) 
@@ -344,19 +368,27 @@ public class RopeController : MonoBehaviour
             m_rigidbody.gravityScale = 5; // set back the original gravity for player
         }
 
+         
+
         if (m_springJoint2D.enabled != false)
         {
             m_springJoint2D.connectedAnchor = Vector2.zero; // initialize the anchor position
             m_springJoint2D.enabled = false; // disable spring joint
         }
         
+        
         if(m_distanceJoint2D.enabled != false)
         {
             m_distanceJoint2D.connectedBody = null; // clean the connected body
             m_distanceJoint2D.enabled = false; // disable distance joint
             m_distanceJoint2D.maxDistanceOnly = true; // max distance only
-        }   
-           
+        }
+
+        if (heavyEnemyTransform != null)
+        {
+            heavyEnemyTransform = null;
+        }
+
         if (targetRigidbody != null)
         {
             
@@ -369,14 +401,37 @@ public class RopeController : MonoBehaviour
             targetRigidbody.mass = _targetOriginalMass;
 
             _reocrdPropertiesBefore = false;
-            
 
-            if(targetRigidbody.GetComponent<BlockCollisionDetector>() == true)
+
+            if (targetRigidbody.GetComponent<BlockCollisionDetector>() == true)
             {
                 Destroy(targetRigidbody.GetComponent<BlockCollisionDetector>()); // destroy the block collision detector that i add to him
             }
 
             targetRigidbody = null; // clean my target rigid body is who
+        }
+
+        
+
+        if (_enemyICanMove != null) // if im not throwing and i release a hold a light enemy, let him walk back
+        {
+            if(isThrowing == false)
+            {
+                ((MonoBehaviour)_enemyICanMove).enabled = true;
+            }
+            else
+            {
+                _hitTarget.collider.enabled = false;
+                StartCoroutine(_hitTarget.collider.GetComponent<Health>().DelayDieCoroutine(5f));
+
+                isThrowing = false; // false isThrowing my slef, because the target is been throwing out, wont colliding and false isThrowing them self
+            }
+
+            
+            _enemyICanMove = null;
+
+            
+
         }
 
         if (throwRope != null)
@@ -540,6 +595,9 @@ public class RopeController : MonoBehaviour
         grappleDistanceVector = grapplePoint - (Vector2)transform.position; // record the length from hit point to this
         grappleRope.enabled = true; // enable the draw rope, when this script is enable, will enable the line renderer 
         playerController.CanJumpAgain(); // enable jump
+
+        
+
     }
 
     void AnalysisTarget(GameObject target)

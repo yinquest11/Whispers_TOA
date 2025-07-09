@@ -14,7 +14,7 @@ public class Health : MonoBehaviour
     protected Coroutine _changeColorCoroutine;
     protected Color _originalColor;
 
-    [Header("For Light Enemy erhh")]
+    [Header("For Light Enemy erhh")] // Only for light enemy might required this
     public GameObject erhhGameObjectPrefab;
     protected GameObject _erhhGameObject;
     public float erhhForce;
@@ -38,18 +38,18 @@ public class Health : MonoBehaviour
         Initialization();
 
     }
-    protected virtual void Update()
+    protected virtual void Update() // some child object might inhereit this update 
     {
        
 
     }
 
-    protected void Initialization()
+    protected void Initialization() // initialize the current health
     {
         currentHealth = maxHealth;
     }
 
-    public virtual void TakeDamage(float _damageAmountTake)
+    public virtual void TakeDamage(float _damageAmountTake) // First take damage function, will instantly die if health < 0
     {
         if (this.enabled == false)
         {
@@ -68,7 +68,7 @@ public class Health : MonoBehaviour
 
     }
 
-    public virtual void TakeDamage(float _damageAmountTake, float delayDie)
+    public virtual void TakeDamage(float _damageAmountTake, float delayDie) // Second take damage function, will delay {delayDie} second only die if health < 0
     {
         if (this.enabled == false)
         {
@@ -91,16 +91,16 @@ public class Health : MonoBehaviour
 
     }
 
-    protected virtual void TakeDamageRespond()
+    protected virtual void TakeDamageRespond() // the respond if take damage, normaly just change color
     {
         switch (type)
         {
             case gameObjectType.LightEnemy:
-                _changeColorCoroutine = StartCoroutine(_changeColor());
+                _changeColorCoroutine = StartCoroutine(ChangeColorCoroutine());
                 break;
 
             case gameObjectType.HeavyEnemy:
-                _changeColorCoroutine = StartCoroutine(_changeColor());
+                _changeColorCoroutine = StartCoroutine(ChangeColorCoroutine());
                 break;
 
             case gameObjectType.Player:
@@ -109,29 +109,9 @@ public class Health : MonoBehaviour
         }
     }
 
-    protected virtual IEnumerator DelayDieCoroutine(float delay) 
-    {
 
-        yield return new WaitForSeconds(0.1f);
-        
-        HaveToDie();
 
-    }
-
-    protected  virtual IEnumerator _changeColor() // Change the color of sprite when is an Enemy are taking damage
-    {
-        if (childSprite == null) { Debug.Log(gameObject.name + " has activate defensive programming");  }
-
-        
-        childSprite.color = Color.white; //childSprite.color = new Color(0.9433962f, 0.5844309f, 0.5844309f);
-
-        yield return new WaitForSeconds(0.1f);
-
-        childSprite.color = _originalColor;
-
-    }
-
-    public virtual void HaveToDie()
+    public virtual void HaveToDie() // Destroy them self with different way, can play particular animation
     {
 
         switch (type)
@@ -162,7 +142,7 @@ public class Health : MonoBehaviour
         
     }
 
-    public virtual void LightEnemyErhhhh(Vector2 erhhDirection)
+    public virtual void LightEnemyErhhhh(Vector2 erhhDirection) // instantiae the "coin" (if for light enemy)
     {
         if (type != gameObjectType.LightEnemy)
             return;
@@ -179,5 +159,25 @@ public class Health : MonoBehaviour
         }
 
     }
-   
+
+    public virtual IEnumerator DelayDieCoroutine(float delay) // Delay Die Coroutine for second take damage
+    {
+
+        yield return new WaitForSeconds(delay);
+
+        HaveToDie();
+
+    }
+
+    protected virtual IEnumerator ChangeColorCoroutine() // Change the color of sprite when is an Enemy are taking damage
+    {
+        if (childSprite == null) { Debug.Log(gameObject.name + " has activate defensive programming"); }
+
+        childSprite.color = Color.white; //childSprite.color = new Color(0.9433962f, 0.5844309f, 0.5844309f);
+
+        yield return new WaitForSeconds(0.1f);
+
+        childSprite.color = _originalColor;
+
+    }
 }

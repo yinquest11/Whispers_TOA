@@ -1,7 +1,7 @@
 using UnityEngine;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
-public class FlyEnemyMovement : MonoBehaviour // Simple tracking player base on inputDirection script
+public class FlyEnemyMovement : MonoBehaviour, ICanMove
 {
     protected GameObject player;
 

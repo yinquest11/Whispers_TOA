@@ -10,9 +10,4 @@ public class IgnoreColisionBetween : MonoBehaviour
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("erhhObject"), LayerMask.NameToLayer("erhhObject"), true);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

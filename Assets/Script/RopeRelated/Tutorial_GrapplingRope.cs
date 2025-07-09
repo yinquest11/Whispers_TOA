@@ -131,7 +131,7 @@ public class Tutorial_GrapplingRope : MonoBehaviour
     void DrawRopeNoWaves()
     {
         m_lineRenderer.SetPosition(0, ropeController.transform.position);
-        m_lineRenderer.SetPosition(1, ropeController.grapplePoint);
+        m_lineRenderer.SetPosition(1, ropeController.m_springJoint2D.connectedAnchor);
 
 
         _finishDrawingRope = true;
