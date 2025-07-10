@@ -34,7 +34,7 @@ public class RopeController : MonoBehaviour
 
      public  Vector2       grapplePoint;
      public  Vector2       grappleDistanceVector;
-     private RaycastHit2D  _hitTarget;
+     private RaycastHit2D  _hitInformation;
      private int           _targetLayer;
      private string        _targetLayerName;
      private bool          _holdBefore = false;
@@ -151,23 +151,20 @@ public class RopeController : MonoBehaviour
             SetGrapplePoint();
         }
 
-        DebugDraw();
-
-        if (_hitTarget == false)
-            return;
 
         UpdateGotHold();
 
+       if (_hitInformation == false)
+            return;
+
+        
         TryDetermineRopeMode();
 
         SwitchRopeMode();
 
     }
 
-    private void DebugDraw()
-    {
-        
-    }
+    
 
     private void SwitchRopeMode()
     {
@@ -193,7 +190,7 @@ public class RopeController : MonoBehaviour
 
     void PullEnemy()
     {
-        movementHelper.MoveToBySpeed(_hitTarget.collider.transform, PullOffSet(), moveSpeed, acceleration); // move coroutine
+        movementHelper.MoveToBySpeed(_hitInformation.collider.transform, PullOffSet(), moveSpeed, acceleration); // move coroutine
 
         // special case, close the rope and set to Nothing yourself
         CloseGrappleRopeAndInitialize();
@@ -212,7 +209,7 @@ public class RopeController : MonoBehaviour
     {
         if (heavyEnemyTransform == null)
         {
-            heavyEnemyTransform = _hitTarget.collider.transform;
+            heavyEnemyTransform = _hitInformation.collider.transform;
             heavyEnemyOriginalPosition = heavyEnemyTransform.position;
         }
         
@@ -237,9 +234,9 @@ public class RopeController : MonoBehaviour
         lineRenderer.enabled = false; // close own line renderer
 
         // get the hit target punya rigid body
-        if (_hitTarget.collider.GetComponent<Rigidbody2D>() != null)
+        if (_hitInformation.collider.GetComponent<Rigidbody2D>() != null)
         {
-            targetRigidbody = _hitTarget.collider.GetComponent<Rigidbody2D>();
+            targetRigidbody = _hitInformation.collider.GetComponent<Rigidbody2D>();
         }
         else
         {
@@ -283,9 +280,9 @@ public class RopeController : MonoBehaviour
         }
 
         // disable hit target punya ICanMove type script
-        if (_hitTarget.collider.GetComponent<ICanMove>() != null)
+        if (_hitInformation.collider.GetComponent<ICanMove>() != null)
         {
-            _enemyICanMove = _hitTarget.collider.GetComponent<ICanMove>();
+            _enemyICanMove = _hitInformation.collider.GetComponent<ICanMove>();
             ((MonoBehaviour)_enemyICanMove).enabled = false;
         }
         else
@@ -366,25 +363,25 @@ public class RopeController : MonoBehaviour
             m_rigidbody.gravityScale = 5; // set back the original gravity for player
         }
 
-         
-
         if (m_springJoint2D.enabled != false)
         {
             m_springJoint2D.connectedAnchor = Vector2.zero; // initialize the anchor position
+
             m_springJoint2D.enabled = false; // disable spring joint
         }
-        
-        
+          
         if(m_distanceJoint2D.enabled != false)
         {
             m_distanceJoint2D.connectedBody = null; // clean the connected body
+
             m_distanceJoint2D.enabled = false; // disable distance joint
+
             m_distanceJoint2D.maxDistanceOnly = true; // max distance only
         }
 
         if (heavyEnemyTransform != null)
         {
-            heavyEnemyTransform = null;
+            heavyEnemyTransform = null; // clean target
         }
 
         if (targetRigidbody != null)
@@ -419,16 +416,13 @@ public class RopeController : MonoBehaviour
             }
             else
             {
-                _hitTarget.collider.enabled = false;
-                StartCoroutine(_hitTarget.collider.GetComponent<Health>().DelayDieCoroutine(5f));
+                _hitInformation.collider.enabled = false;
+                StartCoroutine(_hitInformation.collider.GetComponent<Health>().DelayDieCoroutine(5f));
 
                 isThrowing = false; // false isThrowing my slef, because the target is been throwing out, wont colliding and false isThrowing them self
             }
-
             
             _enemyICanMove = null;
-
-            
 
         }
 
@@ -436,8 +430,6 @@ public class RopeController : MonoBehaviour
         {
             throwRope.SetActive(false); // disable my verlet rope for throw
         }
-        
-       
 
     }
 
@@ -457,13 +449,13 @@ public class RopeController : MonoBehaviour
             else if (_targetLayerName == "Enemy")
             {
                 // Hold a light enemy
-                if (_hitTarget.collider.CompareTag("LightEnemy"))
+                if (_hitInformation.collider.CompareTag("LightEnemy"))
                 {               
                     ropeMode = RopeMode.ThrowEnemy;
                 }
 
                 // Hold a heavy enemy
-                else if (_hitTarget.collider.CompareTag("HeavyEnemy"))
+                else if (_hitInformation.collider.CompareTag("HeavyEnemy"))
                 {             
                     ropeMode = RopeMode.Swing;
                 }
@@ -475,7 +467,7 @@ public class RopeController : MonoBehaviour
         
 
         
-        else if (_holdBefore == false && gotHold == false && _hitTarget.collider != null && grappleRope.enabled == true) // Press
+        else if (_holdBefore == false && gotHold == false && _hitInformation.collider != null && grappleRope.enabled == true) // Press
         {
             // Press a grabable
             if (_targetLayerName == "Grabable")
@@ -485,13 +477,13 @@ public class RopeController : MonoBehaviour
             else if(_targetLayerName == "Enemy")
             {
                 // Press a light enemy
-                if (_hitTarget.collider.CompareTag("LightEnemy"))
+                if (_hitInformation.collider.CompareTag("LightEnemy"))
                 {
                     ropeMode = RopeMode.PullEnemyToMe;
                 }
 
                 // Press a heavy enemy
-                else if (_hitTarget.collider.CompareTag("HeavyEnemy"))
+                else if (_hitInformation.collider.CompareTag("HeavyEnemy"))
                 {
                     CloseGrappleRopeAndInitialize();
                 }
@@ -530,20 +522,22 @@ public class RopeController : MonoBehaviour
 
         RaycastHit2D successfulHit = Physics2D.Raycast(transform.position, fireDirection, maxDistnace, interstedLayer); // raycast to the direction
 
-        if (successfulHit == true) // if got hit the thing I want
+        gotHold = true;
+
+        if (successfulHit == true) // if got hit the thing I want, use the hit point
         {
             OnGrappleHit(successfulHit);
         }
-        else
+        else // no have hit any thing
         {
-            RaycastHit2D autoAimHit = AutoAim(fireDirection);
+            RaycastHit2D autoAimHit = AutoAim(fireDirection); // try to use AutoAim() to return a cloest hit point
 
-            if (autoAimHit.collider != null)
-            {
+            if (autoAimHit == true)
+            {          
                 
-                // 如果成功，也调用同一个命中处理函数
                 OnGrappleHit(autoAimHit);
             }
+
         }
     }
 
@@ -581,45 +575,38 @@ public class RopeController : MonoBehaviour
 
         return new RaycastHit2D();
     }
-    
+
 
     private void OnGrappleHit(RaycastHit2D successfulHit)
     {
-        _hitTarget = successfulHit; // record the thing
+        // record the point
+        _hitInformation = successfulHit; 
 
-        gotHold = true;
-        AnalysisTarget(_hitTarget.collider.gameObject); // the target layer will only include in interstedLayer, if not even pass the Raycast test
-        grapplePoint = _hitTarget.point; // record the hit point
-        grappleDistanceVector = grapplePoint - (Vector2)transform.position; // record the length from hit point to this
-        grappleRope.enabled = true; // enable the draw rope, when this script is enable, will enable the line renderer 
-        playerController.CanJumpAgain(); // enable jump
-
-        
-
-    }
-
-    void AnalysisTarget(GameObject target)
-    {
-        _targetLayer = target.layer;
+        // record the thing
+        _targetLayer = _hitInformation.collider.gameObject.layer;
         _targetLayerName = LayerMask.LayerToName(_targetLayer);
 
-        switch (_targetLayerName)
-        {
-            case "Enemy":
-                //Debug.Log($"Target is on Enemy layer")
-                return;
+        // record the hit point
+        grapplePoint = _hitInformation.point;
 
-            case "Grabable":
-                //Debug.Log($"Target is on Grabable layer")
-                return;
-        }
+        // record the length from hit point to this
+        grappleDistanceVector = grapplePoint - (Vector2)transform.position;
+
+
+
+        // enable the draw rope, when this script is enable, will enable the line renderer
+        grappleRope.enabled = true;
+
+        // enable jump
+        playerController.CanJumpAgain();
 
     }
+
+    
 
     private void OnDrawGizmosSelected()
     {
         // draw rope max distance
-
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, maxDistnace);
     }
