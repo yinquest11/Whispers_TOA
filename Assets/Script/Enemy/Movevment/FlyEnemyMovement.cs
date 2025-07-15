@@ -25,6 +25,7 @@ public class FlyEnemyMovement : MonoBehaviour, ICanMove
         player = GameObject.FindWithTag("Player");
 
         if (_collider == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
+        // ReSharper disable once RedundantJumpStatement
         if (_rigidBody == null) { Debug.Log(gameObject.name + " has activate defensive programming"); return; }
     }
 

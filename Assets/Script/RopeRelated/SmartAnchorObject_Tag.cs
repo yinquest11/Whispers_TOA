@@ -48,12 +48,8 @@ public class SmartAnchorObject_Tag : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
         UpdateQPoint();
         DrawPoint();
-
-
-
     }
 
     
@@ -91,7 +87,6 @@ public class SmartAnchorObject_Tag : MonoBehaviour
         Debug.DrawRay(transform.position, Q3Point-(Vector2)transform.position, Color.red);
         Debug.DrawRay(transform.position, Q4Point- (Vector2)transform.position, Color.red);
     }
-
     public Vector2 ReturnClosestQPoint(Vector2 firstPointPosition)
     {
         List<float> distanceList = new List<float>();

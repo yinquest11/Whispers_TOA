@@ -31,7 +31,7 @@ public class DialogueTrigger : MonoBehaviour
         }
     }
 
-    //While detected if we interact start the dialogue
+    // While detected if we interact start the dialogue
 
     private void Update()
     {

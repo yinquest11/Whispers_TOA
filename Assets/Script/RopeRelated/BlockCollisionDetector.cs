@@ -6,9 +6,6 @@ public class BlockCollisionDetector : MonoBehaviour
     private RopeController ropeController;
     private Health targetHealth;
 
-    
-    
-
     void Start()
     {
         ropeController = GameObject.FindWithTag("RopeController").GetComponent<RopeController>();

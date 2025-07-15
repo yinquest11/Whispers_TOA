@@ -41,14 +41,12 @@ public class ViewportRuler : MonoBehaviour
     void Update()
     {
         CalculateZone();
-
-
+        
        if (needDraw == false)
             return;
-
+       
         DrawDivisionLines();
-
-
+        
     }
 
     private void CalculateZone()

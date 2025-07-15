@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+// ReSharper disable All
 
 public class RopeController : MonoBehaviour
 {
@@ -116,6 +117,7 @@ public class RopeController : MonoBehaviour
 
     void Start()
     {
+        
         // set my grapple rope
         grappleRope = GetComponent<Tutorial_GrapplingRope>();
         grappleRope.enabled = false;

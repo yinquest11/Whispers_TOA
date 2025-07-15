@@ -275,8 +275,7 @@ public class RopeVerlet : MonoBehaviour
 
                     }
                     
-
-                        float depth = _collisionRadius - distance;// 绳子节段“钻入”碰撞体内部到底有多深
+                    float depth = _collisionRadius - distance;// 绳子节段“钻入”碰撞体内部到底有多深
 
                     segment.CurrentPosition += normal * depth; // 利用上一步算出的“深度”，将绳段沿着“逃离方向”（normal）推出去，不多不少，正好推回到碰撞体的表面
 
