@@ -29,7 +29,7 @@ public class RopeController : MonoBehaviour
 
     public SpringJoint2D    m_springJoint2D;
     public DistanceJoint2D  m_distanceJoint2D;
-    
+    public bool test;
 
     // Hit information
 
@@ -373,6 +373,7 @@ public class RopeController : MonoBehaviour
             targetRigidbody.bodyType = _targetBpdyType;
             targetRigidbody.freezeRotation = _targetOriginalFreezeRotation;
             targetRigidbody.gravityScale = _targetOriginalGravity;
+            
             targetRigidbody.mass = _targetOriginalMass;
 
             
