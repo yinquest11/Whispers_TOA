@@ -17,7 +17,7 @@ public class Health : MonoBehaviour
     [Header("For Light Enemy erhh")] // Only for light enemy might required this
     public GameObject erhhGameObjectPrefab;
     protected GameObject _erhhGameObject;
-    public float erhhForce;
+    public float erhhForce = 18.02f;
 
 
 

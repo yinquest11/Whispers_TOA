@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class SlimeChase : MonoBehaviour
+public class SlimeChase : MonoBehaviour, ICanMove
 {
     public Transform player;
     public float jumpForce = 6f;

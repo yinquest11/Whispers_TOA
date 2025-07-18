@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class BeetlePatrol : MonoBehaviour
+public class BeetlePatrol : MonoBehaviour, ICanMove
 {
     public Transform pointA;
     public Transform pointB;
@@ -23,22 +23,7 @@ public class BeetlePatrol : MonoBehaviour
             Flip();
         }
 
-        //transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
-        // // 🔁 Check if the beetle is close to the target
-        // if (Vector2.Distance(transform.position, target) < 0.5f)
-        // {
-        //     // Use if-else instead of ternary operator
-        //     if (target == pointA.position)
-        //     {
-        //         target = pointB.position;
-        //     }
-        //     else
-        //     {
-        //         target = pointA.position;
-        //     }
-
-        //     Flip(); // Flip the beetle's facing direction
-        // }
+        
 
 
     }
