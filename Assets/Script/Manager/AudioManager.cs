@@ -1,8 +1,11 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
+    [SerializeField] Slider volumeSlider;
+
     public Sound[] musicSounds;
     public Sound[] sfxSounds;
 
@@ -11,9 +14,9 @@ public class AudioManager : MonoBehaviour
 
     public static AudioManager Instance;
 
-    public void Awake()
+    private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
@@ -24,6 +27,40 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        if (!PlayerPrefs.HasKey("musicVolume"))
+        {
+            PlayerPrefs.SetFloat("musicVolume", 1);
+            PlayerPrefs.Save();
+        }
+
+        Load();
+
+        if (volumeSlider != null)
+        {
+            volumeSlider.onValueChanged.AddListener(delegate { ChangeVolume(); });
+        }
+    }
+
+    public void ChangeVolume()
+    {
+        musicSource.volume = volumeSlider.value;
+        Save();
+    }
+
+    private void Save()
+    {
+        PlayerPrefs.SetFloat("musicVolume", volumeSlider.value);
+        PlayerPrefs.Save();
+    }
+
+    private void Load()
+    {
+        float savedVolume = PlayerPrefs.GetFloat("musicVolume");
+        volumeSlider.value = savedVolume;
+        musicSource.volume = savedVolume;
+    }
 
     public void PlayMusic(string name)
     {
@@ -50,7 +87,7 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            sfxSource.PlayOneShot(s.clip);    
+            sfxSource.PlayOneShot(s.clip);
         }
     }
 }
