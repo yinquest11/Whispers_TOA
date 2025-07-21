@@ -1227,15 +1227,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1247183751676568277, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.1164092
+      value: 0.80357677
       objectReference: {fileID: 0}
     - target: {fileID: 1247183751676568277, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 11.41
+      value: -1.13
       objectReference: {fileID: 0}
     - target: {fileID: 1247183751676568277, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.4764
+      value: 8.14
       objectReference: {fileID: 0}
     - target: {fileID: 1247183751676568277, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1291,15 +1291,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9152149774853228038, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
       propertyPath: m_Color.b
-      value: 1
+      value: 0.5574936
       objectReference: {fileID: 0}
     - target: {fileID: 9152149774853228038, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
       propertyPath: m_Color.g
-      value: 0.58128244
+      value: 0.72955966
       objectReference: {fileID: 0}
     - target: {fileID: 9152149774853228038, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
       propertyPath: m_Color.r
-      value: 0.44968545
+      value: 0.586512
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 823952097855612756, guid: 3c18f4aa945f58a4985a3839e710affa, type: 3}
@@ -1533,43 +1533,6 @@ MonoBehaviour:
   erhhGameObjectPrefab: {fileID: 8483718601978460891, guid: 0a25201ce11e6ac409487f44a9e1b580, type: 3}
   erhhForce: 18.02
   type: 0
---- !u!70 &1362734546
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1362734536}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: -0.3581774, y: -0.18161112}
-  m_Size: {x: 0.91366976, y: 1.3676976}
-  m_Direction: 0
 --- !u!4 &1709551645 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7471700542424919732, guid: d2ea7e824ed875f4f831a2cbefad89a3, type: 3}
@@ -1948,14 +1911,6 @@ PrefabInstance:
       propertyPath: pointB
       value: 
       objectReference: {fileID: 1063439035}
-    - target: {fileID: 4193043128241178183, guid: 1c04dc0ae791ae844b150d40c8dfc7bc, type: 3}
-      propertyPath: m_Mass
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4193043128241178183, guid: 1c04dc0ae791ae844b150d40c8dfc7bc, type: 3}
-      propertyPath: m_BodyType
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5765851263748646361, guid: 1c04dc0ae791ae844b150d40c8dfc7bc, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -2014,15 +1969,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9183183625231273344, guid: 1c04dc0ae791ae844b150d40c8dfc7bc, type: 3}
       propertyPath: m_Color.b
-      value: 0.58805025
+      value: 0.01233883
       objectReference: {fileID: 0}
     - target: {fileID: 9183183625231273344, guid: 1c04dc0ae791ae844b150d40c8dfc7bc, type: 3}
       propertyPath: m_Color.g
-      value: 0.5894941
+      value: 0.012578547
       objectReference: {fileID: 0}
     - target: {fileID: 9183183625231273344, guid: 1c04dc0ae791ae844b150d40c8dfc7bc, type: 3}
       propertyPath: m_Color.r
-      value: 1
+      value: 0.009058135
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2439,22 +2394,6 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 5570770788882987892}
-    - target: {fileID: 4175931738270382439, guid: a372a10930d458b4b8553ac656a7da4c, type: 3}
-      propertyPath: m_BodyType
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4175931738270382439, guid: a372a10930d458b4b8553ac656a7da4c, type: 3}
-      propertyPath: m_Constraints
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4175931738270382439, guid: a372a10930d458b4b8553ac656a7da4c, type: 3}
-      propertyPath: m_Interpolate
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4175931738270382439, guid: a372a10930d458b4b8553ac656a7da4c, type: 3}
-      propertyPath: m_CollisionDetection
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5316260009342567359, guid: a372a10930d458b4b8553ac656a7da4c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.66
@@ -2507,17 +2446,13 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.864
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 713571272102645938, guid: a372a10930d458b4b8553ac656a7da4c, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5514498577863402511, guid: a372a10930d458b4b8553ac656a7da4c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1362734541}
-    - targetCorrespondingSourceObject: {fileID: 5514498577863402511, guid: a372a10930d458b4b8553ac656a7da4c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1362734546}
   m_SourcePrefab: {fileID: 100100000, guid: a372a10930d458b4b8553ac656a7da4c, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
