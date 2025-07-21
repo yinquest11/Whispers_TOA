@@ -24,7 +24,7 @@ public class BlockCollisionDetector : MonoBehaviour
             {
                 AudioManager.Instance.PlaySfx("ThrowHit");
                 targetHealth.LightEnemyErhhhh(collision.contacts[0].normal);
-                targetHealth.TakeDamage(0.01f,1f);
+                targetHealth.TakeDamage(1f,0.1f);
             }
         }
 
