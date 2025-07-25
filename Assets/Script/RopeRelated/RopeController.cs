@@ -385,6 +385,8 @@ public class RopeController : MonoBehaviour
             }
 
             targetRigidbody = null; // clean my target rigid body is who
+            
+            isThrowing = false;
         }
 
         
