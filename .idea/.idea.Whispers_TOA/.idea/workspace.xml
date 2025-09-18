@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="43af4954-6e2e-4cce-8467-6232e570a6c5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Whispers_TOA/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Whispers_TOA/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/RopeRelated/RopeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/RopeRelated/RopeController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/AudioManager.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/AudioManager.prefab" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,6 +147,8 @@
       <workItem from="1753171788952" duration="667000" />
       <workItem from="1753252529349" duration="237000" />
       <workItem from="1753255393583" duration="712000" />
+      <workItem from="1753950947905" duration="19000" />
+      <workItem from="1753951169287" duration="5000" />
     </task>
     <servers />
   </component>
