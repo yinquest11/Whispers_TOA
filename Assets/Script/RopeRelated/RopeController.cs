@@ -425,7 +425,7 @@ public class RopeController : MonoBehaviour
             _holdBefore = true;
 
             // Hold a grabable
-            if (_targetLayerName == "Grabable")
+            if (_targetLayerName == "Grabable" || _targetLayerName == "Ground")
             {          
                 ropeMode = RopeMode.Swing;
             }
@@ -454,7 +454,7 @@ public class RopeController : MonoBehaviour
         else if (_holdBefore == false && gotHold == false && _hitInformation.collider != null && grappleRope.enabled == true) // Press
         {
             // Press a grabable
-            if (_targetLayerName == "Grabable")
+            if (_targetLayerName == "Grabable" || _targetLayerName == "Ground")
             {
                 CloseGrappleRopeAndInitialize();
             }

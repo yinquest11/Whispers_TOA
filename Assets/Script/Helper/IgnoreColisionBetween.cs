@@ -8,6 +8,7 @@ public class IgnoreColisionBetween : MonoBehaviour
 
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("erhhObject"), LayerMask.NameToLayer("Enemy"), true);
         Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("erhhObject"), LayerMask.NameToLayer("erhhObject"), true);
+        
     }
 
 }

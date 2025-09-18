@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,11 +12,16 @@ public class PlayerController : MonoBehaviour
 
     public float moveSpeed = 5f;
     public float jumpForce = 5f;
-    
-
+    public bool shouldMove;
+    public bool isGround = false;
+    public Vector3 groundCheckPosition;
+    public float groundCheckRadius;
+   
     public float dashSpeed = 20f;
     public float dashDuration = 0.2f;
     public float dashCooldown = 1f;
+    public bool hasTriggerFallAnimation;
+    
 
 
     private int _jumpCount;
@@ -26,6 +32,7 @@ public class PlayerController : MonoBehaviour
     private float _lastDashTime = -999f;
     private int _facingDirection = 1; // 1 = right, -1 = left
 
+    
     private Transform _transform;
 
     private float _lastAPressedTime = float.NegativeInfinity;
@@ -63,29 +70,65 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position + groundCheckPosition, groundCheckRadius);
+    }
 
     void Update()
     {
-        if (Input.GetButton("Fire2") == false) // temporarily
-        {
-            
-        }
-
+        
+        CheckGround();
+        
         HandleMovement();
+        
         HandleJumping();
-
+   
         HandlePlatformCollision();
 
         FlipPlayerSprite();
 
         HandleDash();
 
-        DoAttack();
-
         SetAnimation();
 
         
 
+    }
+
+    private void CheckGround()
+    {
+        Collider2D hitCollider = Physics2D.OverlapCircle(groundCheckPosition + transform.position, groundCheckRadius, 1 << LayerMask.NameToLayer("Ground"));
+
+        if (hitCollider != null)
+        {
+            
+            if (hitCollider.gameObject.CompareTag("Ground"))
+            {
+                
+                isGround = true;
+                if (hasTriggerFallAnimation == true)
+                {
+                    hasTriggerFallAnimation = false;
+                }
+            }
+            else
+            {
+                isGround = false;
+
+            }
+        }
+        else
+        {
+            isGround = false;
+            if (_rb.linearVelocityY < 0 && hasTriggerFallAnimation == false && !_animator.GetCurrentAnimatorStateInfo(0).IsName("Dash"))
+            {
+                _animator.SetTrigger("fallTrigger");
+                hasTriggerFallAnimation = true; 
+            }
+            
+        }
     }
 
     private void HandlePlatformCollision()
@@ -117,7 +160,7 @@ public class PlayerController : MonoBehaviour
 
         float _moveInput = 0f;
         float currentSpeed;
-
+        
         
         currentSpeed = SmartMovement(ref _moveInput);
 
@@ -130,6 +173,11 @@ public class PlayerController : MonoBehaviour
         if (_moveInput != 0)
         {
             _facingDirection = (int)Mathf.Sign(_moveInput);
+            shouldMove = true;
+        }
+        else
+        {
+            shouldMove = false;
         }
             
 
@@ -138,16 +186,17 @@ public class PlayerController : MonoBehaviour
     private float SmartMovement(ref float _moveInput)
     {
 
-
         float currentSpeed = moveSpeed; // Always return base moveSpeed
 
         if (Input.GetKeyDown(KeyCode.A))
         {
             _lastAPressedTime = Time.time;
+            
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
             _lastDPressedTime = Time.time;
+            
         }
 
         bool aHeld = Input.GetKey(KeyCode.A);
@@ -178,6 +227,7 @@ public class PlayerController : MonoBehaviour
             else if (Input.GetKey(KeyCode.D))
                 _facingDirection = 1;
 
+            _animator.SetTrigger("shouldDash");
             StartCoroutine(Dash());
         }
     }
@@ -185,13 +235,11 @@ public class PlayerController : MonoBehaviour
     void HandleJumping()
     {
         
-            
-        
         if (Input.GetKeyDown(KeyCode.Space) && _jumpCount > 0)
         {
             _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, jumpForce); // need modify for rope after release
             _jumpCount--;
-
+            _animator.SetTrigger("needJump");
             AudioManager.Instance.PlaySfx("Jump");
             
         }
@@ -219,6 +267,7 @@ public class PlayerController : MonoBehaviour
             //isGrounded = true; // need the isGround boolean
             _jumpCount = _maxJumps;
            
+           
         }
 
     }
@@ -230,13 +279,13 @@ public class PlayerController : MonoBehaviour
 
     private void FlipPlayerSprite(float _moveInput)
     {
-        if (_moveInput == 1 && _spriteRenderer.flipX != false)
+        if (Mathf.Approximately(_moveInput, 1) && _spriteRenderer.flipX != false)
         {
             //_transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
             _spriteRenderer.flipX = false;
 
         }
-        else if (_moveInput == -1 && _spriteRenderer.flipX != true)
+        else if (Mathf.Approximately(_moveInput, -1) && _spriteRenderer.flipX != true)
         {
             //_transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
             _spriteRenderer.flipX = true;
@@ -255,20 +304,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void DoAttack()
-    {
-        if (Input.GetButtonDown("Fire1"))
-        {
-
-            _animator.SetTrigger("meleeAttack");
-            isMeleeAttack = true;
-        }
-    }
+    
 
     private void SetAnimation()
     {
-        _animator.SetBool("isMeleeAttack", isMeleeAttack);
-        _animator.SetFloat("attackSpeed", attackSpeed);
-
+        _animator.SetBool("shouldMove", shouldMove && _jumpCount == _maxJumps);
+        _animator.SetBool("isGround", isGround);
+        
     }
 }
