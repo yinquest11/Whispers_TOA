@@ -50,11 +50,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c3f71573c8c65c45bdc1f116945fc41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 7.31
   jumpForce: 15
+  shouldMove: 0
+  isGround: 0
+  groundCheckPosition: {x: 0, y: -1.16, z: 0}
+  groundCheckRadius: 0.51
   dashSpeed: 20
   dashDuration: 0.2
   dashCooldown: 0
+  hasTriggerFallAnimation: 0
   currentMoveInput: 0
   isMeleeAttack: 0
   attackSpeed: 1.5
@@ -119,8 +124,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.027328968, y: 0.07287687}
-  m_Size: {x: 0.7004113, y: 1.163973}
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 1.0659391, y: 2.5922914}
   m_Direction: 0
 --- !u!231 &2331608974826192064
 SpringJoint2D:
@@ -490,7 +495,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: 1670995327, guid: fbaab84148a3f154fab5b573fdfd7f13, type: 3}
+  m_Sprite: {fileID: 5219396012434601270, guid: 04fbc7b4071f0ed4ea24e61a470e8a1c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -530,7 +535,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2426419111866936976}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 65cce764633bf224999f3cc81dc7ecfa, type: 3}
   m_Name: 
@@ -640,7 +645,7 @@ MonoBehaviour:
   lineRenderer: {fileID: 0}
   interstedLayer:
     serializedVersion: 2
-    m_Bits: 576
+    m_Bits: 8768
   maxDistnace: 12.44
   gotHold: 0
   m_playerController: {fileID: 3078024177173481564}
