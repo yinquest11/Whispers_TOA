@@ -219,7 +219,8 @@ public class PlayerController : MonoBehaviour
     }
     private void HandleDash()
     {
-        if (!_isDashing && Input.GetButtonDown("Fire3") && Time.time >= _lastDashTime + dashCooldown)
+        // Input.GetButtonDown("Fire3")
+        if (!_isDashing && Input.GetKeyDown(KeyCode.Mouse0) && Time.time >= _lastDashTime + dashCooldown)
         {
             // Update facing direction based on current input
             if (Input.GetKey(KeyCode.A))
