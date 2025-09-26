@@ -2990,6 +2990,10 @@ PrefabInstance:
       propertyPath: volumeSlider
       value: 
       objectReference: {fileID: 774922850}
+    - target: {fileID: 7069743670014100898, guid: 5fa57f31ceebbfb4aada6b32d5820ac7, type: 3}
+      propertyPath: musicFadeDuration
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

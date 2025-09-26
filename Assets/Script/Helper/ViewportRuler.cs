@@ -62,9 +62,9 @@ public class ViewportRuler : MonoBehaviour
         
         // 也顺便重置一下这个标志位，确保状态干净
         HasDirectionReversed = false; 
-
-        
+  
     }
+    
     private void CalculateZone()
     {
         CalculateCurrentZone();
