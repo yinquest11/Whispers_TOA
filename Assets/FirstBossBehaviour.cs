@@ -18,6 +18,8 @@ public class FirstBossBehaviour : MonoBehaviour
     public bool canFollow = false;
     public bool canStartOnAirCoroutine = true;
 
+    public GameObject throwObjectToSpawn;
+
     public enum BossState
     {
         onAir,
@@ -103,8 +105,16 @@ public class FirstBossBehaviour : MonoBehaviour
         {
             rb.AddForce((playerPosition - (Vector2)transform.position).normalized * endJumpForce, ForceMode2D.Impulse);
             curretnState = BossState.onGround;
+            
+            // Instantiate Throw Object
+            if (throwObjectToSpawn != null)
+            { 
+                Instantiate(throwObjectToSpawn, Vector3.zero, Quaternion.identity);
+            }
+            
             canStart = false;
             
+ 
         }
 
 

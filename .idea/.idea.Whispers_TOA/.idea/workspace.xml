@@ -6,11 +6,17 @@
   <component name="ChangeListManager">
     <list default="true" id="43af4954-6e2e-4cce-8467-6232e570a6c5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Whispers_TOA/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Whispers_TOA/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animation/Player.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animation/Player.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/FirstBossBehaviour.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/FirstBossBehaviour.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/BossLevel1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/BossLevel1.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/BossLevel3.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/BossLevel3.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/Helper/IgnoreColisionBetween.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Helper/IgnoreColisionBetween.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Helper/ViewportRuler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Helper/ViewportRuler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/AudioManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/AudioManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/Health.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/Health.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/Player/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Player/PlayerController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/RopeRelated/BlockCollisionDetector.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/RopeRelated/BlockCollisionDetector.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/RopeRelated/RopeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/RopeRelated/RopeController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -165,6 +171,7 @@
       <workItem from="1758200410087" duration="9927000" />
       <workItem from="1758801180963" duration="2918000" />
       <workItem from="1758807228531" duration="10196000" />
+      <workItem from="1758848397515" duration="5303000" />
     </task>
     <servers />
   </component>

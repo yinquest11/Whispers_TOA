@@ -49,6 +49,22 @@ public class ViewportRuler : MonoBehaviour
         
     }
 
+    
+    public void ResetForNewSwipe()
+    {
+        // 计算并同步当前区域
+        currentZone = CalculateCurrentZone();
+        previousZone = currentZone;
+        
+        // 【关键修复】: 重置鼠标移动方向的记忆。
+        // 设置为 0 (静止)，这样下一次任何方向的移动都会被检测为“变化”。
+        _mouseMoveDirection = 0;
+        
+        // 也顺便重置一下这个标志位，确保状态干净
+        HasDirectionReversed = false; 
+
+        
+    }
     private void CalculateZone()
     {
         CalculateCurrentZone();

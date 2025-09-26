@@ -22,7 +22,7 @@ public class BlockCollisionDetector : MonoBehaviour
 
             if (targetHealth != null)
             {
-                AudioManager.Instance.PlaySfx("ThrowHit");
+                AudioManager.Instance.PlaySfx("ThrowHit"); 
                 targetHealth.LightEnemyErhhhh(collision.contacts[0].normal);
                 targetHealth.TakeDamage(0.01f,1f);
             }

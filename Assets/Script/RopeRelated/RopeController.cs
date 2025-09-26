@@ -106,6 +106,9 @@ public class RopeController : MonoBehaviour
     // for heavy enemy need to update anchor
     public Transform targetTransform;
     public Vector3 targetOriginalPosiiton;
+    
+    // for viewport
+    public bool shouldReset = true;
 
     private void Awake()
     {
@@ -260,10 +263,7 @@ public class RopeController : MonoBehaviour
             _enemyICanMove = _hitInformation.collider.GetComponent<ICanMove>();
             ((MonoBehaviour)_enemyICanMove).enabled = false;
         }
-        else
-        {
-            Debug.Log("Enemy Movement does not apply ICanMove interface");
-        }
+        
 
         // show my verlet rope
         throwRope.SetActive(true);
@@ -279,6 +279,15 @@ public class RopeController : MonoBehaviour
         _blockPrependicularDirectionToPlayer = Vector2.Perpendicular(playerDirectionToBlock);
 
 
+        if (shouldReset == true)
+        {
+            
+            _viewportRuler.ResetForNewSwipe();
+            shouldReset = false;
+
+            return;
+        }
+        
         // check if need to throw, then throw
         if (_viewportRuler.HasDirectionReversed == true && canThrow == true ) 
         {
@@ -414,7 +423,8 @@ public class RopeController : MonoBehaviour
             throwRope.SetActive(false); // disable my verlet rope for throw
         }
 
-        
+        shouldReset = true;
+
     }
 
     private void TryDetermineRopeMode()
@@ -425,7 +435,7 @@ public class RopeController : MonoBehaviour
             _holdBefore = true;
 
             // Hold a grabable
-            if (_targetLayerName == "Grabable" || _targetLayerName == "Ground")
+            if (_targetLayerName == "Ground")
             {          
                 ropeMode = RopeMode.Swing;
             }
@@ -444,6 +454,11 @@ public class RopeController : MonoBehaviour
                     ropeMode = RopeMode.Swing;
                 }
 
+            }
+            
+            else if (_targetLayerName == "Grabable" )
+            {
+                ropeMode = RopeMode.ThrowEnemy;
             }
 
         }

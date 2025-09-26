@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using Unity.VisualScripting;
 
 public class Health : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class Health : MonoBehaviour
     public GameObject erhhGameObjectPrefab;
     protected GameObject _erhhGameObject;
     public float erhhForce = 18.02f;
+
+    public float beingThrowDamage;
 
 
 
@@ -178,6 +181,21 @@ public class Health : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
 
         childSprite.color = _originalColor;
+
+    }
+
+    void OnCollisionEnter2D(Collision2D _collider2D)
+    {
+        if (type == gameObjectType.Player)
+            return;
+
+
+        if (_collider2D.gameObject.layer == LayerMask.NameToLayer("Grabable"))
+        {
+            
+            this.TakeDamage(beingThrowDamage);
+            Destroy(_collider2D.gameObject);
+        }
 
     }
 }

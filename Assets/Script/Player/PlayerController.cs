@@ -67,6 +67,8 @@ public class PlayerController : MonoBehaviour
         _allPlatformEffectors = FindObjectsByType<PlatformEffector2D>(FindObjectsSortMode.None);
 
         AudioManager.Instance.PlayMusic("BGM");
+        
+       
 
     }
 
@@ -241,6 +243,7 @@ public class PlayerController : MonoBehaviour
             _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, jumpForce); // need modify for rope after release
             _jumpCount--;
             _animator.SetTrigger("needJump");
+            
             AudioManager.Instance.PlaySfx("Jump");
             
         }
