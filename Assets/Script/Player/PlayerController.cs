@@ -113,6 +113,7 @@ public class PlayerController : MonoBehaviour
                 if (hasTriggerFallAnimation == true)
                 {
                     hasTriggerFallAnimation = false;
+                    AudioManager.Instance.PlaySfx("PlayerLand");
                 }
             }
             else

@@ -3019,8 +3019,44 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 774922850}
     - target: {fileID: 7069743670014100898, guid: 5fa57f31ceebbfb4aada6b32d5820ac7, type: 3}
+      propertyPath: tempAudioManager
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7069743670014100898, guid: 5fa57f31ceebbfb4aada6b32d5820ac7, type: 3}
       propertyPath: musicFadeDuration
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7069743670014100898, guid: 5fa57f31ceebbfb4aada6b32d5820ac7, type: 3}
+      propertyPath: sfxSounds.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7069743670014100898, guid: 5fa57f31ceebbfb4aada6b32d5820ac7, type: 3}
+      propertyPath: sfxSounds.Array.data[0].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 5741202d79b096e42b0cf0db29d63fe1, type: 3}
+    - target: {fileID: 7069743670014100898, guid: 5fa57f31ceebbfb4aada6b32d5820ac7, type: 3}
+      propertyPath: sfxSounds.Array.data[2].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: d40286589cd0f2746a4d758b502e15d1, type: 3}
+    - target: {fileID: 7069743670014100898, guid: 5fa57f31ceebbfb4aada6b32d5820ac7, type: 3}
+      propertyPath: sfxSounds.Array.data[2].name
+      value: RopeThrow
+      objectReference: {fileID: 0}
+    - target: {fileID: 7069743670014100898, guid: 5fa57f31ceebbfb4aada6b32d5820ac7, type: 3}
+      propertyPath: sfxSounds.Array.data[3].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 462e58a9710a1e8438f27806e25b31cb, type: 3}
+    - target: {fileID: 7069743670014100898, guid: 5fa57f31ceebbfb4aada6b32d5820ac7, type: 3}
+      propertyPath: sfxSounds.Array.data[3].name
+      value: RopeHitSurface
+      objectReference: {fileID: 0}
+    - target: {fileID: 7069743670014100898, guid: 5fa57f31ceebbfb4aada6b32d5820ac7, type: 3}
+      propertyPath: sfxSounds.Array.data[4].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 3d67e2d03f6ef2f488b7a06611e5a212, type: 3}
+    - target: {fileID: 7069743670014100898, guid: 5fa57f31ceebbfb4aada6b32d5820ac7, type: 3}
+      propertyPath: sfxSounds.Array.data[4].name
+      value: PlayerLand
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

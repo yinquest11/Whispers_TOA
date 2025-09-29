@@ -291,7 +291,7 @@ public class RopeController : MonoBehaviour
         // check if need to throw, then throw
         if (_viewportRuler.HasDirectionReversed == true && canThrow == true ) 
         {
-            Throw(_viewportRuler.GetMouseMoveDirection);        
+            Throw(_viewportRuler.GetMouseMoveDirection);
         }
 
         // check if need to acceleration the box
@@ -307,6 +307,8 @@ public class RopeController : MonoBehaviour
     {
         canThrow = false;
         isThrowing = true;
+
+        
 
         MaxDistanceOnly(false);
 
@@ -530,6 +532,7 @@ public class RopeController : MonoBehaviour
         if (successfulHit == true) // if got hit the thing I want, use the hit point
         {
             OnGrappleHit(successfulHit);
+            AudioManager.Instance.PlaySfx("RopeThrow");
         }
         else // no have hit any thing
         {
