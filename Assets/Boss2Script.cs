@@ -13,10 +13,17 @@ public class Boss2Script : MonoBehaviour
     public float moveSpeed = 3f;
 
     [Header("Attack")]
-    public GameObject laserPrefab;  // assign in Inspector
+    public GameObject laserPrefab; 
     public float laserDuration = 0.5f;
 
     private bool goingToA = true;
+
+    public SideLaserManager spawner;
+
+    public float verticalOffset = 8f;
+
+    [Header("ThrowObject")]
+    public GameObject throwObjectToSpawn;
 
     void Start()
     {
@@ -27,14 +34,14 @@ public class Boss2Script : MonoBehaviour
     {
         while (true)
         {
-            // 1. Go to either point A or B
+            // Go to either point A or B
             Transform startPoint = goingToA ? pointA : pointB;
             yield return StartCoroutine(MoveToPoint(startPoint.position));
 
-            // 2. Go to top point
+            // Go to top point
             yield return StartCoroutine(MoveToPoint(topPoint.position));
 
-            // 3. Pick random X between A and B, go down
+            // Pick random X between A and B, go down
             float randomX = Random.Range(pointA.position.x, pointB.position.x);
             float lowerY = (pointA.position.y + pointB.position.y) / 2f;
             Vector2 attackPos = new Vector2(randomX, lowerY);
@@ -43,11 +50,11 @@ public class Boss2Script : MonoBehaviour
             // Attack here
             yield return StartCoroutine(FireLaser());
 
-            // 4. Return to top
+            // Return to top
             yield return StartCoroutine(MoveToPoint(topPoint.position));
 
-            // 5. Toggle target
             goingToA = !goingToA;
+
         }
     }
 
@@ -68,21 +75,34 @@ public class Boss2Script : MonoBehaviour
             // Start from boss position
             Vector3 spawnPos = transform.position;
 
-            // Offset downwards (adjust this number to move the laser lower)
-            float verticalOffset = 8f; // 2 Unity units below the boss
+            // Offset downwards
+            float verticalOffset = 8f; // adjust this if needed
             spawnPos.y -= verticalOffset;
 
             GameObject laser = Instantiate(laserPrefab, spawnPos, Quaternion.identity);
 
-            // Make sure laser doesn't push the boss
+            // Trigger side spawner to spawn additional lasers
+            if (spawner != null)
+            {
+                spawner.SpawnWithOffset(2f);
+            }
+
+            if (throwObjectToSpawn != null)
+            {
+                Instantiate(throwObjectToSpawn, Vector3.zero, Quaternion.identity);
+            }
+
+            // Prevent physics interaction
             Rigidbody2D rb = laser.GetComponent<Rigidbody2D>();
             if (rb != null) rb.bodyType = RigidbodyType2D.Kinematic;
 
             yield return new WaitForSeconds(laserDuration);
 
             Destroy(laser);
+            
         }
     }
+
 }
 
 
