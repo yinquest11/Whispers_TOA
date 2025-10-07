@@ -21,6 +21,7 @@ TagManager:
   - RopeController
   - ThrowRope
   - AudioManager
+  - CineCamp
   layers:
   - Default
   - TransparentFX

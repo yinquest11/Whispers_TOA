@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="43af4954-6e2e-4cce-8467-6232e570a6c5" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/BossLevel1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/BossLevel1.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Helper/ViewportRuler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Helper/ViewportRuler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Whispers_TOA/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Whispers_TOA/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,6 +17,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/FirstBossBehaviour.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Script/CameraHelper/CameraHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/RopeRelated/RopeController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/RopeRelated/SmartAnchorObject_Tag.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/RopeRelated/TestAutoAim.cs" root0="FORCE_HIGHLIGHTING" />
@@ -163,6 +163,8 @@
       <workItem from="1758807228531" duration="10196000" />
       <workItem from="1758848397515" duration="5303000" />
       <workItem from="1758854398932" duration="295000" />
+      <workItem from="1759393703307" duration="127000" />
+      <workItem from="1759842109261" duration="4781000" />
     </task>
     <servers />
   </component>
