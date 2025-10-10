@@ -6,18 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="43af4954-6e2e-4cce-8467-6232e570a6c5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Whispers_TOA/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Whispers_TOA/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/FirstBossBehaviour.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/FirstBossBehaviour.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Fairy.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Fairy.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/BossLevel1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/BossLevel1.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/BossLevel2.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/BossLevel2.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/BossLevel3.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/BossLevel3.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/CameraHelper/CameraHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/CameraHelper/CameraHelper.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Fairy/FairyFollow.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Fairy/FairyFollow.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Helper/IgnoreColisionBetween.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Helper/IgnoreColisionBetween.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Player/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Player/PlayerController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/RopeRelated/RopeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/RopeRelated/RopeController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/FinalBoss.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/FinalBoss.unity" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -181,6 +170,8 @@
       <workItem from="1759993330330" duration="627000" />
       <workItem from="1760077424779" duration="7484000" />
       <workItem from="1760090448492" duration="770000" />
+      <workItem from="1760093450344" duration="708000" />
+      <workItem from="1760094650954" duration="400000" />
     </task>
     <servers />
   </component>
