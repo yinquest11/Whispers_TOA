@@ -2228,7 +2228,7 @@ GameObject:
   - component: {fileID: 2102430356}
   m_Layer: 0
   m_Name: CameraHelper
-  m_TagString: Untagged
+  m_TagString: CameraHelper
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

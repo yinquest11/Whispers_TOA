@@ -47,6 +47,7 @@ public class FairyFollow : MonoBehaviour
     {
         Vector3 targetPosition = _playerTransform.position + (Vector3)offset;
 
+       
         targetPosition.y += Mathf.Sin(Time.time * floatFrequency) * floatAmplitude;
 
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref _velocity, 1f / followSpeed);

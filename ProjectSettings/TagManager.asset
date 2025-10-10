@@ -22,6 +22,7 @@ TagManager:
   - ThrowRope
   - AudioManager
   - CineCamp
+  - CameraHelper
   layers:
   - Default
   - TransparentFX
@@ -38,8 +39,8 @@ TagManager:
   - erhhObject
   - Ground
   - FirstBoss
-  - 
-  - 
+  - RopePoint
+  - Wall
   - 
   - 
   - 

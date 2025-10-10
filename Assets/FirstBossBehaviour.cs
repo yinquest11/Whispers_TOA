@@ -20,6 +20,9 @@ public class FirstBossBehaviour : MonoBehaviour
 
     public GameObject throwObjectToSpawn;
 
+    public bool playerEnterRoom = false;
+    
+
     public enum BossState
     {
         onAir,
@@ -40,6 +43,9 @@ public class FirstBossBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (playerEnterRoom == false)
+            return;
+        
         playerPosition =  GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>().position;
 
         if (canStart == false)

@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
 
     private PlatformEffector2D[] _allPlatformEffectors;
 
-
+    
 
 
 
@@ -92,6 +92,8 @@ public class PlayerController : MonoBehaviour
         FlipPlayerSprite();
 
         HandleDash();
+
+        
 
         SetAnimation();
 
@@ -308,6 +310,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    
     
 
     private void SetAnimation()

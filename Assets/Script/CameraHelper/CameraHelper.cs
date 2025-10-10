@@ -25,34 +25,31 @@ public class CameraHelper : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.E))
-        {
-            // change size
-            ChangeCameraSize(cinemachineCamera.Lens.OrthographicSize, cinemachineCamera.Lens.OrthographicSize + 2, 2);
-        }
-        
-        if(Input.GetKeyDown(KeyCode.Q))
-        {
-            // enable full screen dead zone
-            DeadZoneEnable(new Vector2(1f, 1f));
-        }
-        
-        if(Input.GetKeyDown(KeyCode.Z))
-        {
-            // enable empty dead zone area, so no death zone
-            DeadZoneEnable(new Vector2(0f, 0f));
-        }
-        
         
     }
-
-    public void DeadZoneEnable(Vector2 customSize)
+    
+    // if player reach the red area (screen space), the camera will be force to follow target until target back to the area inside
+    public void SetHardLimitsSize(Vector2 customSize)
+    {
+        cameraPositionComposer.Composition.HardLimits.Size = customSize;
+    }
+    
+    // Set hard limits offset
+    public void SetHardLimitsOffset(Vector2 customSize)
+    {
+        cameraPositionComposer.Composition.HardLimits.Offset = customSize;
+    }
+    
+    // Set dead zone size
+    public void SetDeadZoneSize(Vector2 customSize)
     {
 
         cameraPositionComposer.Composition.DeadZone.Size = customSize;
         
     }
-    public void ChangeCameraSize(float startSize, float endSize,float duration, AnimationCurve curve = null)
+    
+    // Change camera otho size
+    public void SetCameraSize(float startSize, float endSize,float duration, AnimationCurve curve = null)
     {
         Interpolate(startSize, endSize, 2, curve, onUpdate: (newValue) => {cinemachineCamera.Lens.OrthographicSize = newValue;} );
     }

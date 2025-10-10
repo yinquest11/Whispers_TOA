@@ -460,6 +460,13 @@ public class RopeController : MonoBehaviour
             {
                 ropeMode = RopeMode.ThrowEnemy;
             }
+            
+            else if (_targetLayerName == "RopePoint")
+            {
+                ropeMode = RopeMode.Swing;
+            }
+            
+            
 
         }
 
@@ -488,6 +495,12 @@ public class RopeController : MonoBehaviour
                 }
                 
             }
+            
+            else if (_targetLayerName == "RopePoint")
+            {
+                CloseGrappleRopeAndInitialize();
+            }
+            
             
             
 
@@ -525,8 +538,12 @@ public class RopeController : MonoBehaviour
 
         RaycastHit2D successfulHit = Physics2D.Raycast(transform.position, fireDirection, maxDistnace, interstedLayer); // raycast to the direction
 
+        
+        
         gotHold = true;
 
+        
+        
         if (successfulHit == true) // if got hit the thing I want, use the hit point
         {
             OnGrappleHit(successfulHit);
@@ -610,11 +627,16 @@ public class RopeController : MonoBehaviour
             _targetOriginalMass = targetRigidbody.mass;         
         }
 
-        // enable the draw rope, when this script is enable, will enable the line renderer
-        grappleRope.enabled = true;
+        // ignore the wall layer
+        if (_targetLayerName != "Wall")
+        {
+            // enable the draw rope, when this script is enable, will enable the line renderer
+            grappleRope.enabled = true;
 
-        // enable jump
-        playerController.CanJumpAgain();
+            // enable jump
+            playerController.CanJumpAgain();
+        }
+       
 
     }
 
