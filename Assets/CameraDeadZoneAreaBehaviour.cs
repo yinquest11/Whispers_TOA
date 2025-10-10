@@ -19,16 +19,5 @@ public class CameraDeadZoneAreaBehaviour : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            cameraHelper.DeadZoneEnable(new Vector2(1, 1));
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        cameraHelper.DeadZoneEnable(new Vector2(0, 0));
-    }
+    
 }
