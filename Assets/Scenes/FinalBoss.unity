@@ -2677,9 +2677,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bossHighPosition: {fileID: 1693164673}
-  jumpForce: 24.03
-  endJumpForce: 33.4
-  followSpeed: 11.54
+  rb: {fileID: 1634562256}
+  jumpForce: 10
+  endJumpForce: 10
+  followSpeed: 5
   pointA: {fileID: 1128889216}
   pointB: {fileID: 1685456142}
   topPoint: {fileID: 34742382}
@@ -2691,13 +2692,13 @@ MonoBehaviour:
   - {fileID: 1128889216}
   - {fileID: 1685456142}
   - {fileID: 34742382}
+  moveSpeed: 3
+  waitTime: 1.5
   missilePrefab: {fileID: 543184723858377196, guid: 5cd361a1eb0f2ba408bdc90bd67f3b03, type: 3}
   missileCount: 3
   spreadAngle: 30
-  moveSpeed: 3
+  shotsPerCycle: 3
   throwObjectToSpawn: {fileID: 7536462631002381555, guid: 78dcee070625efb438dea1e5be71cd46, type: 3}
-  minAttacksPerCycle: 2
-  maxAttacksPerCycle: 4
   waitTimeBetweenAttacks: 1
 --- !u!50 &1634562256
 Rigidbody2D:
@@ -3044,7 +3045,7 @@ Transform:
   m_GameObject: {fileID: 1693164672}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 3.09, z: -0.7375334}
+  m_LocalPosition: {x: 0.2, y: 27.9, z: -0.7375334}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
