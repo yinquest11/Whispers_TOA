@@ -38,9 +38,9 @@ public class CameraZoneTrigger : MonoBehaviour
         // Save original settings
         if (cameraHelper != null)
         {
-            originalDeadZoneSize = cameraHelper.cameraPositionComposer.Composition.DeadZone.Size;
-            originalCameraSize = cameraHelper.cinemachineCamera.Lens.OrthographicSize;
-            originalFollowTarget = cameraHelper.cinemachineCamera.Follow;
+            //originalDeadZoneSize = cameraHelper.cameraPositionComposer.Composition.DeadZone.Size;
+            //originalCameraSize = cameraHelper.cinemachineCamera.Lens.OrthographicSize;
+            //originalFollowTarget = cameraHelper.cinemachineCamera.Follow;
         }
     }
 

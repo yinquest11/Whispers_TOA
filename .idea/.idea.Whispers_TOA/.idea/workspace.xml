@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="43af4954-6e2e-4cce-8467-6232e570a6c5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Whispers_TOA/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Whispers_TOA/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/CameraZoneTrigger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/CameraZoneTrigger.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/New Palette.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/New Palette.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/BossLevel1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/BossLevel1.unity" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,6 +66,7 @@
       <option name="ENV_FILE_PATHS" value="" />
       <option name="REDIRECT_INPUT_PATH" value="" />
       <option name="PTY_MODE" value="Auto" />
+      <option name="MIXED_MODE_DEBUG" value="0" />
       <method v="2" />
     </configuration>
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
@@ -75,6 +78,7 @@
       <option name="ENV_FILE_PATHS" value="" />
       <option name="REDIRECT_INPUT_PATH" value="" />
       <option name="PTY_MODE" value="Auto" />
+      <option name="MIXED_MODE_DEBUG" value="0" />
       <method v="2" />
     </configuration>
     <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
@@ -86,6 +90,7 @@
       <option name="ENV_FILE_PATHS" value="" />
       <option name="REDIRECT_INPUT_PATH" value="" />
       <option name="PTY_MODE" value="Auto" />
+      <option name="MIXED_MODE_DEBUG" value="0" />
       <method v="2" />
     </configuration>
     <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
@@ -174,6 +179,7 @@
       <workItem from="1760268940385" duration="562000" />
       <workItem from="1760438514823" duration="1182000" />
       <workItem from="1760515589292" duration="1922000" />
+      <workItem from="1760545640928" duration="879000" />
     </task>
     <servers />
   </component>
